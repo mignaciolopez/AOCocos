@@ -1,5 +1,4 @@
 proj.win32/Debug.win32/
-bin/
 .VC*
 .vs*
 *.tlog
