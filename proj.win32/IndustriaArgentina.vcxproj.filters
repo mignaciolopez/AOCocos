@@ -36,6 +36,9 @@
     <ClCompile Include="..\Classes\ECS\EntityManager.cpp">
       <Filter>src\ECS</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\ECS\Entity.cpp">
+      <Filter>src\ECS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -48,6 +51,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\EntityManager.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\Entity.h">
       <Filter>src\ECS</Filter>
     </ClInclude>
   </ItemGroup>

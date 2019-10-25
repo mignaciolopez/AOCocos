@@ -2,8 +2,9 @@
 
 #include <map>
 
-using ContainerEntity = std::map<unsigned int, unsigned int>;
-//The second unsigned int will be user later to find faster the network id
+#include "ECS/Entity.h"
+
+using ContainerEntity = std::map<unsigned int, Entity*>;
 
 class EntityManager
 {
@@ -12,9 +13,10 @@ public:
 	~EntityManager();
 
 	unsigned int CreateEntity();
+	void AddComponentTo(unsigned int entityID, void* component);
 
 private:
 	unsigned int m_id;
 	ContainerEntity m_entities;
-};
 
+};
