@@ -9,6 +9,27 @@ namespace ECS
 
 #define LOGID "[ECS Engine]"
 
+	static ECSEngine* s_ecsEngine = nullptr;
+
+	ECSEngine * ECSEngine::GetInstance()
+	{
+		if (!s_ecsEngine)
+		{
+			s_ecsEngine = new (std::nothrow) ECSEngine;
+		}
+
+		return s_ecsEngine;
+	}
+
+	void ECSEngine::DestroyInstance()
+	{
+		if (s_ecsEngine)
+		{
+			delete s_ecsEngine;
+			s_ecsEngine = nullptr;
+		}
+	}
+
 	ECSEngine::ECSEngine()
 	{
 		cocos2d::log("%s Constructor", LOGID);
@@ -42,6 +63,16 @@ namespace ECS
 	void ECSEngine::Update()
 	{
 			m_systemManager->Update();
+	}
+
+	EntityManager * ECSEngine::GetEntityManager()
+	{
+		return m_entityManager;
+	}
+
+	SystemManager * ECSEngine::GetSystemManager()
+	{
+		return m_systemManager;
 	}
 
 }

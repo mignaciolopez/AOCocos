@@ -1,17 +1,17 @@
 #include "MainScene.h"
 #include "ECS/ECSEngine.h"
 
+#include "Components/ComponentsList.h"
+
 #include "Systems/RenderSystem.h"
+#include "Components/BodyComponent.h"
 
 #define LOGID "[MAIN SCENE]"
 
 USING_NS_CC;
 
-static ECS::ECSEngine* s_ECSEngine;
-
-Scene* MainScene::createScene(ECS::ECSEngine* ecsEngine)
+Scene* MainScene::createScene()
 {
-	s_ECSEngine = ecsEngine;
     return MainScene::create();
 }
 
@@ -28,10 +28,27 @@ bool MainScene::init()
 
 	this->scheduleUpdate();
 
+	// 1- Init Engine
+	m_ECSEngine = ECS::ECSEngine::GetInstance();
+
+	// 2- Create Entity
+	unsigned int entity = m_ECSEngine->GetEntityManager()->CreateEntity();
+
+	// 3- Create Component
+	BodyComponent* body = new (std::nothrow) BodyComponent;
+	if (!body)
+		cocos2d::log("%s body Failed!", LOGID);
+
+	// 4- Add Component to Entity
+	m_ECSEngine->GetEntityManager()->AddComponentTo(entity, body);
+
+	// 5- Create System
 	RenderSystem* renderSystem = new (std::nothrow) RenderSystem;
 	if (!renderSystem)
 		cocos2d::log("%s RenderSystem Failed!", LOGID);
-	s_ECSEngine->m_systemManager->RegisterSystem(renderSystem);
+
+	// 6- Register System
+	m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
 	
 
 	cocos2d::log("%s Init Success.", LOGID);
@@ -40,5 +57,5 @@ bool MainScene::init()
 
 void MainScene::update(float dt)
 {
-	s_ECSEngine->Update();
+	m_ECSEngine->Update();
 }

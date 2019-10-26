@@ -13,15 +13,21 @@ namespace ECS
 		ECSEngine();
 		~ECSEngine();
 
+		static ECSEngine* GetInstance();
+		static void DestroyInstance();
+
 		void Update();
+
+		EntityManager* GetEntityManager();
+		SystemManager* GetSystemManager();
 
 	private:
 
 	public:
-		EntityManager* m_entityManager;
-		SystemManager* m_systemManager;
 
 	private:
+		EntityManager* m_entityManager;
+		SystemManager* m_systemManager;
 
 	};
 

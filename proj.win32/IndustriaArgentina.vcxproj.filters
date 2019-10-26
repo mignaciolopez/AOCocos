@@ -25,6 +25,9 @@
     <Filter Include="src\ECS_ENGINE\Entities">
       <UniqueIdentifier>{4b3d794b-a111-434a-8151-2a5f949013de}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Components">
+      <UniqueIdentifier>{f8c6bd17-565c-43cf-b461-de4a14fc279e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -57,6 +60,9 @@
     <ClCompile Include="..\Classes\Systems\RenderSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Components\BodyComponent.cpp">
+      <Filter>src\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -88,6 +94,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Systems\RenderSystem.h">
       <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\BodyComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\ComponentsList.h">
+      <Filter>src\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

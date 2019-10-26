@@ -8,7 +8,7 @@ namespace ECS
 	{
 	public:
 		System();
-		~System();
+		virtual ~System();
 
 		virtual void Update() = 0;
 	};

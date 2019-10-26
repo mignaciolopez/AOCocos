@@ -1,6 +1,8 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 
+#include "Components/ComponentsList.h"
+
 namespace ECS
 {
 
@@ -8,7 +10,9 @@ namespace ECS
 	{
 	public:
 		Component();
-		~Component();
+		virtual ~Component();
+
+		const ComponentType _type = ComponentType::NONE;
 
 	};
 

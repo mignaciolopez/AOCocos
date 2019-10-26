@@ -49,11 +49,11 @@ namespace ECS
 		return m_id;
 	}
 
-	void EntityManager::AddComponentTo(unsigned int entityID, ECS::Component* component)
+	void EntityManager::AddComponentTo(unsigned int entityID, Component * component)
 	{
 		if (m_entities.find(entityID) != m_entities.end())
 		{
-			m_entities.at(entityID)->AddComponent(component);
+			m_entities.at(entityID)->AddComponent(component->_type, component);
 		}
 	}
 

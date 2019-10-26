@@ -1,5 +1,8 @@
 #include "RenderSystem.h"
 
+#include "Components/ComponentsList.h"
+#include "ECS/ECSEngine.h"
+
 #include "cocos2d.h"
 
 #define LOGID "[RENDER SYSTEM]"

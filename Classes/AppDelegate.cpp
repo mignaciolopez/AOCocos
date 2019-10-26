@@ -11,11 +11,7 @@ AppDelegate::AppDelegate() : m_ECSEngine(nullptr)
 
 AppDelegate::~AppDelegate()
 {
-	if (m_ECSEngine)
-	{
-		delete m_ECSEngine;
-		m_ECSEngine = nullptr;
-	}
+	ECS::ECSEngine::DestroyInstance();
 }
 
 // if you want a different context, modify the value of glContextAttrs
@@ -70,9 +66,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	//auto console = director->getConsole();
 	//console->listenOnTCP(5678);
 
-	m_ECSEngine = new (std::nothrow) ECS::ECSEngine;
+	m_ECSEngine = ECS::ECSEngine::GetInstance();
 
-	auto mainScene = MainScene::createScene(m_ECSEngine);
+	auto mainScene = MainScene::createScene();
 	director->runWithScene(mainScene);
 
 	return true;

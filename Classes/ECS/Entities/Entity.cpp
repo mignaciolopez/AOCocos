@@ -17,11 +17,16 @@ namespace ECS
 	Entity::~Entity()
 	{
 		cocos2d::log("%s Destructor", LOGID);
+		for (auto component : m_components)
+		{
+			delete component.second;
+			component.second = nullptr;
+		}
 	}
 
-	void Entity::AddComponent(ECS::Component* component)
+	void Entity::AddComponent(ComponentType type, ECS::Component* component)
 	{
-		m_components.push_back(component);
+		m_components.emplace(type, component);
 	}
 
 	unsigned int Entity::GetNumOfComponents()

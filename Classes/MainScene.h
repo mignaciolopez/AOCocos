@@ -11,7 +11,7 @@ namespace ECS
 class MainScene : public cocos2d::Scene
 {
 public:
-    static cocos2d::Scene* createScene(ECS::ECSEngine* ecsEngine);
+    static cocos2d::Scene* createScene();
 
     virtual bool init();
 
@@ -21,7 +21,7 @@ public:
 	virtual void update(float dt) override;
 
 private:
-	
+	ECS::ECSEngine* m_ECSEngine;
 };
 
 #endif // __MAIN_SCENE_H__

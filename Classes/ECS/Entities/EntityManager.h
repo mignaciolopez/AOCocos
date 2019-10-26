@@ -1,6 +1,8 @@
 #ifndef __ENTITY_MANAGER_H__
 #define __ENTITY_MANAGER_H__
 
+#include "Components/ComponentsList.h"
+
 #include <map>
 
 namespace ECS
@@ -20,9 +22,9 @@ namespace ECS
 		void AddComponentTo(unsigned int entityID, Component* component);
 		ContainerEntity* GetEntities();
 
+		ContainerEntity m_entities;
 	private:
 		unsigned int m_id;
-		ContainerEntity m_entities;
 
 	};
 }
