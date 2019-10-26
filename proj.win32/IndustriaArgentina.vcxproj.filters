@@ -10,16 +10,19 @@
     <Filter Include="src">
       <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ECS">
+    <Filter Include="src\Systems">
+      <UniqueIdentifier>{5bf5f02d-77b3-4ac8-bcc5-529bb359449d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ECS_ENGINE">
       <UniqueIdentifier>{1421e286-08dc-46d2-a1f0-7f33f853df5a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ECS\Components">
+    <Filter Include="src\ECS_ENGINE\Components">
       <UniqueIdentifier>{c4bdb54a-aac7-4c0f-8680-7d5d161b247f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ECS\Systems">
+    <Filter Include="src\ECS_ENGINE\Systems">
       <UniqueIdentifier>{bac84560-397c-420b-9f45-fc37891126af}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ECS\Entities">
+    <Filter Include="src\ECS_ENGINE\Entities">
       <UniqueIdentifier>{4b3d794b-a111-434a-8151-2a5f949013de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -30,14 +33,29 @@
     <ClCompile Include="..\Classes\AppDelegate.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\HelloWorldScene.cpp">
+    <ClCompile Include="..\Classes\ECS\Entities\EntityManager.cpp">
+      <Filter>src\ECS_ENGINE\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\Entities\Entity.cpp">
+      <Filter>src\ECS_ENGINE\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\ECSEngine.cpp">
+      <Filter>src\ECS_ENGINE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainScene.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ECS\EntityManager.cpp">
-      <Filter>src\ECS</Filter>
+    <ClCompile Include="..\Classes\ECS\Systems\SystemManager.cpp">
+      <Filter>src\ECS_ENGINE\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ECS\Entity.cpp">
-      <Filter>src\ECS</Filter>
+    <ClCompile Include="..\Classes\ECS\Systems\System.cpp">
+      <Filter>src\ECS_ENGINE\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\Components\Component.cpp">
+      <Filter>src\ECS_ENGINE\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\RenderSystem.cpp">
+      <Filter>src\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,14 +65,29 @@
     <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\HelloWorldScene.h">
+    <ClInclude Include="..\Classes\ECS\Entities\Entity.h">
+      <Filter>src\ECS_ENGINE\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\Entities\EntityManager.h">
+      <Filter>src\ECS_ENGINE\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\ECSEngine.h">
+      <Filter>src\ECS_ENGINE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainScene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ECS\EntityManager.h">
-      <Filter>src\ECS</Filter>
+    <ClInclude Include="..\Classes\ECS\Systems\SystemManager.h">
+      <Filter>src\ECS_ENGINE\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ECS\Entity.h">
-      <Filter>src\ECS</Filter>
+    <ClInclude Include="..\Classes\ECS\Systems\System.h">
+      <Filter>src\ECS_ENGINE\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\Components\Component.h">
+      <Filter>src\ECS_ENGINE\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\RenderSystem.h">
+      <Filter>src\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
