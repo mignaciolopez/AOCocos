@@ -3,6 +3,8 @@
 
 #include "ECS/Components/Component.h"
 
+#include "ECS/Components/Component.h"
+
 #include "cocos2d.h"
 
 class BodyComponent : public ECS::Component

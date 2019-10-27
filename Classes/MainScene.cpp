@@ -4,7 +4,6 @@
 #include "Components/ComponentsList.h"
 
 #include "Systems/RenderSystem.h"
-#include "Components/BodyComponent.h"
 
 #define LOGID "[MAIN SCENE]"
 
@@ -58,4 +57,5 @@ bool MainScene::init()
 void MainScene::update(float dt)
 {
 	m_ECSEngine->Update();
+	unscheduleUpdate();
 }

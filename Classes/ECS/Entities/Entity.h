@@ -2,13 +2,15 @@
 #define __ENTITY_H__
 
 #include <map>
+#include <vector>
 
 #include "Components/ComponentsList.h"
 
+#include "ECS/Entities/Entity.h"
+#include "ECS/Components/Component.h"
+
 namespace ECS
 {
-	class Component;
-
 	using ContainerComponents = std::multimap<ComponentType, Component*>;
 
 	class Entity
@@ -17,8 +19,14 @@ namespace ECS
 		Entity();
 		~Entity();
 
-		void AddComponent(ComponentType componentID, Component* component);
+		template <typename COMPONENT>
+		inline void AddComponent(COMPONENT* component)
+		{
+			m_components.emplace(component->_type, component);
+		}
+
 		unsigned int GetNumOfComponents();
+		std::vector<Component*> GetComponentsOfType(ComponentType type);
 
 	private:
 

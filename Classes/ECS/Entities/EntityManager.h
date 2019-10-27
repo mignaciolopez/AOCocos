@@ -3,13 +3,14 @@
 
 #include "Components/ComponentsList.h"
 
+#include "ECS/Entities/Entity.h"
+#include "ECS/Components/Component.h"
+
 #include <map>
+#include <vector>
 
 namespace ECS
 {
-	class Entity;
-	class Component;
-
 	using ContainerEntity = std::map<unsigned int, Entity*>;
 
 	class EntityManager
@@ -19,12 +20,23 @@ namespace ECS
 		~EntityManager();
 
 		unsigned int CreateEntity();
-		void AddComponentTo(unsigned int entityID, Component* component);
+		
+		template <typename COMPONENT>
+		inline void AddComponentTo(unsigned int entityID, COMPONENT* component)
+		{
+			if (m_entities.find(entityID) != m_entities.end())
+			{
+				m_entities.at(entityID)->AddComponent(component);
+			}
+		}
+
 		ContainerEntity* GetEntities();
 
-		ContainerEntity m_entities;
+		std::vector<Entity*> GetEntitiesWithComponent(ComponentType type);
+
 	private:
 		unsigned int m_id;
+		ContainerEntity m_entities;
 
 	};
 }

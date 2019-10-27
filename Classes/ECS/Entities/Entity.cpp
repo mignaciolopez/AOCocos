@@ -1,7 +1,5 @@
 #include "Entity.h"
 
-#include "ECS/Components/Component.h"
-
 #include "cocos2d.h"
 
 namespace ECS
@@ -24,14 +22,22 @@ namespace ECS
 		}
 	}
 
-	void Entity::AddComponent(ComponentType type, ECS::Component* component)
-	{
-		m_components.emplace(type, component);
-	}
-
 	unsigned int Entity::GetNumOfComponents()
 	{
 		return m_components.size();
+	}
+
+	std::vector<Component*> Entity::GetComponentsOfType(ComponentType type)
+	{
+		std::vector<Component*> comps;
+
+		typedef ContainerComponents::iterator itC;
+		std::pair<itC, itC> result = m_components.equal_range(type);
+
+		for (itC it = result.first; it != result.second; it++)
+			comps.push_back(it->second);
+
+		return comps;
 	}
 
 }

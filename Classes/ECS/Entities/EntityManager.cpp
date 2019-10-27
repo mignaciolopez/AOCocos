@@ -1,7 +1,7 @@
 #include "EntityManager.h"
 
-#include "ECS/Entities/Entity.h"
-#include "ECS/Components/Component.h"
+
+#include "Components/BodyComponent.h"
 
 #include "cocos2d.h"
 
@@ -49,17 +49,24 @@ namespace ECS
 		return m_id;
 	}
 
-	void EntityManager::AddComponentTo(unsigned int entityID, Component * component)
-	{
-		if (m_entities.find(entityID) != m_entities.end())
-		{
-			m_entities.at(entityID)->AddComponent(component->_type, component);
-		}
-	}
-
 	ContainerEntity* EntityManager::GetEntities()
 	{
 		return &m_entities;
+	}
+
+	std::vector<Entity*> EntityManager::GetEntitiesWithComponent(ComponentType type)
+	{
+		std::vector<Entity*> entities;
+
+		for (auto entity : m_entities)
+		{
+			for (auto comp : entity.second->GetComponentsOfType(type))
+			{
+				entities.push_back(entity.second);
+			}
+		}
+
+		return entities;
 	}
 
 }

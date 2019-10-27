@@ -54,14 +54,14 @@
     <ClCompile Include="..\Classes\ECS\Systems\System.cpp">
       <Filter>src\ECS_ENGINE\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ECS\Components\Component.cpp">
-      <Filter>src\ECS_ENGINE\Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Systems\RenderSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\Components\BodyComponent.cpp">
       <Filter>src\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\Components\Component.cpp">
+      <Filter>src\ECS_ENGINE\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,9 +89,6 @@
     <ClInclude Include="..\Classes\ECS\Systems\System.h">
       <Filter>src\ECS_ENGINE\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ECS\Components\Component.h">
-      <Filter>src\ECS_ENGINE\Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Systems\RenderSystem.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
@@ -100,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Components\ComponentsList.h">
       <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\Components\Component.h">
+      <Filter>src\ECS_ENGINE\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

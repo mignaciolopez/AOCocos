@@ -1,6 +1,8 @@
 #ifndef __MAIN_SCENE_H__
 #define __MAIN_SCENE_H__
 
+#include "Components/BodyComponent.h"
+
 namespace ECS
 {
 	class ECSEngine;
@@ -20,8 +22,11 @@ public:
 
 	virtual void update(float dt) override;
 
+
+
 private:
 	ECS::ECSEngine* m_ECSEngine;
+	
 };
 
 #endif // __MAIN_SCENE_H__

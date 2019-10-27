@@ -10,6 +10,10 @@ public:
 	~RenderSystem();
 
 	virtual void Update() override;
+
+private:
+	std::vector<ComponentType> m_compatibleComponents;
+
 };
 
 #endif // __RENDER_SYSTEM_H__
