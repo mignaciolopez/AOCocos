@@ -3,6 +3,8 @@
 
 #include "Components/ComponentsList.h"
 
+#include "cocos2d.h"
+
 namespace ECS
 {
 

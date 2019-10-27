@@ -17,12 +17,12 @@ namespace ECS
 
 	SystemManager::~SystemManager()
 	{
-		cocos2d::log("%s Destructor", LOGID);
 		for (auto system : m_systems)
 		{
 			delete system;
 			system = nullptr;
 		}
+		cocos2d::log("%s Destructor", LOGID);
 	}
 
 	void SystemManager::Update()

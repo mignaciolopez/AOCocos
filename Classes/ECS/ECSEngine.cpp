@@ -45,8 +45,6 @@ namespace ECS
 
 	ECSEngine::~ECSEngine()
 	{
-		cocos2d::log("%s Destructor", LOGID);
-
 		if (m_systemManager)
 		{
 			delete m_systemManager;
@@ -58,6 +56,8 @@ namespace ECS
 			delete m_entityManager;
 			m_entityManager = nullptr;
 		}
+
+		cocos2d::log("%s Destructor", LOGID);
 	}
 
 	void ECSEngine::Update()

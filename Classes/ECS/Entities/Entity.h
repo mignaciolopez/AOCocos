@@ -32,9 +32,9 @@ namespace ECS
 	private:
 
 	public:
+		ContainerComponents m_components;
 
 	private:
-		ContainerComponents m_components;
 
 	};
 }

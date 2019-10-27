@@ -57,5 +57,5 @@ bool MainScene::init()
 void MainScene::update(float dt)
 {
 	m_ECSEngine->Update();
-	unscheduleUpdate();
+	//unscheduleUpdate();
 }

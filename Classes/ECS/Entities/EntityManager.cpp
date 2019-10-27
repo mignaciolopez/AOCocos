@@ -18,7 +18,6 @@ namespace ECS
 
 	EntityManager::~EntityManager()
 	{
-		cocos2d::log("%s Destructor", LOGID);
 		if (m_entities.size() > 0)
 		{
 			for (auto e : m_entities)
@@ -27,6 +26,7 @@ namespace ECS
 				e.second = nullptr;
 			}
 		}
+		cocos2d::log("%s Destructor", LOGID);
 	}
 
 	unsigned int EntityManager::CreateEntity()
@@ -67,6 +67,14 @@ namespace ECS
 		}
 
 		return entities;
+	}
+
+	Entity * EntityManager::GetEntityByID(unsigned int ID)
+	{
+		if (m_entities.find(ID) != m_entities.end())
+			return m_entities.at(ID);
+		
+		return nullptr;
 	}
 
 }

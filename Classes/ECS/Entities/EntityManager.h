@@ -34,6 +34,8 @@ namespace ECS
 
 		std::vector<Entity*> GetEntitiesWithComponent(ComponentType type);
 
+		Entity* GetEntityByID(unsigned int ID);
+
 	private:
 		unsigned int m_id;
 		ContainerEntity m_entities;
