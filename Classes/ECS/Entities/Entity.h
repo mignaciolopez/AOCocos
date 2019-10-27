@@ -26,6 +26,7 @@ namespace ECS
 		}
 
 		unsigned int GetNumOfComponents();
+
 		std::vector<Component*> GetComponentsOfType(ComponentType type);
 
 	private:
