@@ -33,9 +33,9 @@ void RenderSystem::Update()
 		{
 			for (auto compType : entity->GetComponentsOfType(comp))
 			{
-				cocos2d::Sprite* spr = (reinterpret_cast<BodyComponent*>(compType))->_bodySprite;
+				//cocos2d::Sprite* spr = (reinterpret_cast<BodyComponent*>(compType))->_bodySprite;
 				
-				cocos2d::Director::getInstance()->getRunningScene()->addChild(spr);
+				//cocos2d::Director::getInstance()->getRunningScene()->addChild(spr);
 			}
 		}
 	}
