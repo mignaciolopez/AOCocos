@@ -63,6 +63,7 @@
     <ClCompile Include="..\Classes\ECS\Components\Component.cpp">
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\ECS\Components\ComponentManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -100,6 +101,10 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\Components\Component.h">
       <Filter>src\ECS_ENGINE\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\Components\ComponentManager.h" />
+    <ClInclude Include="..\Classes\Components\HeadComponent.h">
+      <Filter>src\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

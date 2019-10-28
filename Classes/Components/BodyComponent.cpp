@@ -17,7 +17,7 @@ BodyComponent::BodyComponent()
 BodyComponent::~BodyComponent()
 {
 	auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
-	if(runningScene)
+	if(runningScene && _bodySprite)
 		cocos2d::Director::getInstance()->getRunningScene()->removeChild(_bodySprite);
 	
 	_bodySprite->release();

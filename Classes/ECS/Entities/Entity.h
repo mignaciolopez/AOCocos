@@ -1,7 +1,6 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
-#include <map>
 #include <vector>
 
 #include "Components/ComponentsList.h"
@@ -11,23 +10,20 @@
 
 namespace ECS
 {
-	using ContainerComponents = std::multimap<ComponentType, Component*>;
+	using ContainerComponents = std::vector<unsigned int>;
 
 	class Entity
 	{
 	public:
-		Entity();
+		Entity(unsigned int id);
 		~Entity();
 
-		template <typename COMPONENT>
-		inline void AddComponent(COMPONENT* component)
-		{
-			m_components.emplace(component->_type, component);
-		}
+		void AddComponent(unsigned int id);
 
 		unsigned int GetNumOfComponents();
 
-		std::vector<Component*> GetComponentsOfType(ComponentType type);
+		std::vector<unsigned int> GetComponents();
+		std::vector<unsigned int> GetComponents(ComponentType type);
 
 	private:
 
@@ -35,7 +31,7 @@ namespace ECS
 		ContainerComponents m_components;
 
 	private:
-
+		unsigned int m_id;
 	};
 }
 #endif // __ENTITY_H__

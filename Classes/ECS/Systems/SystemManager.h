@@ -1,13 +1,13 @@
 #ifndef __SYSTEM_MANAGER_H__
 #define __SYSTEM_MANAGER_H__
 
-#include <vector>
+#include <map>
 
 namespace ECS
 {
 	class System;
 
-	using ContainerSystem = std::vector<System*>;
+	using ContainerSystem = std::map<unsigned int, System*>;
 
 	class SystemManager
 	{
@@ -16,9 +16,22 @@ namespace ECS
 		~SystemManager();
 
 		void Update();
-		void RegisterSystem(System* system);
+
+		template <typename SYSTEM>
+		inline unsigned int RegisterSystem(SYSTEM* system)
+		{
+			unsigned int id = GetNewID();
+			m_systems.emplace(id, system);
+
+			return id;
+		}
+
+		void unRegisterSystem(unsigned int id, bool cleanUp = true);
+
+		System* getSystem(unsigned int id);
 
 	private:
+		unsigned int GetNewID();
 
 	public:
 

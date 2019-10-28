@@ -12,7 +12,6 @@ namespace ECS
 
 	EntityManager::EntityManager()
 	{
-		m_id = 0;
 		cocos2d::log("%s Constructor", LOGID);
 	}
 
@@ -31,48 +30,36 @@ namespace ECS
 
 	unsigned int EntityManager::CreateEntity()
 	{
-		m_id = 0;
+		unsigned int id = 0;
 
-		while (m_entities.find(m_id) != m_entities.end())
-			++m_id;
+		while (m_entities.find(id) != m_entities.end())
+			++id;
 
-		Entity* entity = new (std::nothrow) Entity;
+		Entity* entity = new (std::nothrow) Entity(id);
 
 		if (entity)
-			m_entities.emplace(m_id, entity);
+			m_entities.emplace(id, entity);
 		else
 		{
 			cocos2d::log("%s Allocation Error", LOGID);
 			cocos2d::log("%s Entity* entity = new (std::nothrow) Entity;", LOGID);
 		}
 
-		return m_id;
+		return id;
 	}
 
-	ContainerEntity* EntityManager::GetEntities()
+	void EntityManager::AddComponentToEntity(unsigned int entityID, unsigned int componentID)
 	{
-		return &m_entities;
-	}
-
-	std::vector<Entity*> EntityManager::GetEntitiesWithComponent(ComponentType type)
-	{
-		std::vector<Entity*> entities;
-
-		for (auto entity : m_entities)
+		if (m_entities.find(entityID) != m_entities.end())
 		{
-			for (auto comp : entity.second->GetComponentsOfType(type))
-			{
-				entities.push_back(entity.second);
-			}
+			m_entities.at(entityID)->AddComponent(componentID);
 		}
-
-		return entities;
 	}
 
-	Entity * EntityManager::GetEntityByID(unsigned int ID)
+	Entity * EntityManager::getEntity(unsigned int id)
 	{
-		if (m_entities.find(ID) != m_entities.end())
-			return m_entities.at(ID);
+		if (m_entities.find(id) != m_entities.end())
+			return m_entities.at(id);
 		
 		return nullptr;
 	}

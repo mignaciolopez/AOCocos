@@ -2,6 +2,8 @@
 #define __MAIN_SCENE_H__
 
 #include "Components/BodyComponent.h"
+#include "Components/HeadComponent.h"
+#include "Systems/RenderSystem.h"
 
 namespace ECS
 {
@@ -26,6 +28,10 @@ public:
 
 private:
 	ECS::ECSEngine* m_ECSEngine;
+
+	unsigned int m_renderSystemID;
+	unsigned int m_bodyComponentID;
+	unsigned int m_headComponentID;
 	
 };
 

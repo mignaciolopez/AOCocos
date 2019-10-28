@@ -3,8 +3,6 @@
 
 #include "Components/ComponentsList.h"
 
-#include "Systems/RenderSystem.h"
-
 #define LOGID "[MAIN SCENE]"
 
 USING_NS_CC;
@@ -30,24 +28,31 @@ bool MainScene::init()
 	// 1- Init Engine
 	m_ECSEngine = ECS::ECSEngine::GetInstance();
 
-	// 2- Create Entity
+	// 2- Create Entities
 	unsigned int entity = m_ECSEngine->GetEntityManager()->CreateEntity();
 
-	// 3- Create Component
+	// 3- Create Components
 	BodyComponent* body = new (std::nothrow) BodyComponent;
 	if (!body)
 		cocos2d::log("%s body Failed!", LOGID);
 
-	// 4- Add Component to Entity
-	m_ECSEngine->GetEntityManager()->AddComponentTo(entity, body);
+	HeadComponent* head = new (std::nothrow) HeadComponent;
 
-	// 5- Create System
+	// 4- Store Components
+	m_bodyComponentID = m_ECSEngine->GetComponentManager()->storeComponent(body);
+	m_headComponentID = m_ECSEngine->GetComponentManager()->storeComponent(head);
+
+	// 5- Add Components to Entities
+	m_ECSEngine->GetEntityManager()->AddComponentToEntity(entity, m_bodyComponentID);
+	m_ECSEngine->GetEntityManager()->AddComponentToEntity(entity, m_headComponentID);
+
+	// 6- Create Systems
 	RenderSystem* renderSystem = new (std::nothrow) RenderSystem;
 	if (!renderSystem)
 		cocos2d::log("%s RenderSystem Failed!", LOGID);
 
-	// 6- Register System
-	m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
+	// 7- Register Systems
+	m_renderSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
 	
 
 	cocos2d::log("%s Init Success.", LOGID);

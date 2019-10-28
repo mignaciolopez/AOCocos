@@ -19,8 +19,8 @@ namespace ECS
 	{
 		for (auto system : m_systems)
 		{
-			delete system;
-			system = nullptr;
+			delete system.second;
+			system.second = nullptr;
 		}
 		cocos2d::log("%s Destructor", LOGID);
 	}
@@ -29,13 +29,39 @@ namespace ECS
 	{
 		for (auto system : m_systems)
 		{
-			system->Update();
+			system.second->Update();
 		}
 	}
 
-	void SystemManager::RegisterSystem(System * system)
+	void SystemManager::unRegisterSystem(unsigned int id, bool cleanUp)
 	{
-		m_systems.push_back(system);
+		if (m_systems.find(id) != m_systems.end())
+		{
+			if (cleanUp && m_systems.at(id))
+			{
+				delete m_systems.at(id);
+				m_systems.at(id) = nullptr;
+			}
+
+			m_systems.erase(id);
+		}
 	}
 
+	System * SystemManager::getSystem(unsigned int id)
+	{
+		if (m_systems.find(id) != m_systems.end())
+			return m_systems.at(id);
+
+		return nullptr;
+	}
+
+	unsigned int SystemManager::GetNewID()
+	{
+		unsigned int id = 0;
+
+		while (m_systems.find(id) != m_systems.end())
+			++id;
+
+		return id;
+	}
 }

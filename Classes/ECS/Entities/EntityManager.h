@@ -21,23 +21,11 @@ namespace ECS
 
 		unsigned int CreateEntity();
 		
-		template <typename COMPONENT>
-		inline void AddComponentTo(unsigned int entityID, COMPONENT* component)
-		{
-			if (m_entities.find(entityID) != m_entities.end())
-			{
-				m_entities.at(entityID)->AddComponent(component);
-			}
-		}
+		void AddComponentToEntity(unsigned int entityID, unsigned int componentID);
 
-		ContainerEntity* GetEntities();
-
-		std::vector<Entity*> GetEntitiesWithComponent(ComponentType type);
-
-		Entity* GetEntityByID(unsigned int ID);
+		Entity* getEntity(unsigned int id);
 
 	private:
-		unsigned int m_id;
 		ContainerEntity m_entities;
 
 	};

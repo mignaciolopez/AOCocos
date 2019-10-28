@@ -1,9 +1,7 @@
 #include "RenderSystem.h"
 
-#include "Components/ComponentsList.h"
-#include "ECS/ECSEngine.h"
-#include "ECS/Entities/Entity.h"
 #include "Components/BodyComponent.h"
+#include "Components/HeadComponent.h"
 
 #include "cocos2d.h"
 
@@ -13,7 +11,12 @@ RenderSystem::RenderSystem()
 {
 	cocos2d::log("%s Constructor", LOGID);
 
+	m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
+	
+	m_director = cocos2d::Director::getInstance();
+
 	m_compatibleComponents.push_back(ComponentType::BODYCOMPONENT);
+	m_compatibleComponents.push_back(ComponentType::HEADCOMPONENT);
 }
 
 RenderSystem::~RenderSystem()
@@ -25,19 +28,25 @@ void RenderSystem::Update()
 {
 	//cocos2d::log("%s Update", LOGID);
 
-	for (auto comp : m_compatibleComponents)
+	for (auto compatibleComponent : m_compatibleComponents)
 	{
-		for (auto entity :
-			ECS::ECSEngine::GetInstance()->GetEntityManager()->
-			GetEntitiesWithComponent(comp))
+		for (auto componentID : m_componentManager->getComponentsOfType(compatibleComponent))
 		{
-			for (auto compType : entity->GetComponentsOfType(comp))
+			cocos2d::Sprite* spr;
+			if (compatibleComponent == ComponentType::BODYCOMPONENT)
 			{
-				cocos2d::Sprite* spr = (reinterpret_cast<BodyComponent*>(compType))->_bodySprite;
-				
-				if (spr->getParent() != cocos2d::Director::getInstance()->getRunningScene())
-					cocos2d::Director::getInstance()->getRunningScene()->addChild(spr);
+				spr = (reinterpret_cast<BodyComponent*>
+					(m_componentManager->getComponent(componentID)))->_bodySprite;
 			}
+			else if (compatibleComponent == ComponentType::HEADCOMPONENT)
+			{
+				spr = (reinterpret_cast<HeadComponent*>
+					(m_componentManager->getComponent(componentID)))->_sprite;
+			}
+			
+				
+			if (spr->getParent() != m_director->getRunningScene())
+				m_director->getRunningScene()->addChild(spr);
 		}
 	}
 }
