@@ -25,6 +25,11 @@
 #ifndef  _APP_DELEGATE_H_
 #define  _APP_DELEGATE_H_
 
+namespace ECS
+{
+	class ECSEngine;
+}
+
 #include "cocos2d.h"
 
 /**
@@ -37,6 +42,8 @@ class  AppDelegate : private cocos2d::Application
 public:
     AppDelegate();
     virtual ~AppDelegate();
+
+	ECS::ECSEngine* m_ECSEngine;
 
     virtual void initGLContextAttrs();
 
