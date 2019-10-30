@@ -7,12 +7,23 @@
 #include <vector>
 #include <map>
 
+#include "cocos2d.h"
+
 namespace ECS
 {
 	// Abstract Class for EventHandler to notify of a change
 	class EventHandlerBase
 	{
 	public:
+		EventHandlerBase()
+		{
+			cocos2d::log("%s Constructor", "[EVENT HANDLER BASE]");
+		}
+		virtual ~EventHandlerBase()
+		{
+			cocos2d::log("%s Destructor", "[EVENT HANDLER BASE]");
+		}
+
 		virtual void execute(unsigned int, unsigned int) = 0;
 	};
 	
@@ -31,8 +42,13 @@ namespace ECS
 
 		EventHandler(Class *obj, _fptr func)
 		{
+			cocos2d::log("%s Constructor", "[EVENT HANDLER]");
 			object = obj;
 			function = func;
+		}
+		~EventHandler()
+		{
+			cocos2d::log("%s Destructor", "[EVENT HANDLER]");
 		}
 
 		virtual void execute(unsigned int eid, unsigned int cid) override
@@ -44,24 +60,42 @@ namespace ECS
 	// Class to create a event
 	class Evnt
 	{
-		// To store all listeners of the event
-		typedef std::map<int, EventHandlerBase*> EventHandlerMap;
-		EventHandlerMap handlers;
-		int count = 0;
 	public:
+		Evnt()
+		{
+			cocos2d::log("%s Constructor", "[EVNT]");
+		}
+		virtual ~Evnt()
+		{
+			for (auto handler : m_handlers)
+			{
+				if (handler.second)
+				{
+					delete handler.second;
+					handler.second = 0;
+				}
+			}
+			cocos2d::log("%s Destructor", "[EVNT]");
+		}
+
 
 		template <typename Class>
 		void addListener(Class *obj, void (Class::*func)(unsigned int, unsigned int))
 		{
-			handlers[count] = new (std::nothrow) EventHandler<Class>(obj, func);
+			m_handlers[count] = new (std::nothrow) EventHandler<Class>(obj, func);
 			count++;
 		}
 
 		void execute(unsigned int eid, unsigned int cid)
 		{
-			for (EventHandlerMap::iterator it = handlers.begin(); it != handlers.end(); ++it)
+			for (EventHandlerMap::iterator it = m_handlers.begin(); it != m_handlers.end(); ++it)
 				it->second->execute(eid, cid);
 		}
+	private:
+		// To store all listeners of the event
+		typedef std::map<int, EventHandlerBase*> EventHandlerMap;
+		EventHandlerMap m_handlers;
+		int count = 0;
 
 	};
 

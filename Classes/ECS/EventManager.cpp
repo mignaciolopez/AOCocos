@@ -2,9 +2,13 @@
 
 namespace ECS
 {
+#define LOGID "[EVENT MANAGER]"
+
 	EventManager::EventManager()
 	{
-		for (int i = EVENTS::FIRST; i != EVENTS::LAST; ++i)
+		cocos2d::log("%s Constructor", LOGID);
+
+		for (int i = EVENTS::FIRST + 1; i != EVENTS::LAST; i++)
 		{
 			Evnt* e = new (std::nothrow) Evnt;
 			if (e)
@@ -14,6 +18,16 @@ namespace ECS
 
 	EventManager::~EventManager()
 	{
+		for (auto e : m_events)
+		{
+			if (e.second)
+			{
+				delete e.second;
+				e.second = nullptr;
+			}
+		}
+
+		cocos2d::log("%s Destructor", LOGID);
 	}
 
 	void EventManager::execute(EVENTS evnt, unsigned int eid, unsigned int cid)
