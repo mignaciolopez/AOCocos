@@ -45,11 +45,19 @@ void InputSystem::Update()
 	//cocos2d::log("%s Update", LOGID);
 
 	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW))
-	{
 		m_eventManager->execute(EVENTS::MOVE_NORTH, 0, 0);
-		
-	}
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
+		m_eventManager->execute(EVENTS::MOVE_EAST, 0, 0);
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
+		m_eventManager->execute(EVENTS::MOVE_SOUTH, 0, 0);
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
+		m_eventManager->execute(EVENTS::MOVE_WEST, 0, 0);
 
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE))
+	{
+		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE);
+		m_director->end();
+	}
 }
 
 bool InputSystem::IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode)

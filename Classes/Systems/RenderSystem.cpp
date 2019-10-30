@@ -18,6 +18,9 @@ RenderSystem::RenderSystem()
 
 	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
 	m_eventManager->Subscribe(EVENTS::MOVE_NORTH, &RenderSystem::moveNorth, this);
+	m_eventManager->Subscribe(EVENTS::MOVE_EAST, &RenderSystem::moveEast, this);
+	m_eventManager->Subscribe(EVENTS::MOVE_SOUTH, &RenderSystem::moveSouth, this);
+	m_eventManager->Subscribe(EVENTS::MOVE_WEST, &RenderSystem::moveWest, this);
 }
 
 RenderSystem::~RenderSystem()
@@ -46,12 +49,48 @@ void RenderSystem::Update()
 
 void RenderSystem::moveNorth(unsigned int eid, unsigned int cid)
 {
+	move(Direction::North, eid, cid);
+}
+
+void RenderSystem::moveEast(unsigned int eid, unsigned int cid)
+{
+	move(Direction::East, eid, cid);
+}
+
+void RenderSystem::moveSouth(unsigned int eid, unsigned int cid)
+{
+	move(Direction::South, eid, cid);
+}
+
+void RenderSystem::moveWest(unsigned int eid, unsigned int cid)
+{
+	move(Direction::West, eid, cid);
+}
+
+void RenderSystem::move(Direction dir, unsigned int eid, unsigned int cid)
+{
 	cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>
 		(m_componentManager->getComponent(cid)))->_sprite;
 
 	if (!(reinterpret_cast<SpriteComponent*>(m_componentManager->getComponent(cid)))->_moving)
 	{
-		cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(0.0f, 32.0f));
+		float x = 0, y = 0;
+		switch (dir)
+		{
+		case North:
+			y = 32.0f;
+			break;
+		case East:
+			x = 32.0f;
+			break;
+		case South:
+			y = -32.0f;
+			break;
+		case West:
+			x = -32.0f;
+			break;
+		}
+		cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(x, y));
 		spr->runAction(move);
 		(reinterpret_cast<SpriteComponent*>(m_componentManager->getComponent(cid)))->_moving = true;
 

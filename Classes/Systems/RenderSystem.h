@@ -8,6 +8,14 @@ namespace cocos2d
 	class Director;
 }
 
+enum Direction
+{
+	North,
+	East,
+	South,
+	West
+};
+
 class RenderSystem : public ECS::System
 {
 public:
@@ -16,6 +24,11 @@ public:
 
 	virtual void Update() override;
 	void moveNorth(unsigned int eid, unsigned int cid);
+	void moveEast(unsigned int eid, unsigned int cid);
+	void moveSouth(unsigned int eid, unsigned int cid);
+	void moveWest(unsigned int eid, unsigned int cid);
+
+	void move(Direction dir, unsigned int eid, unsigned int cid);
 
 	void stopMoving(unsigned int cid);
 
