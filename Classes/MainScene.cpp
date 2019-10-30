@@ -32,26 +32,31 @@ bool MainScene::init()
 	unsigned int entity = m_ECSEngine->GetEntityManager()->CreateEntity();
 
 	// 3- Create Components
-	BodyComponent* body = new (std::nothrow) BodyComponent;
-	if (!body)
+	SpriteComponent* body = new (std::nothrow) SpriteComponent("HelloWorld.png");
+	if (!body || !body->_sprite)
+	{
 		cocos2d::log("%s body Failed!", LOGID);
+		m_ECSEngine->GetEntityManager()->AddComponentToEntity(entity, body);
+		return false;
+	}
+	SpriteComponent* head = new (std::nothrow) SpriteComponent("HelloWorld.png");
+	if (!head || !head->_sprite)
+	{
+		cocos2d::log("%s head Failed!", LOGID);
+		m_ECSEngine->GetEntityManager()->AddComponentToEntity(entity, head);
+		return false;
+	}
 
-	HeadComponent* head = new (std::nothrow) HeadComponent;
+	// 4- Add Components to Entities (This store the component with component Manager
+	m_bodyComponentID = m_ECSEngine->GetEntityManager()->AddComponentToEntity(entity, body);
+	m_headComponentID = m_ECSEngine->GetEntityManager()->AddComponentToEntity(entity, head);
 
-	// 4- Store Components
-	m_bodyComponentID = m_ECSEngine->GetComponentManager()->storeComponent(body);
-	m_headComponentID = m_ECSEngine->GetComponentManager()->storeComponent(head);
-
-	// 5- Add Components to Entities
-	m_ECSEngine->GetEntityManager()->AddComponentToEntity(entity, m_bodyComponentID);
-	m_ECSEngine->GetEntityManager()->AddComponentToEntity(entity, m_headComponentID);
-
-	// 6- Create Systems
+	// 5- Create Systems
 	RenderSystem* renderSystem = new (std::nothrow) RenderSystem;
 	if (!renderSystem)
 		cocos2d::log("%s RenderSystem Failed!", LOGID);
 
-	// 7- Register Systems
+	// 6- Register Systems
 	m_renderSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
 	
 

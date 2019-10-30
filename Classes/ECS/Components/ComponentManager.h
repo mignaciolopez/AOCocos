@@ -6,8 +6,6 @@
 
 #include "ECS/Components/Component.h"
 
-#include "cocos2d.h"
-
 namespace ECS
 {
 

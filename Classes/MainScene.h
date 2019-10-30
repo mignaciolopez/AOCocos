@@ -1,8 +1,7 @@
 #ifndef __MAIN_SCENE_H__
 #define __MAIN_SCENE_H__
 
-#include "Components/BodyComponent.h"
-#include "Components/HeadComponent.h"
+#include "Components/SpriteComponent.h"
 #include "Systems/RenderSystem.h"
 
 namespace ECS

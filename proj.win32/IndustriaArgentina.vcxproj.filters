@@ -57,9 +57,6 @@
     <ClCompile Include="..\Classes\Systems\RenderSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Components\BodyComponent.cpp">
-      <Filter>src\Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\ECS\Components\Component.cpp">
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClCompile>
@@ -93,9 +90,6 @@
     <ClInclude Include="..\Classes\Systems\RenderSystem.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Components\BodyComponent.h">
-      <Filter>src\Components</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Components\ComponentsList.h">
       <Filter>src\Components</Filter>
     </ClInclude>
@@ -103,7 +97,7 @@
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\Components\ComponentManager.h" />
-    <ClInclude Include="..\Classes\Components\HeadComponent.h">
+    <ClInclude Include="..\Classes\Components\SpriteComponent.h">
       <Filter>src\Components</Filter>
     </ClInclude>
   </ItemGroup>
