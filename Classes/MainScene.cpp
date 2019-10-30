@@ -68,4 +68,6 @@ void MainScene::update(float dt)
 {
 	m_ECSEngine->Update();
 	//unscheduleUpdate();
+
+	m_ECSEngine->getEventManager()->execute(EVENTS::MOVE, 0, 1);
 }

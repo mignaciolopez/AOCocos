@@ -61,6 +61,9 @@
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ECS\Components\ComponentManager.cpp" />
+    <ClCompile Include="..\Classes\ECS\EventManager.cpp">
+      <Filter>src\ECS_ENGINE</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -99,6 +102,12 @@
     <ClInclude Include="..\Classes\ECS\Components\ComponentManager.h" />
     <ClInclude Include="..\Classes\Components\SpriteComponent.h">
       <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\EventManager.h">
+      <Filter>src\ECS_ENGINE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\EventList.h">
+      <Filter>src\ECS_ENGINE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

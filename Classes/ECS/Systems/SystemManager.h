@@ -1,6 +1,9 @@
 #ifndef __SYSTEM_MANAGER_H__
 #define __SYSTEM_MANAGER_H__
 
+#include "ECS/EventManager.h"
+#include "ECS/Systems/System.h"
+
 #include <map>
 
 namespace ECS
@@ -12,7 +15,7 @@ namespace ECS
 	class SystemManager
 	{
 	public:
-		SystemManager();
+		SystemManager(EventManager* eventManager);
 		~SystemManager();
 
 		void Update();
@@ -37,6 +40,7 @@ namespace ECS
 
 	private:
 		ContainerSystem m_systems;
+		EventManager* m_eventManager;
 
 	};
 }

@@ -1,7 +1,6 @@
 #ifndef __RENDER_SYSTEM_H__
 #define __RENDER_SYSTEM_H__
 
-#include "ECS/Systems/System.h"
 #include "ECS/ECSEngine.h"
 
 namespace cocos2d
@@ -16,12 +15,13 @@ public:
 	~RenderSystem();
 
 	virtual void Update() override;
+	void spawn(unsigned int eid, unsigned int cid);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;
 
 	ECS::ComponentManager* m_componentManager;
-
+	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 
 };

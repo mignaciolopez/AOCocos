@@ -154,6 +154,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\ECS\ECSEngine.cpp" />
     <ClCompile Include="..\Classes\ECS\Entities\Entity.cpp" />
     <ClCompile Include="..\Classes\ECS\Entities\EntityManager.cpp" />
+    <ClCompile Include="..\Classes\ECS\EventManager.cpp" />
     <ClCompile Include="..\Classes\ECS\Systems\System.cpp" />
     <ClCompile Include="..\Classes\ECS\Systems\SystemManager.cpp" />
     <ClCompile Include="..\Classes\MainScene.cpp" />
@@ -169,6 +170,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\ECS\ECSEngine.h" />
     <ClInclude Include="..\Classes\ECS\Entities\Entity.h" />
     <ClInclude Include="..\Classes\ECS\Entities\EntityManager.h" />
+    <ClInclude Include="..\Classes\ECS\EventList.h" />
+    <ClInclude Include="..\Classes\ECS\EventManager.h" />
     <ClInclude Include="..\Classes\ECS\Systems\System.h" />
     <ClInclude Include="..\Classes\ECS\Systems\SystemManager.h" />
     <ClInclude Include="..\Classes\MainScene.h" />

@@ -15,6 +15,9 @@ RenderSystem::RenderSystem()
 	m_director = cocos2d::Director::getInstance();
 
 	m_compatibleComponents.push_back(ComponentType::SPRITE);
+
+	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
+	m_eventManager->Subscribe(EVENTS::MOVE, &RenderSystem::spawn, this);
 }
 
 RenderSystem::~RenderSystem()
@@ -39,4 +42,13 @@ void RenderSystem::Update()
 				m_director->getRunningScene()->addChild(spr);
 		}
 	}
+}
+
+void RenderSystem::spawn(unsigned int eid, unsigned int cid)
+{
+	cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>
+		(m_componentManager->getComponent(cid)))->_sprite;
+
+	cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.01f, cocos2d::Vec2(1.f, 1.f));
+	spr->runAction(move);
 }

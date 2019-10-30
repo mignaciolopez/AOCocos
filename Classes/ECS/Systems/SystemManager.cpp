@@ -10,7 +10,7 @@ namespace ECS
 
 #define LOGID "[SYSTEM MANAGER]"
 
-	SystemManager::SystemManager()
+	SystemManager::SystemManager(EventManager* eventManager) : m_eventManager(eventManager)
 	{
 		cocos2d::log("%s Constructor", LOGID);
 	}
