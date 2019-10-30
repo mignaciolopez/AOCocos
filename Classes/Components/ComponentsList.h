@@ -5,8 +5,7 @@
 enum ComponentType
 {
 	NONE = -1,
-	BODYCOMPONENT = 0,
-	HEADCOMPONENT
+	SPRITE
 };
 
 

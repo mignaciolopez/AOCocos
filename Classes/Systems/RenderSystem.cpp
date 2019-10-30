@@ -1,7 +1,6 @@
 #include "RenderSystem.h"
 
-#include "Components/BodyComponent.h"
-#include "Components/HeadComponent.h"
+#include "Components/SpriteComponent.h"
 
 #include "cocos2d.h"
 
@@ -15,8 +14,7 @@ RenderSystem::RenderSystem()
 	
 	m_director = cocos2d::Director::getInstance();
 
-	m_compatibleComponents.push_back(ComponentType::BODYCOMPONENT);
-	m_compatibleComponents.push_back(ComponentType::HEADCOMPONENT);
+	m_compatibleComponents.push_back(ComponentType::SPRITE);
 }
 
 RenderSystem::~RenderSystem()
@@ -33,17 +31,9 @@ void RenderSystem::Update()
 		for (auto componentID : m_componentManager->getComponentsOfType(compatibleComponent))
 		{
 			cocos2d::Sprite* spr;
-			if (compatibleComponent == ComponentType::BODYCOMPONENT)
-			{
-				spr = (reinterpret_cast<BodyComponent*>
-					(m_componentManager->getComponent(componentID)))->_bodySprite;
-			}
-			else if (compatibleComponent == ComponentType::HEADCOMPONENT)
-			{
-				spr = (reinterpret_cast<HeadComponent*>
-					(m_componentManager->getComponent(componentID)))->_sprite;
-			}
-			
+
+			spr = (reinterpret_cast<SpriteComponent*>
+					(m_componentManager->getComponent(componentID)))->_sprite;			
 				
 			if (spr->getParent() != m_director->getRunningScene())
 				m_director->getRunningScene()->addChild(spr);

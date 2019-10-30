@@ -4,7 +4,10 @@
 #include "ECS/Systems/System.h"
 #include "ECS/ECSEngine.h"
 
-#include "cocos2d.h"
+namespace cocos2d
+{
+	class Director;
+}
 
 class RenderSystem : public ECS::System
 {
