@@ -15,7 +15,9 @@ public:
 	~RenderSystem();
 
 	virtual void Update() override;
-	void spawn(unsigned int eid, unsigned int cid);
+	void moveNorth(unsigned int eid, unsigned int cid);
+
+	void stopMoving(unsigned int cid);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;

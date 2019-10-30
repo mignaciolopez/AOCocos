@@ -4,7 +4,10 @@
 enum EVENTS
 {
 	FIRST = 0,	//USED for iteration DO NOT REMOVE
-	MOVE,
+	MOVE_NORTH,
+	MOVE_EAST,
+	MOVE_SOUTH,
+	MOVE_WEST,
 	LAST		//USED for iteration DO NOT REMOVE
 };
 

@@ -44,6 +44,7 @@ public:
 
 	cocos2d::Sprite* _sprite;
 	const ComponentType _type = ComponentType::SPRITE;
+	bool  _moving = false;
 };
 
 #endif // __SPRITE_COMPONENT_H__

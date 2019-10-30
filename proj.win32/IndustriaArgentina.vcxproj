@@ -158,6 +158,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\ECS\Systems\System.cpp" />
     <ClCompile Include="..\Classes\ECS\Systems\SystemManager.cpp" />
     <ClCompile Include="..\Classes\MainScene.cpp" />
+    <ClCompile Include="..\Classes\Systems\InputSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\RenderSystem.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -175,6 +176,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\ECS\Systems\System.h" />
     <ClInclude Include="..\Classes\ECS\Systems\SystemManager.h" />
     <ClInclude Include="..\Classes\MainScene.h" />
+    <ClInclude Include="..\Classes\Systems\InputSystem.h" />
     <ClInclude Include="..\Classes\Systems\RenderSystem.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>

@@ -56,9 +56,13 @@ bool MainScene::init()
 	if (!renderSystem)
 		cocos2d::log("%s RenderSystem Failed!", LOGID);
 
+	InputSystem* inputSystem = new (std::nothrow) InputSystem(this);
+	if (!inputSystem)
+		cocos2d::log("%s InputSystem Failed!", LOGID);
+
 	// 6- Register Systems
 	m_renderSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
-	
+	m_inputSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(inputSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
     return true;
@@ -68,6 +72,4 @@ void MainScene::update(float dt)
 {
 	m_ECSEngine->Update();
 	//unscheduleUpdate();
-
-	m_ECSEngine->getEventManager()->execute(EVENTS::MOVE, 0, 1);
 }
