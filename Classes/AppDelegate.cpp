@@ -69,6 +69,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	m_ECSEngine = ECS::ECSEngine::GetInstance();
 
 	auto mainScene = MainScene::createScene();
+	if (!mainScene)
+		return false;
+
 	director->runWithScene(mainScene);
 
 	return true;
