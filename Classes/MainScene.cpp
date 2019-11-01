@@ -64,10 +64,15 @@ bool MainScene::init()
 	if (!uiSystem)
 		cocos2d::log("%s UISystem Failed!", LOGID);
 
+	MovementSystem* movementSystem = new (std::nothrow) MovementSystem;
+	if (!uiSystem)
+		cocos2d::log("%s MovementSystem Failed!", LOGID);
+
 	// 6- Register Systems
 	m_renderSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
 	m_inputSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(inputSystem);
 	m_uiSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(uiSystem);
+	m_movementSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(movementSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
     return true;

@@ -38,7 +38,7 @@ private:
 	cocos2d::Scene* m_scene;
 
 	cocos2d::EventListenerKeyboard* m_kbListener;
-	std::map<cocos2d::EventKeyboard::KeyCode, bool> m_keys;
+	bool m_keyStates[256];
 
 	
 	cocos2d::EventListenerMouse* m_mouseListener;

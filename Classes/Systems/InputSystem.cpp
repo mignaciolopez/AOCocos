@@ -16,23 +16,22 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 
 	m_director = cocos2d::Director::getInstance();
 
-	//m_compatibleComponents.push_back(ComponentType::SPRITE);
-
 	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
+
+	for (int i = 0; i < 256; i++)
+		m_keyStates[i] = false;
 
 	m_kbListener = cocos2d::EventListenerKeyboard::create();
 	m_kbListener->retain();
 
 	m_director->getOpenGLView()->setIMEKeyboardState(true);
-	m_kbListener->onKeyPressed = [=](cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+	m_kbListener->onKeyPressed = [this](cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* ccevnt)
 	{
-		if (m_keys.find(keyCode) == m_keys.end())
-			m_keys.insert(std::make_pair(keyCode, true));
+		m_keyStates[static_cast<int>(keyCode)] = true;
 	};
-	m_kbListener->onKeyReleased = [=](cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event)
+	m_kbListener->onKeyReleased = [this](cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* ccevnt)
 	{
-		if (m_keys.find(keyCode) != m_keys.end())
-			m_keys.erase(keyCode);
+		m_keyStates[static_cast<int>(keyCode)] = false;
 	};
 
 	m_scene->getEventDispatcher()->addEventListenerWithFixedPriority(m_kbListener, 1);
@@ -40,7 +39,7 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 
 	m_mouseListener = cocos2d::EventListenerMouse::create();
 	m_mouseListener->retain();
-	m_scene->getEventDispatcher()->addEventListenerWithFixedPriority(m_mouseListener, 2);
+	m_scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(m_mouseListener, m_scene);
 	
 	m_mouseListener->onMouseDown = CC_CALLBACK_1(InputSystem::onMouseDown, this);
 	m_mouseListener->onMouseMove = CC_CALLBACK_1(InputSystem::onMouseMove, this);
@@ -55,12 +54,6 @@ InputSystem::~InputSystem()
 {
 	if (m_scene)
 	{
-		//if (m_scene->getEventDispatcher())
-		//{
-			//m_scene->getEventDispatcher()->removeEventListener(m_kbListener);
-			//m_scene->getEventDispatcher()->removeEventListener(m_mouseListener);
-		//}
-
 		if (m_kbListener)
 			m_kbListener->release();
 
@@ -101,7 +94,7 @@ void InputSystem::Update()
 
 bool InputSystem::IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
 {
-	if (m_keys.find(keyCode) != m_keys.end())
+	if (m_keyStates[static_cast<int>(keyCode)])
 		return true;
 
 	return false;
@@ -109,8 +102,7 @@ bool InputSystem::IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
 
 void InputSystem::ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode keyCode)
 {
-	if (m_keys.find(keyCode) != m_keys.end())
-		m_keys.erase(keyCode);
+	m_keyStates[static_cast<int>(keyCode)] = false;
 }
 
 void InputSystem::onMouseDown(cocos2d::Event * ccevnt)

@@ -69,7 +69,12 @@
     <ClCompile Include="..\Classes\ECS\Components\ComponentManager.cpp">
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Systems\UISystem.cpp" />
+    <ClCompile Include="..\Classes\Systems\UISystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\MovementSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -120,7 +125,12 @@
     <ClInclude Include="..\Classes\ECS\EventList.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Systems\UISystem.h" />
+    <ClInclude Include="..\Classes\Systems\UISystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\MovementSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
