@@ -23,10 +23,11 @@ public:
 	~RenderSystem();
 
 	virtual void Update() override;
-	void moveNorth(unsigned int eid, unsigned int cid);
-	void moveEast(unsigned int eid, unsigned int cid);
-	void moveSouth(unsigned int eid, unsigned int cid);
-	void moveWest(unsigned int eid, unsigned int cid);
+
+	void moveNorth(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt = nullptr);
+	void moveEast(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt = nullptr);
+	void moveSouth(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt = nullptr);
+	void moveWest(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt = nullptr);
 
 	void move(Direction dir, unsigned int eid, unsigned int cid);
 

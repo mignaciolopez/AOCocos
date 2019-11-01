@@ -60,9 +60,14 @@ bool MainScene::init()
 	if (!inputSystem)
 		cocos2d::log("%s InputSystem Failed!", LOGID);
 
+	UISystem* uiSystem = new (std::nothrow) UISystem;
+	if (!uiSystem)
+		cocos2d::log("%s UISystem Failed!", LOGID);
+
 	// 6- Register Systems
 	m_renderSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
 	m_inputSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(inputSystem);
+	m_uiSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(uiSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
     return true;

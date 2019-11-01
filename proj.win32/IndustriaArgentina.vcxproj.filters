@@ -69,6 +69,7 @@
     <ClCompile Include="..\Classes\ECS\Components\ComponentManager.cpp">
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Systems\UISystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -119,6 +120,7 @@
     <ClInclude Include="..\Classes\ECS\EventList.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Systems\UISystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

@@ -47,22 +47,22 @@ void RenderSystem::Update()
 	}
 }
 
-void RenderSystem::moveNorth(unsigned int eid, unsigned int cid)
+void RenderSystem::moveNorth(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt)
 {
 	move(Direction::North, eid, cid);
 }
 
-void RenderSystem::moveEast(unsigned int eid, unsigned int cid)
+void RenderSystem::moveEast(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt)
 {
 	move(Direction::East, eid, cid);
 }
 
-void RenderSystem::moveSouth(unsigned int eid, unsigned int cid)
+void RenderSystem::moveSouth(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt)
 {
 	move(Direction::South, eid, cid);
 }
 
-void RenderSystem::moveWest(unsigned int eid, unsigned int cid)
+void RenderSystem::moveWest(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt)
 {
 	move(Direction::West, eid, cid);
 }
