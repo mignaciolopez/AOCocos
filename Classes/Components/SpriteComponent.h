@@ -7,18 +7,15 @@
 
 class SpriteComponent : public ECS::Component
 {
-
-#define LOGID "[SPRITE COMPONENT]"
-
 public:
 	SpriteComponent(const char* spriteFileName)
 	{
-		cocos2d::log("%s Constructor", LOGID);
+		cocos2d::log("%s Constructor", "[SPRITE COMPONENT]");
 
 		_sprite = cocos2d::Sprite::create(spriteFileName);
 
 		if (!_sprite)
-			cocos2d::log("%s _sprite failed with file name: %s", LOGID, spriteFileName);
+			cocos2d::log("%s _sprite failed with file name: %s", "[SPRITE COMPONENT]", spriteFileName);
 		else
 		{
 			_sprite->retain();
@@ -39,7 +36,7 @@ public:
 			cocos2d::Director::getInstance()->getRunningScene()->removeChild(_sprite);
 			_sprite->release();
 		}
-		cocos2d::log("%s Destructor", LOGID);
+		cocos2d::log("%s Destructor", "[SPRITE COMPONENT]");
 	}
 
 	cocos2d::Sprite* _sprite;

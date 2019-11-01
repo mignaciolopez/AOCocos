@@ -17,6 +17,7 @@ public:
 	virtual void Update() override;
 
 	void clicked(unsigned int eid, unsigned int cid, cocos2d::Event* ccevent);
+	void toogleFullscreen(unsigned int eid, unsigned int cid, cocos2d::Event* ccevent);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;
@@ -25,6 +26,7 @@ private:
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 
+	const cocos2d::Size m_windowSize = cocos2d::Size(800, 600);
 };
 
 #endif // __RENDER_SYSTEM_H__

@@ -4,11 +4,9 @@
 
 #include "cocos2d.h"
 
-#define LOGID "[RENDER SYSTEM]"
-
 RenderSystem::RenderSystem()
 {
-	cocos2d::log("%s Constructor", LOGID);
+	cocos2d::log("%s Constructor", "[RENDER SYSTEM]");
 
 	m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
 	
@@ -21,12 +19,12 @@ RenderSystem::RenderSystem()
 
 RenderSystem::~RenderSystem()
 {
-	cocos2d::log("%s Destructor", LOGID);
+	cocos2d::log("%s Destructor", "[RENDER SYSTEM]");
 }
 
 void RenderSystem::Update()
 {
-	//cocos2d::log("%s Update", LOGID);
+	//cocos2d::log("%s Update", "[RENDER SYSTEM]");
 
 	for (auto compatibleComponent : m_compatibleComponents)
 	{

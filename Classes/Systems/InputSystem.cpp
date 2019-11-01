@@ -4,11 +4,9 @@
 
 #include "cocos2d.h"
 
-#define LOGID "[INPUT SYSTEM]"
-
 InputSystem::InputSystem(cocos2d::Scene* scene)
 {
-	cocos2d::log("%s Constructor", LOGID);
+	cocos2d::log("%s Constructor", "[INPUT SYSTEM]");
 
 	m_scene = scene;
 
@@ -61,7 +59,7 @@ InputSystem::~InputSystem()
 			m_mouseListener->release();
 	}
 
-	cocos2d::log("%s Destructor", LOGID);
+	cocos2d::log("%s Destructor", "[INPUT SYSTEM]");
 }
 
 void InputSystem::Update()
@@ -89,6 +87,11 @@ void InputSystem::Update()
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE);
 		m_director->end();
+	}
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F11))
+	{
+		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F11);
+		m_eventManager->execute(EVENTS::UI_TOGGLE_FULLSCREEN, 0, m_localEntity);
 	}
 }
 
