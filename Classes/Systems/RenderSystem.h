@@ -15,7 +15,6 @@ public:
 	~RenderSystem();
 
 	virtual void Update() override;
-	void spawn(unsigned int eid, unsigned int cid);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;

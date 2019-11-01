@@ -3,6 +3,9 @@
 
 #include "Components/SpriteComponent.h"
 #include "Systems/RenderSystem.h"
+#include "Systems/InputSystem.h"
+#include "Systems/UISystem.h"
+#include "Systems/MovementSystem.h"
 
 namespace ECS
 {
@@ -29,6 +32,10 @@ private:
 	ECS::ECSEngine* m_ECSEngine;
 
 	unsigned int m_renderSystemID;
+	unsigned int m_inputSystemID;
+	unsigned int m_uiSystemID;
+	unsigned int m_movementSystemID;
+
 	unsigned int m_bodyComponentID;
 	unsigned int m_headComponentID;
 	

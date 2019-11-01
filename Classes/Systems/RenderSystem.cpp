@@ -4,11 +4,9 @@
 
 #include "cocos2d.h"
 
-#define LOGID "[RENDER SYSTEM]"
-
 RenderSystem::RenderSystem()
 {
-	cocos2d::log("%s Constructor", LOGID);
+	cocos2d::log("%s Constructor", "[RENDER SYSTEM]");
 
 	m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
 	
@@ -16,18 +14,17 @@ RenderSystem::RenderSystem()
 
 	m_compatibleComponents.push_back(ComponentType::SPRITE);
 
-	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
-	m_eventManager->Subscribe(EVENTS::MOVE, &RenderSystem::spawn, this);
+	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager(); //del if not used
 }
 
 RenderSystem::~RenderSystem()
 {
-	cocos2d::log("%s Destructor", LOGID);
+	cocos2d::log("%s Destructor", "[RENDER SYSTEM]");
 }
 
 void RenderSystem::Update()
 {
-	//cocos2d::log("%s Update", LOGID);
+	//cocos2d::log("%s Update", "[RENDER SYSTEM]");
 
 	for (auto compatibleComponent : m_compatibleComponents)
 	{
@@ -42,13 +39,4 @@ void RenderSystem::Update()
 				m_director->getRunningScene()->addChild(spr);
 		}
 	}
-}
-
-void RenderSystem::spawn(unsigned int eid, unsigned int cid)
-{
-	cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>
-		(m_componentManager->getComponent(cid)))->_sprite;
-
-	cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.01f, cocos2d::Vec2(1.f, 1.f));
-	spr->runAction(move);
 }

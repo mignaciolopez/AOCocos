@@ -60,9 +60,20 @@
     <ClCompile Include="..\Classes\ECS\Components\Component.cpp">
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ECS\Components\ComponentManager.cpp" />
     <ClCompile Include="..\Classes\ECS\EventManager.cpp">
       <Filter>src\ECS_ENGINE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\InputSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\Components\ComponentManager.cpp">
+      <Filter>src\ECS_ENGINE\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\UISystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\MovementSystem.cpp">
+      <Filter>src\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -99,15 +110,26 @@
     <ClInclude Include="..\Classes\ECS\Components\Component.h">
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\ECS\Components\ComponentManager.h" />
     <ClInclude Include="..\Classes\Components\SpriteComponent.h">
       <Filter>src\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\EventManager.h">
       <Filter>src\ECS_ENGINE</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Systems\InputSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\Components\ComponentManager.h">
+      <Filter>src\ECS_ENGINE\Components</Filter>
+    </ClInclude>
     <ClInclude Include="..\Classes\ECS\EventList.h">
-      <Filter>src\ECS_ENGINE</Filter>
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\UISystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\MovementSystem.h">
+      <Filter>src\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
