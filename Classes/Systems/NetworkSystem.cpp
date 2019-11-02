@@ -13,7 +13,6 @@ NetworkSystem::NetworkSystem()
 	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
 
 	m_peer = nullptr;
-	m_packet = nullptr;
 
 	m_peer = SLNet::RakPeerInterface::GetInstance();
 	SLNet::StartupResult result = m_peer->Startup(1, &m_sd, 1);
@@ -53,16 +52,18 @@ NetworkSystem::~NetworkSystem()
 
 void NetworkSystem::Update()
 {
+	SLNet::Packet* packet;
 	if (m_peer)
-		for (m_packet = m_peer->Receive(); m_packet; m_peer->DeallocatePacket(m_packet), m_packet = m_peer->Receive())
+		for (packet = m_peer->Receive(); packet; m_peer->DeallocatePacket(packet), packet = m_peer->Receive())
 		{
-			switch (m_packet->data[0])
+			SLNet::BitStream bsIn(packet->data, packet->length, false);
+			switch (packet->data[0])
 			{
 			case ID_PUBLIC_KEY_MISMATCH:
 				cocos2d::log("%s ID_PUBLIC_KEY_MISMATCH", "[NETWORK SYSTEM]");
 				break;
 			case ID_CONNECTION_REQUEST_ACCEPTED:
-				m_serverGUID = m_packet->guid;
+				m_serverGUID = packet->guid;
 				m_online = true;
 				break;
 			case ID_NO_FREE_INCOMING_CONNECTIONS:
@@ -79,7 +80,8 @@ void NetworkSystem::Update()
 				cocos2d::log("%s ID_CONNECTION_ATTEMPT_FAILED", "[NETWORK SYSTEM]");
 				break;
 			default:
-				cocos2d::log("%s Message with identifier %i has arrived.", "[NETWORK SYSTEM]", m_packet->data[0]);
+				cocos2d::log("%s Message with identifier %i has arrived.", "[NETWORK SYSTEM]", packet->data[0]);
+				receive(&bsIn);
 				break;
 			}
 		}
@@ -100,4 +102,15 @@ void NetworkSystem::mousePressed(unsigned int eid, unsigned int cid, cocos2d::Ev
 		bsOut.Write(e->getLocation().y);
 		m_peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, m_serverGUID, false);
 	}
+}
+
+void NetworkSystem::receive(SLNet::BitStream* bsIn)
+{
+	EVENTS evnt = EVENTS::FIRST;
+	int eid = -1, cid = -1;
+
+	bsIn->Read(evnt);
+	bsIn->Read(eid);
+	bsIn->Read(cid);
+	m_eventManager->execute(evnt, eid, cid, nullptr);
 }

@@ -25,6 +25,9 @@ public:
 	void mousePressed(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt);
 
 private:
+	void receive(SLNet::BitStream* bsIn);
+
+private:
 	std::vector<ComponentType> m_compatibleComponents;
 
 	ECS::ComponentManager* m_componentManager;
@@ -33,7 +36,6 @@ private:
 
 
 	SLNet::RakPeerInterface* m_peer;
-	SLNet::Packet* m_packet;
 	SLNet::SocketDescriptor m_sd;
 
 	SLNet::RakString m_accountName;
