@@ -23,6 +23,15 @@ NetworkSystem::NetworkSystem()
 
 	m_online = false;
 
+	if (SLNet::CONNECTION_ATTEMPT_STARTED != m_peer->Connect("127.0.0.1", 6000, 0, 0))
+	{
+		cocos2d::log("%s Conection attempt failed!", "[NETWORK SYSTEM]");
+	}
+	else
+	{
+		cocos2d::log("%s Conection attempt started.", "[NETWORK SYSTEM]");
+	}
+
 	m_eventManager->Subscribe(EVENTS::MOUSE_PRESSED, &NetworkSystem::mousePressed, this);
 }
 
@@ -54,19 +63,20 @@ void NetworkSystem::Update()
 				break;
 			case ID_CONNECTION_REQUEST_ACCEPTED:
 				m_serverGUID = m_packet->guid;
+				m_online = true;
 				break;
 			case ID_NO_FREE_INCOMING_CONNECTIONS:
-				cocos2d::log("%s The server is full.", "[NETWORK SYSTEM]");
+				cocos2d::log("%s ID_NO_FREE_INCOMING_CONNECTIONS", "[NETWORK SYSTEM]");
 				break;
 			case ID_DISCONNECTION_NOTIFICATION:
-				cocos2d::log("%s We have been disconnected.", "[NETWORK SYSTEM]");
+				cocos2d::log("%s ID_DISCONNECTION_NOTIFICATION", "[NETWORK SYSTEM]");
 				break;
 			case ID_CONNECTION_LOST:
-				cocos2d::log("%s Connection lost.", "[NETWORK SYSTEM]");
+				cocos2d::log("%s ID_CONNECTION_LOST", "[NETWORK SYSTEM]");
 				//Go Back to LOGIN SCENE
 				break;
 			case ID_CONNECTION_ATTEMPT_FAILED:
-				cocos2d::log("%s Connection Attempt Failed.", "[NETWORK SYSTEM]");
+				cocos2d::log("%s ID_CONNECTION_ATTEMPT_FAILED", "[NETWORK SYSTEM]");
 				break;
 			default:
 				cocos2d::log("%s Message with identifier %i has arrived.", "[NETWORK SYSTEM]", m_packet->data[0]);
