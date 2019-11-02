@@ -75,6 +75,9 @@
     <ClCompile Include="..\Classes\Systems\MovementSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Systems\NetworkSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -129,6 +132,9 @@
       <Filter>src\Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Systems\MovementSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\NetworkSystem.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
   </ItemGroup>

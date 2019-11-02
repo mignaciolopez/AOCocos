@@ -68,11 +68,16 @@ bool MainScene::init()
 	if (!uiSystem)
 		cocos2d::log("%s MovementSystem Failed!", LOGID);
 
+	NetworkSystem* networkSystem = new (std::nothrow) NetworkSystem;
+	if (!uiSystem)
+		cocos2d::log("%s NetworkSystem Failed!", LOGID);
+
 	// 6- Register Systems
 	m_renderSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
 	m_inputSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(inputSystem);
 	m_uiSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(uiSystem);
 	m_movementSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(movementSystem);
+	m_networkSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(networkSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
     return true;
