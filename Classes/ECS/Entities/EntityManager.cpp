@@ -1,7 +1,5 @@
 #include "EntityManager.h"
 
-#include "ECS/Components/ComponentManager.h"
-
 #include "cocos2d.h"
 
 namespace ECS
@@ -9,11 +7,9 @@ namespace ECS
 
 #define LOGID "[ENTITY MANAGER]"
 
-	EntityManager::EntityManager(ComponentManager* componentManager)
+	EntityManager::EntityManager()
 	{
 		cocos2d::log("%s Constructor", LOGID);
-
-		m_componentManager = componentManager;
 	}
 
 	EntityManager::~EntityManager()
@@ -29,9 +25,9 @@ namespace ECS
 		cocos2d::log("%s Destructor", LOGID);
 	}
 
-	unsigned int EntityManager::CreateEntity()
+	int EntityManager::CreateEntity()
 	{
-		unsigned int id = 0;
+		int id = 0;
 
 		while (m_entities.find(id) != m_entities.end())
 			++id;
@@ -49,12 +45,17 @@ namespace ECS
 		return id;
 	}
 
-	Entity * EntityManager::getEntity(unsigned int id)
+	Entity * EntityManager::getEntity(int id)
 	{
 		if (m_entities.find(id) != m_entities.end())
 			return m_entities.at(id);
 		
 		return nullptr;
+	}
+
+	ContainerEntity * EntityManager::getEntities()
+	{
+		return &m_entities;
 	}
 
 }

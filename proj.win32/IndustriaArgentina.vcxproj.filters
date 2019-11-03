@@ -66,9 +66,6 @@
     <ClCompile Include="..\Classes\Systems\InputSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ECS\Components\ComponentManager.cpp">
-      <Filter>src\ECS_ENGINE\Components</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\Systems\UISystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
@@ -121,9 +118,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Systems\InputSystem.h">
       <Filter>src\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\ECS\Components\ComponentManager.h">
-      <Filter>src\ECS_ENGINE\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\EventList.h">
       <Filter>src\Systems</Filter>

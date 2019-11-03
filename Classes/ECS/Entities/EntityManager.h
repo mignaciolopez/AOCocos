@@ -2,43 +2,34 @@
 #define __ENTITY_MANAGER_H__
 
 #include "ECS/Entities/Entity.h"
-#include "ECS/Components/Component.h"
 
 #include <map>
 #include <vector>
 
 namespace ECS
 {
-	using ContainerEntity = std::map<unsigned int, Entity*>;
-
-	class ComponentManager;
+	using ContainerEntity = std::map<int, Entity*>;
 
 	class EntityManager
 	{
 	public:
-		EntityManager(ComponentManager* componentManager);
+		EntityManager();
 		~EntityManager();
 
-		unsigned int CreateEntity();
-		
+		int CreateEntity();
+
 		template <typename COMPONENT>
-		inline unsigned int AddComponentToEntity(unsigned int entityID, COMPONENT* component)
+		inline void AddComponentToEntity(int eid, COMPONENT* component)
 		{
-			unsigned int compID = m_componentManager->storeComponent(component);
-
-			if (m_entities.find(entityID) != m_entities.end())
-			{
-				m_entities.at(entityID)->AddComponent(compID);
-			}
-
-			return compID;
+			if (m_entities.find(eid) != m_entities.end())
+				m_entities.at(eid)->AddComponent(component);
 		}
 
-		Entity* getEntity(unsigned int id);
+		Entity* getEntity(int id);
+		ContainerEntity* getEntities();
 
 	private:
 		ContainerEntity m_entities;
-		ComponentManager* m_componentManager;
 
 	};
 }

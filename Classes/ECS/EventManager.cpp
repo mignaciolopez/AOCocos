@@ -30,9 +30,9 @@ namespace ECS
 		cocos2d::log("%s Destructor", LOGID);
 	}
 
-	void EventManager::execute(EVENTS evnt, unsigned int eid, unsigned int cid, cocos2d::Event * ccevnt)
+	void EventManager::execute(EVENTS evnt, int eid, cocos2d::Event * ccevnt)
 	{
 		if (m_events.find(evnt) != m_events.end())
-			m_events.at(evnt)->execute(eid, cid, ccevnt);
+			m_events.at(evnt)->execute(eid, ccevnt);
 	}
 }

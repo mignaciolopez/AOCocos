@@ -34,11 +34,7 @@ namespace ECS
 	{
 		cocos2d::log("%s Constructor", LOGID);
 
-		m_componentManager = new (std::nothrow) ComponentManager;
-		if (!m_componentManager)
-			cocos2d::log("%s ComponentManager allocation error", LOGID);
-
-		m_entityManager = new (std::nothrow) EntityManager(m_componentManager);
+		m_entityManager = new (std::nothrow) EntityManager();
 		if (!m_entityManager)
 			cocos2d::log("%s EntityManager allocation error", LOGID);
 
@@ -65,12 +61,6 @@ namespace ECS
 			m_systemManager = nullptr;
 		}
 
-		if (m_componentManager)
-		{
-			delete m_componentManager;
-			m_componentManager = nullptr;
-		}
-
 		if (m_entityManager)
 		{
 			delete m_entityManager;
@@ -93,11 +83,6 @@ namespace ECS
 	SystemManager* ECSEngine::GetSystemManager()
 	{
 		return m_systemManager;
-	}
-
-	ComponentManager* ECSEngine::GetComponentManager()
-	{
-		return m_componentManager;
 	}
 
 	EventManager* ECSEngine::getEventManager()

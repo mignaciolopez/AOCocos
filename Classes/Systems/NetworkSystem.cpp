@@ -8,7 +8,7 @@ NetworkSystem::NetworkSystem()
 {
 	cocos2d::log("%s Constructor", "[NETWORK SYSTEM]");
 
-	m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
+	//m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
 	m_director = cocos2d::Director::getInstance();
 	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
 
@@ -87,7 +87,7 @@ void NetworkSystem::Update()
 		}
 }
 
-void NetworkSystem::mousePressed(unsigned int eid, unsigned int cid, cocos2d::Event * ccevnt)
+void NetworkSystem::mousePressed(int eid, cocos2d::Event * ccevnt)
 {
 	if (m_online && m_peer)
 	{
@@ -96,7 +96,6 @@ void NetworkSystem::mousePressed(unsigned int eid, unsigned int cid, cocos2d::Ev
 		SLNet::BitStream bsOut;
 		bsOut.Write((SLNet::MessageID)EVENTS::MOUSE_PRESSED);
 		bsOut.Write(eid);
-		bsOut.Write(cid);
 		bsOut.Write(e->getMouseButton());
 		bsOut.Write(e->getLocation().x);
 		bsOut.Write(e->getLocation().y);
@@ -107,10 +106,9 @@ void NetworkSystem::mousePressed(unsigned int eid, unsigned int cid, cocos2d::Ev
 void NetworkSystem::receive(SLNet::BitStream* bsIn)
 {
 	EVENTS evnt = EVENTS::FIRST;
-	int eid = -1, cid = -1;
+	int eid = -1;
 
 	bsIn->Read(evnt);
 	bsIn->Read(eid);
-	bsIn->Read(cid);
-	m_eventManager->execute(evnt, eid, cid, nullptr);
+	m_eventManager->execute(evnt, eid, nullptr);
 }

@@ -33,7 +33,7 @@ namespace ECS
 		}
 	}
 
-	void SystemManager::unRegisterSystem(unsigned int id, bool cleanUp)
+	void SystemManager::unRegisterSystem(int id, bool cleanUp)
 	{
 		if (m_systems.find(id) != m_systems.end())
 		{
@@ -47,7 +47,7 @@ namespace ECS
 		}
 	}
 
-	System * SystemManager::getSystem(unsigned int id)
+	System * SystemManager::getSystem(int id)
 	{
 		if (m_systems.find(id) != m_systems.end())
 			return m_systems.at(id);
@@ -55,9 +55,9 @@ namespace ECS
 		return nullptr;
 	}
 
-	unsigned int SystemManager::GetNewID()
+	int SystemManager::GetNewID()
 	{
-		unsigned int id = 0;
+		int id = 0;
 
 		while (m_systems.find(id) != m_systems.end())
 			++id;

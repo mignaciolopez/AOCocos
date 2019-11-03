@@ -22,7 +22,7 @@ public:
 
 	virtual void Update() override;
 
-	void mousePressed(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt);
+	void mousePressed(int eid, cocos2d::Event* ccevnt);
 
 private:
 	void receive(SLNet::BitStream* bsIn);
@@ -30,7 +30,6 @@ private:
 private:
 	std::vector<ComponentType> m_compatibleComponents;
 
-	ECS::ComponentManager* m_componentManager;
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 

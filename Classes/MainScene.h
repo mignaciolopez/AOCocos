@@ -32,15 +32,11 @@ public:
 private:
 	ECS::ECSEngine* m_ECSEngine;
 
-	unsigned int m_renderSystemID;
-	unsigned int m_inputSystemID;
-	unsigned int m_uiSystemID;
-	unsigned int m_movementSystemID;
-	unsigned int m_networkSystemID;
-
-	unsigned int m_bodyComponentID;
-	unsigned int m_headComponentID;
-	
+	int m_renderSystemID;
+	int m_inputSystemID;
+	int m_uiSystemID;
+	int m_movementSystemID;
+	int m_networkSystemID;	
 };
 
 #endif // __MAIN_SCENE_H__

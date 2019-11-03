@@ -10,7 +10,7 @@ namespace ECS
 {
 	class System;
 
-	using ContainerSystem = std::map<unsigned int, System*>;
+	using ContainerSystem = std::map<int, System*>;
 
 	class SystemManager
 	{
@@ -21,20 +21,20 @@ namespace ECS
 		void Update();
 
 		template <typename SYSTEM>
-		inline unsigned int RegisterSystem(SYSTEM* system)
+		inline int RegisterSystem(SYSTEM* system)
 		{
-			unsigned int id = GetNewID();
+			int id = GetNewID();
 			m_systems.emplace(id, system);
 
 			return id;
 		}
 
-		void unRegisterSystem(unsigned int id, bool cleanUp = true);
+		void unRegisterSystem(int id, bool cleanUp = true);
 
-		System* getSystem(unsigned int id);
+		System* getSystem(int id);
 
 	private:
-		unsigned int GetNewID();
+		int GetNewID();
 
 	public:
 

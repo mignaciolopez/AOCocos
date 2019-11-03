@@ -7,7 +7,7 @@ namespace ECS
 
 #define LOGID "[ENTITY]"
 
-	Entity::Entity(unsigned int id)
+	Entity::Entity(int id)
 	{
 		cocos2d::log("%s Constructor", LOGID);
 
@@ -19,24 +19,33 @@ namespace ECS
 		cocos2d::log("%s Destructor", LOGID);
 	}
 
-	void Entity::AddComponent(unsigned int id)
-	{
-		m_components.push_back(id);
-	}
-
-	unsigned int Entity::GetNumOfComponents()
+	int Entity::GetNumOfComponents()
 	{
 		return m_components.size();
 	}
 
-	std::vector<unsigned int> Entity::GetComponents()
+	std::vector<Component*> Entity::getComponents()
 	{
-		return m_components;
+		std::vector<Component*> comps;
+		for (auto comp : m_components)
+		{
+			comps.push_back(comp.second);
+		}
+		return comps;
 	}
 
-	std::vector<unsigned int> Entity::GetComponents(ComponentType type)
+	std::vector<Component*> Entity::getComponents(ComponentType type)
 	{
-		return std::vector<unsigned int>();
+		std::vector<Component*> comps;
+
+		typedef ContainerComponents::iterator MMAPIterator;
+
+		std::pair<MMAPIterator, MMAPIterator> result = m_components.equal_range(type);
+
+		for (MMAPIterator it = result.first; it != result.second; it++)
+			comps.push_back(it->second);
+
+		return comps;
 	}
 
 }

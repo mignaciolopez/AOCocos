@@ -150,7 +150,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\ECS\Components\Component.cpp" />
-    <ClCompile Include="..\Classes\ECS\Components\ComponentManager.cpp" />
     <ClCompile Include="..\Classes\ECS\ECSEngine.cpp" />
     <ClCompile Include="..\Classes\ECS\Entities\Entity.cpp" />
     <ClCompile Include="..\Classes\ECS\Entities\EntityManager.cpp" />
@@ -170,7 +169,6 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Components\ComponentsList.h" />
     <ClInclude Include="..\Classes\Components\SpriteComponent.h" />
     <ClInclude Include="..\Classes\ECS\Components\Component.h" />
-    <ClInclude Include="..\Classes\ECS\Components\ComponentManager.h" />
     <ClInclude Include="..\Classes\ECS\ECSEngine.h" />
     <ClInclude Include="..\Classes\ECS\Entities\Entity.h" />
     <ClInclude Include="..\Classes\ECS\Entities\EntityManager.h" />

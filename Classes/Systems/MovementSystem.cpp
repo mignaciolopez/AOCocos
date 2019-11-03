@@ -8,11 +8,11 @@ MovementSystem::MovementSystem()
 {
 	cocos2d::log("%s Constructor", "[MOVEMENT SYSTEM]");
 
-	m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
-
 	m_director = cocos2d::Director::getInstance();
 
 	m_compatibleComponents.push_back(ComponentType::SPRITE);
+
+	m_entityManager = ECS::ECSEngine::GetInstance()->GetEntityManager();
 
 	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
 	m_eventManager->Subscribe(EVENTS::MOVE_NORTH, &MovementSystem::moveNorth, this);
@@ -31,63 +31,65 @@ void MovementSystem::Update()
 	//cocos2d::log("%s Update", LOGID);
 }
 
-void MovementSystem::moveNorth(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt)
+void MovementSystem::moveNorth(int eid,  cocos2d::Event* ccevnt)
 {
-	move(Direction::North, eid, cid);
+	move(Direction::North, eid);
 }
 
-void MovementSystem::moveEast(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt)
+void MovementSystem::moveEast(int eid,  cocos2d::Event* ccevnt)
 {
-	move(Direction::East, eid, cid);
+	move(Direction::East, eid);
 }
 
-void MovementSystem::moveSouth(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt)
+void MovementSystem::moveSouth(int eid,  cocos2d::Event* ccevnt)
 {
-	move(Direction::South, eid, cid);
+	move(Direction::South, eid);
 }
 
-void MovementSystem::moveWest(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt)
+void MovementSystem::moveWest(int eid,  cocos2d::Event* ccevnt)
 {
-	move(Direction::West, eid, cid);
+	move(Direction::West, eid);
 }
 
-void MovementSystem::move(Direction dir, unsigned int eid, unsigned int cid)
+void MovementSystem::move(Direction dir, int eid)
 {
-	cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>
-		(m_componentManager->getComponent(cid)))->_sprite;
-
-	if (!(reinterpret_cast<SpriteComponent*>(m_componentManager->getComponent(cid)))->_moving)
+	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::SPRITE))
 	{
-		float x = 0, y = 0;
-		switch (dir)
+		cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>(it))->_sprite;
+
+		if (!(reinterpret_cast<SpriteComponent*>(it))->_moving)
 		{
-		case North:
-			y = 32.0f;
-			break;
-		case East:
-			x = 32.0f;
-			break;
-		case South:
-			y = -32.0f;
-			break;
-		case West:
-			x = -32.0f;
-			break;
+			float x = 0, y = 0;
+			switch (dir)
+			{
+			case North:
+				y = 32.0f;
+				break;
+			case East:
+				x = 32.0f;
+				break;
+			case South:
+				y = -32.0f;
+				break;
+			case West:
+				x = -32.0f;
+				break;
+			}
+			cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(x, y));
+			spr->runAction(move);
+			(reinterpret_cast<SpriteComponent*>(it))->_moving = true;
+
+			cocos2d::DelayTime* pause = cocos2d::DelayTime::create(0.2f - 0.02f);
+			cocos2d::Action* action;
+			cocos2d::CallFuncN* CallBack = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
+			action = cocos2d::Sequence::create(pause, CallBack, nullptr);
+			spr->runAction(action);
 		}
-		cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(x, y));
-		spr->runAction(move);
-		(reinterpret_cast<SpriteComponent*>(m_componentManager->getComponent(cid)))->_moving = true;
-
-		cocos2d::DelayTime* pause = cocos2d::DelayTime::create(0.2f - 0.02f);
-		cocos2d::Action* action;
-		cocos2d::CallFuncN* CallBack = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, cid));
-		action = cocos2d::Sequence::create(pause, CallBack, nullptr);
-		spr->runAction(action);
 	}
-
 }
 
-void MovementSystem::stopMoving(unsigned int cid)
+void MovementSystem::stopMoving(int eid)
 {
-	(reinterpret_cast<SpriteComponent*>(m_componentManager->getComponent(cid)))->_moving = false;
+	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::SPRITE))
+		(reinterpret_cast<SpriteComponent*>(it))->_moving = false;
 }
