@@ -16,7 +16,7 @@ namespace ECS
 		EntityManager();
 		~EntityManager();
 
-		int CreateEntity();
+		bool CreateEntity(int eid);
 
 		template <typename COMPONENT>
 		inline void AddComponentToEntity(int eid, COMPONENT* component)

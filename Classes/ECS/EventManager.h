@@ -8,6 +8,7 @@
 #include <map>
 
 #include "cocos2d.h"
+#include "BitStream.h"
 
 namespace ECS
 {
@@ -24,7 +25,7 @@ namespace ECS
 			cocos2d::log("%s Destructor", "[EVENT HANDLER BASE]");
 		}
 
-		virtual void execute(int, cocos2d::Event* = nullptr) = 0;
+		virtual void execute(int, cocos2d::Event* = nullptr, SLNet::BitStream* = nullptr) = 0;
 	};
 	
 	// Event Handler Class : Handles Callback
@@ -32,7 +33,7 @@ namespace ECS
 	class EventHandler : public EventHandlerBase
 	{
 		// Defining type for function pointer
-		typedef void (Class::*_fptr)(int, cocos2d::Event*);
+		typedef void (Class::*_fptr)(int, cocos2d::Event*, SLNet::BitStream*);
 
 	public:
 		// Object of the Listener
@@ -51,9 +52,9 @@ namespace ECS
 			cocos2d::log("%s Destructor", "[EVENT HANDLER]");
 		}
 
-		virtual void execute(int eid, cocos2d::Event* ccevnt = nullptr) override
+		virtual void execute(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr) override
 		{
-			(object->*function)(eid, ccevnt);
+			(object->*function)(eid, ccevnt, bs);
 		}
 	};
 
@@ -79,16 +80,16 @@ namespace ECS
 		}
 
 		template <typename Class>
-		void addListener(Class *obj, void (Class::*func)(int, cocos2d::Event*))
+		void addListener(Class *obj, void (Class::*func)(int, cocos2d::Event*, SLNet::BitStream*))
 		{
 			m_handlers[count] = new (std::nothrow) EventHandler<Class>(obj, func);
 			count++;
 		}
 
-		void execute(int eid, cocos2d::Event* ccevnt = nullptr)
+		void execute(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr)
 		{
 			for (EventHandlerMap::iterator it = m_handlers.begin(); it != m_handlers.end(); ++it)
-				it->second->execute(eid, ccevnt);
+				it->second->execute(eid, ccevnt, bs);
 		}
 	private:
 		// To store all listeners of the event
@@ -105,7 +106,7 @@ namespace ECS
 		~EventManager();
 
 		template <typename SYSTEM>
-		inline bool Subscribe(EVENTS evnt, void(SYSTEM::*func)(int, cocos2d::Event*), SYSTEM* system)
+		inline bool Subscribe(EVENTS evnt, void(SYSTEM::*func)(int, cocos2d::Event*, SLNet::BitStream*), SYSTEM* system)
 		{
 			if (m_events.find(evnt) != m_events.end())
 			{
@@ -115,7 +116,7 @@ namespace ECS
 			return false;
 		}
 
-		void execute(EVENTS evnt, int eid, cocos2d::Event* ccevnt = nullptr);
+		void execute(EVENTS evnt, int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 
 	private:
 		std::map<EVENTS, Evnt*> m_events;

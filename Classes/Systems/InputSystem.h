@@ -16,6 +16,7 @@ public:
 	~InputSystem();
 
 	virtual void Update() override;
+	void setLocalEntity(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 
 private:
 	bool IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode);

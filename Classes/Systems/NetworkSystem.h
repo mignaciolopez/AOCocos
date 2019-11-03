@@ -22,10 +22,12 @@ public:
 
 	virtual void Update() override;
 
-	void mousePressed(int eid, cocos2d::Event* ccevnt);
+	void mousePressed(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 
 private:
-	void receive(SLNet::BitStream* bsIn);
+	void receive(int evntid, SLNet::BitStream* bsIn);
+
+	void conectionAccepted(SLNet::Packet* packet);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;

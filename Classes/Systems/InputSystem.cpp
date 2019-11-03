@@ -42,8 +42,9 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 	m_mouseListener->onMouseScroll = CC_CALLBACK_1(InputSystem::onMouseScroll, this);
 	m_mouseListener->onMouseUp = CC_CALLBACK_1(InputSystem::onMouseUp, this);
 
+	m_eventManager->Subscribe(EVENTS::MY_EID, &InputSystem::setLocalEntity, this);
 
-	m_localEntity = 0;
+	m_localEntity = -1;
 }
 
 InputSystem::~InputSystem()
@@ -83,6 +84,11 @@ void InputSystem::Update()
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F11);
 		m_eventManager->execute(EVENTS::UI_TOGGLE_FULLSCREEN, m_localEntity);
 	}
+}
+
+void InputSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	m_localEntity = eid;
 }
 
 bool InputSystem::IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode)

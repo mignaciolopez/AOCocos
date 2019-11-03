@@ -24,10 +24,10 @@ public:
 
 	virtual void Update() override;
 
-	void moveNorth(int eid, cocos2d::Event* ccevnt = nullptr);
-	void moveEast(int eid, cocos2d::Event* ccevnt = nullptr);
-	void moveSouth(int eid, cocos2d::Event* ccevnt = nullptr);
-	void moveWest(int eid, cocos2d::Event* ccevnt = nullptr);
+	void moveNorth(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
+	void moveEast(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
+	void moveSouth(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
+	void moveWest(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 
 	void move(Direction dir, int eid);
 

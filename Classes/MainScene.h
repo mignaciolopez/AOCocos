@@ -7,6 +7,7 @@
 #include "Systems/UISystem.h"
 #include "Systems/MovementSystem.h"
 #include "Systems/NetworkSystem.h"
+#include "Systems/EntitiesSystem.h"
 
 namespace ECS
 {
@@ -36,7 +37,8 @@ private:
 	int m_inputSystemID;
 	int m_uiSystemID;
 	int m_movementSystemID;
-	int m_networkSystemID;	
+	int m_networkSystemID;
+	int m_entitiesSystemID;
 };
 
 #endif // __MAIN_SCENE_H__

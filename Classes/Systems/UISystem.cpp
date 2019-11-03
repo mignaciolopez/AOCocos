@@ -27,7 +27,7 @@ void UISystem::Update()
 	//cocos2d::log("%s Update", LOGID);
 }
 
-void UISystem::clicked(int eid, cocos2d::Event * ccevnt)
+void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 {
 	cocos2d::EventMouse* mouseEvent;
 	try
@@ -44,7 +44,7 @@ void UISystem::clicked(int eid, cocos2d::Event * ccevnt)
 		eid, mouseEvent->getMouseButton(), mouseEvent->getLocation().x, mouseEvent->getLocation().y);
 }
 
-void UISystem::toogleFullscreen(int eid, cocos2d::Event* ccevent)
+void UISystem::toogleFullscreen(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs)
 {
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 	cocos2d::GLViewImpl* view = static_cast<cocos2d::GLViewImpl*>(m_director->getOpenGLView());

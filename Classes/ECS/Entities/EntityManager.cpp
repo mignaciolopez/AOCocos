@@ -25,24 +25,23 @@ namespace ECS
 		cocos2d::log("%s Destructor", LOGID);
 	}
 
-	int EntityManager::CreateEntity()
+	bool EntityManager::CreateEntity(int eid)
 	{
-		int id = 0;
+		if (m_entities.find(eid) != m_entities.end())
+			return false;
 
-		while (m_entities.find(id) != m_entities.end())
-			++id;
-
-		Entity* entity = new (std::nothrow) Entity(id);
+		Entity* entity = new (std::nothrow) Entity(eid);
 
 		if (entity)
-			m_entities.emplace(id, entity);
+			m_entities.emplace(eid, entity);
 		else
 		{
 			cocos2d::log("%s Allocation Error", LOGID);
 			cocos2d::log("%s Entity* entity = new (std::nothrow) Entity;", LOGID);
+			return false;
 		}
 
-		return id;
+		return true;
 	}
 
 	Entity * EntityManager::getEntity(int id)

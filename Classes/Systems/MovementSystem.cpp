@@ -31,22 +31,22 @@ void MovementSystem::Update()
 	//cocos2d::log("%s Update", LOGID);
 }
 
-void MovementSystem::moveNorth(int eid,  cocos2d::Event* ccevnt)
+void MovementSystem::moveNorth(int eid,  cocos2d::Event* ccevnt, SLNet::BitStream* bs)
 {
 	move(Direction::North, eid);
 }
 
-void MovementSystem::moveEast(int eid,  cocos2d::Event* ccevnt)
+void MovementSystem::moveEast(int eid,  cocos2d::Event* ccevnt, SLNet::BitStream* bs)
 {
 	move(Direction::East, eid);
 }
 
-void MovementSystem::moveSouth(int eid,  cocos2d::Event* ccevnt)
+void MovementSystem::moveSouth(int eid,  cocos2d::Event* ccevnt, SLNet::BitStream* bs)
 {
 	move(Direction::South, eid);
 }
 
-void MovementSystem::moveWest(int eid,  cocos2d::Event* ccevnt)
+void MovementSystem::moveWest(int eid,  cocos2d::Event* ccevnt, SLNet::BitStream* bs)
 {
 	move(Direction::West, eid);
 }

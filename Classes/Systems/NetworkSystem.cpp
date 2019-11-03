@@ -63,8 +63,7 @@ void NetworkSystem::Update()
 				cocos2d::log("%s ID_PUBLIC_KEY_MISMATCH", "[NETWORK SYSTEM]");
 				break;
 			case ID_CONNECTION_REQUEST_ACCEPTED:
-				m_serverGUID = packet->guid;
-				m_online = true;
+				conectionAccepted(packet);
 				break;
 			case ID_NO_FREE_INCOMING_CONNECTIONS:
 				cocos2d::log("%s ID_NO_FREE_INCOMING_CONNECTIONS", "[NETWORK SYSTEM]");
@@ -81,13 +80,13 @@ void NetworkSystem::Update()
 				break;
 			default:
 				cocos2d::log("%s Message with identifier %i has arrived.", "[NETWORK SYSTEM]", packet->data[0]);
-				receive(&bsIn);
+				receive(packet->data[0], &bsIn);
 				break;
 			}
 		}
 }
 
-void NetworkSystem::mousePressed(int eid, cocos2d::Event * ccevnt)
+void NetworkSystem::mousePressed(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 {
 	if (m_online && m_peer)
 	{
@@ -103,12 +102,21 @@ void NetworkSystem::mousePressed(int eid, cocos2d::Event * ccevnt)
 	}
 }
 
-void NetworkSystem::receive(SLNet::BitStream* bsIn)
+void NetworkSystem::receive(int evntid, SLNet::BitStream* bsIn)
 {
-	EVENTS evnt = EVENTS::FIRST;
 	int eid = -1;
 
-	bsIn->Read(evnt);
+	bsIn->IgnoreBytes(sizeof(SLNet::MessageID));
 	bsIn->Read(eid);
-	m_eventManager->execute(evnt, eid, nullptr);
+	m_eventManager->execute(static_cast<EVENTS>(evntid), eid, nullptr, bsIn);
+}
+
+void NetworkSystem::conectionAccepted(SLNet::Packet* packet)
+{
+	m_serverGUID = packet->guid;
+	m_online = true;
+
+	SLNet::BitStream bsOut;
+	bsOut.Write((SLNet::MessageID)EVENTS::REQUEST_EID);
+	m_peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, m_serverGUID, false);
 }
