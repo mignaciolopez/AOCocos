@@ -1,6 +1,7 @@
 #include "MovementSystem.h"
 
 #include "Components/SpriteComponent.h"
+#include "Components/PositionComponent.h"
 
 #include "cocos2d.h"
 
@@ -11,6 +12,7 @@ MovementSystem::MovementSystem()
 	m_director = cocos2d::Director::getInstance();
 
 	m_compatibleComponents.push_back(ComponentType::SPRITE);
+	m_compatibleComponents.push_back(ComponentType::POSITION);
 
 	m_entityManager = ECS::ECSEngine::GetInstance()->GetEntityManager();
 
@@ -19,6 +21,10 @@ MovementSystem::MovementSystem()
 	m_eventManager->Subscribe(EVENTS::MOVE_EAST, &MovementSystem::moveEast, this);
 	m_eventManager->Subscribe(EVENTS::MOVE_SOUTH, &MovementSystem::moveSouth, this);
 	m_eventManager->Subscribe(EVENTS::MOVE_WEST, &MovementSystem::moveWest, this);
+
+	m_eventManager->Subscribe(EVENTS::MY_EID, &MovementSystem::setLocalEntity, this);
+
+	m_localEntity = -1;
 }
 
 MovementSystem::~MovementSystem()
@@ -53,26 +59,41 @@ void MovementSystem::moveWest(int eid,  cocos2d::Event* ccevnt, SLNet::BitStream
 
 void MovementSystem::move(Direction dir, int eid)
 {
+	if (!m_entityManager->getEntity(eid)) //Workaround
+		return;
+
 	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::SPRITE))
 	{
-		cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>(it))->_sprite;
-
 		if (!(reinterpret_cast<SpriteComponent*>(it))->_moving)
 		{
+			cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>(it))->_sprite;
+			SLNet::BitStream bsOut;
 			float x = 0, y = 0;
 			switch (dir)
 			{
 			case North:
 				y = 32.0f;
+				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_NORTH);
+				bsOut.Write(m_localEntity);
+				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
 				break;
 			case East:
 				x = 32.0f;
+				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_EAST);
+				bsOut.Write(m_localEntity);
+				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
 				break;
 			case South:
 				y = -32.0f;
+				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_SOUTH);
+				bsOut.Write(m_localEntity);
+				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
 				break;
 			case West:
 				x = -32.0f;
+				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_WEST);
+				bsOut.Write(m_localEntity);
+				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
 				break;
 			}
 			cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(x, y));
@@ -84,6 +105,12 @@ void MovementSystem::move(Direction dir, int eid)
 			cocos2d::CallFuncN* CallBack = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
 			action = cocos2d::Sequence::create(pause, CallBack, nullptr);
 			spr->runAction(action);
+		
+			for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::POSITION))
+			{
+				(reinterpret_cast<PositionComponent*>(it))->_x = spr->getPosition().x + x;
+				(reinterpret_cast<PositionComponent*>(it))->_y = spr->getPosition().y + y;
+			}
 		}
 	}
 }
@@ -92,4 +119,9 @@ void MovementSystem::stopMoving(int eid)
 {
 	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::SPRITE))
 		(reinterpret_cast<SpriteComponent*>(it))->_moving = false;
+}
+
+void MovementSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	m_localEntity = eid;
 }

@@ -31,7 +31,7 @@ NetworkSystem::NetworkSystem()
 		cocos2d::log("%s Conection attempt started.", "[NETWORK SYSTEM]");
 	}
 
-	m_eventManager->Subscribe(EVENTS::MOUSE_PRESSED, &NetworkSystem::mousePressed, this);
+	m_eventManager->Subscribe(EVENTS::SEND_SERVER, &NetworkSystem::send, this);
 }
 
 NetworkSystem::~NetworkSystem()
@@ -86,19 +86,11 @@ void NetworkSystem::Update()
 		}
 }
 
-void NetworkSystem::mousePressed(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
+void NetworkSystem::send(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs)
 {
 	if (m_online && m_peer)
 	{
-		cocos2d::EventMouse* e = dynamic_cast<cocos2d::EventMouse*>(ccevnt);
-
-		SLNet::BitStream bsOut;
-		bsOut.Write((SLNet::MessageID)EVENTS::MOUSE_PRESSED);
-		bsOut.Write(eid);
-		bsOut.Write(e->getMouseButton());
-		bsOut.Write(e->getLocation().x);
-		bsOut.Write(e->getLocation().y);
-		m_peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, m_serverGUID, false);
+		m_peer->Send(bs, HIGH_PRIORITY, RELIABLE_ORDERED, 0, m_serverGUID, false);
 	}
 }
 

@@ -33,6 +33,8 @@ public:
 
 	void stopMoving(int eid);
 
+	void setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
+
 private:
 	std::vector<ComponentType> m_compatibleComponents;
 
@@ -40,6 +42,7 @@ private:
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 
+	int m_localEntity;
 };
 
 #endif // __MOVEMENT_SYSTEM_H__

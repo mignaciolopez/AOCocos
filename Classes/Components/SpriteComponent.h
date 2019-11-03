@@ -3,12 +3,10 @@
 
 #include "ECS/Components/Component.h"
 
-#include <random>
-
 class SpriteComponent : public ECS::Component
 {
 public:
-	SpriteComponent(const char* spriteFileName)
+	SpriteComponent(const char* spriteFileName, float x, float y)
 	{
 		cocos2d::log("%s Constructor", "[SPRITE COMPONENT]");
 
@@ -20,12 +18,7 @@ public:
 		{
 			_sprite->retain();
 
-			std::random_device dev;
-			std::mt19937 rng(dev());
-			std::uniform_int_distribution<std::mt19937::result_type> distW(100, 700);
-			std::uniform_int_distribution<std::mt19937::result_type> distH(100, 500);
-
-			_sprite->setPosition(distW(rng), distH(rng));
+			_sprite->setPosition(x, x);
 		}
 	}
 	~SpriteComponent()

@@ -1,6 +1,7 @@
 #include "EntitiesSystem.h"
 
 #include "Components/SpriteComponent.h"
+#include "Components/PositionComponent.h"
 
 #include "cocos2d.h"
 
@@ -31,13 +32,19 @@ void EntitiesSystem::createEntity(int eid, cocos2d::Event * ccevent, SLNet::BitS
 {
 	m_entityManager->CreateEntity(eid);
 
-	SpriteComponent* body = new (std::nothrow) SpriteComponent("HelloWorld.png");
+	float x = 0.0f, y = 0.0f;
+	bs->Read(x);
+	bs->Read(y);
+
+	SpriteComponent* body = new (std::nothrow) SpriteComponent("HelloWorld.png", x , y);
 	if (!body || !body->_sprite)
-	{
 		cocos2d::log("%s body Failed!", "[ENTITIES SYSTEM]");
-		m_entityManager->AddComponentToEntity(eid, body); //storing te comp even if it failed prevents quit with memory leak
-		return;
-	}
 
 	m_entityManager->AddComponentToEntity(eid, body);
+
+	PositionComponent* pos = new (std::nothrow) PositionComponent(x, y);
+	if (!pos)
+		cocos2d::log("%s position Failed!", "[ENTITIES SYSTEM]");
+
+	m_entityManager->AddComponentToEntity(eid, pos);
 }

@@ -22,7 +22,7 @@ public:
 
 	virtual void Update() override;
 
-	void mousePressed(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+	void send(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 
 private:
 	void receive(int evntid, SLNet::BitStream* bsIn);

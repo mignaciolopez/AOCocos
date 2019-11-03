@@ -7,8 +7,10 @@ enum EVENTS
 {
 	FIRST = ID_USER_PACKET_ENUM + 1,	//USED for iteration DO NOT REMOVE
 
-	SEND_CLIENT,				//
+	SEND_CLIENT,				//Used by Server
 	SEND_BROADCAST,
+
+	SEND_SERVER,				//Used by client
 
 	REQUEST_EID,
 	MY_EID,

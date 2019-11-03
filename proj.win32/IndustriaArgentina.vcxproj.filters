@@ -137,6 +137,9 @@
     <ClInclude Include="..\Classes\Systems\EntitiesSystem.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
+    <ClInclude Include="..\Classes\Components\PositionComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
