@@ -30,6 +30,7 @@ public:
 	void moveWest(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 
 	void move(Direction dir, int eid);
+	bool moveRemote(Direction dir, int eid);
 
 	void stopMoving(int eid);
 
@@ -43,6 +44,8 @@ private:
 	cocos2d::Director* m_director;
 
 	int m_localEntity;
+
+	std::map<int, std::vector<Direction>*> m_pendingMoves;
 };
 
 #endif // __MOVEMENT_SYSTEM_H__
