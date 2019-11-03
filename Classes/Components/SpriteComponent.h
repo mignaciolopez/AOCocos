@@ -26,7 +26,9 @@ public:
 		auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
 		if (runningScene && _sprite)
 		{
-			cocos2d::Director::getInstance()->getRunningScene()->removeChild(_sprite);
+			if (_sprite->getParent() == runningScene)
+				runningScene->removeChild(_sprite);
+
 			_sprite->release();
 		}
 		cocos2d::log("%s Destructor", "[SPRITE COMPONENT]");

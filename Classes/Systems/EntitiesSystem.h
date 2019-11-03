@@ -17,6 +17,11 @@ public:
 	virtual void Update() override;
 
 	void createEntity(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
+	void sync(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
+	void removeEntity(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
+
+private:
+	void createEntity(int eid, float x, float y);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;

@@ -48,7 +48,6 @@ void MovementSystem::Update()
 			delete it->second;
 			it->second = nullptr;
 			m_pendingMoves.erase(it++);
-
 		}
 	}
 }

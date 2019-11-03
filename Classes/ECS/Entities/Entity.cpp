@@ -16,6 +16,15 @@ namespace ECS
 
 	Entity::~Entity()
 	{
+		for (auto comp : m_components)
+		{
+			if (comp.second)
+			{
+				delete comp.second;
+				comp.second = nullptr;
+			}
+		}
+
 		cocos2d::log("%s Destructor", LOGID);
 	}
 

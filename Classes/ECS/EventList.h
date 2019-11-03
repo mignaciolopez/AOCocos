@@ -15,6 +15,8 @@ enum EVENTS
 	REQUEST_EID,
 	MY_EID,
 	EID_JOINED,
+	EID_QUIT,
+	SYNC,
 
 	MOVE_NORTH,					//Movements
 	MOVE_EAST,

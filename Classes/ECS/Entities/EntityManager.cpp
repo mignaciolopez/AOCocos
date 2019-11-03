@@ -57,4 +57,14 @@ namespace ECS
 		return &m_entities;
 	}
 
+	void EntityManager::removeEntity(int eid)
+	{
+		if (m_entities.find(eid) != m_entities.end())
+		{
+			delete m_entities.at(eid);
+			m_entities.at(eid) = nullptr;
+			m_entities.erase(eid);
+		}
+	}
+
 }

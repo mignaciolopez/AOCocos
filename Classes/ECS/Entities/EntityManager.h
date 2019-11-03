@@ -28,6 +28,8 @@ namespace ECS
 		Entity* getEntity(int id);
 		ContainerEntity* getEntities();
 
+		void removeEntity(int eid);
+
 	private:
 		ContainerEntity m_entities;
 
