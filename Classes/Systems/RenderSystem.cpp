@@ -8,7 +8,7 @@ RenderSystem::RenderSystem()
 {
 	cocos2d::log("%s Constructor", "[RENDER SYSTEM]");
 
-	m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
+	m_entiyManager = ECS::ECSEngine::GetInstance()->GetEntityManager();
 	
 	m_director = cocos2d::Director::getInstance();
 
@@ -28,15 +28,15 @@ void RenderSystem::Update()
 
 	for (auto compatibleComponent : m_compatibleComponents)
 	{
-		for (auto componentID : m_componentManager->getComponentsOfType(compatibleComponent))
+		for (auto entity : *m_entiyManager->getEntities())
 		{
-			cocos2d::Sprite* spr;
+			for (auto it : entity.second->getComponents(ComponentType::SPRITE))
+			{
+				 cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>(it))->_sprite;
 
-			spr = (reinterpret_cast<SpriteComponent*>
-					(m_componentManager->getComponent(componentID)))->_sprite;			
-				
-			if (spr->getParent() != m_director->getRunningScene())
-				m_director->getRunningScene()->addChild(spr);
+				if (spr->getParent() != m_director->getRunningScene())
+					m_director->getRunningScene()->addChild(spr);
+			}
 		}
 	}
 }

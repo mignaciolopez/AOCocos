@@ -19,7 +19,7 @@ public:
 private:
 	std::vector<ComponentType> m_compatibleComponents;
 
-	ECS::ComponentManager* m_componentManager;
+	ECS::EntityManager* m_entiyManager;
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 

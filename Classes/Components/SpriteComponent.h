@@ -3,29 +3,24 @@
 
 #include "ECS/Components/Component.h"
 
-#include <random>
-
 class SpriteComponent : public ECS::Component
 {
 public:
-	SpriteComponent(const char* spriteFileName)
+	SpriteComponent(std::string sfn, float x, float y)
 	{
 		cocos2d::log("%s Constructor", "[SPRITE COMPONENT]");
 
-		_sprite = cocos2d::Sprite::create(spriteFileName);
+		auto cache = cocos2d::SpriteFrameCache::getInstance();
+
+		_sprite = cocos2d::Sprite::createWithSpriteFrameName(sfn);
 
 		if (!_sprite)
-			cocos2d::log("%s _sprite failed with file name: %s", "[SPRITE COMPONENT]", spriteFileName);
+			cocos2d::log("%s _sprite failed with file name: %s", "[SPRITE COMPONENT]", sfn);
 		else
 		{
 			_sprite->retain();
 
-			std::random_device dev;
-			std::mt19937 rng(dev());
-			std::uniform_int_distribution<std::mt19937::result_type> distW(100, 700);
-			std::uniform_int_distribution<std::mt19937::result_type> distH(100, 500);
-
-			_sprite->setPosition(distW(rng), distH(rng));
+			_sprite->setPosition(x, x);
 		}
 	}
 	~SpriteComponent()
@@ -33,7 +28,9 @@ public:
 		auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
 		if (runningScene && _sprite)
 		{
-			cocos2d::Director::getInstance()->getRunningScene()->removeChild(_sprite);
+			if (_sprite->getParent() == runningScene)
+				runningScene->removeChild(_sprite);
+
 			_sprite->release();
 		}
 		cocos2d::log("%s Destructor", "[SPRITE COMPONENT]");

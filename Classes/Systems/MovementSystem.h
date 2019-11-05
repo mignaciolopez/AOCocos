@@ -24,22 +24,28 @@ public:
 
 	virtual void Update() override;
 
-	void moveNorth(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt = nullptr);
-	void moveEast(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt = nullptr);
-	void moveSouth(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt = nullptr);
-	void moveWest(unsigned int eid, unsigned int cid, cocos2d::Event* ccevnt = nullptr);
+	void moveNorth(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
+	void moveEast(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
+	void moveSouth(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
+	void moveWest(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 
-	void move(Direction dir, unsigned int eid, unsigned int cid);
+	void move(Direction dir, int eid);
+	bool moveRemote(Direction dir, int eid);
 
-	void stopMoving(unsigned int cid);
+	void stopMoving(int eid);
+
+	void setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;
 
-	ECS::ComponentManager* m_componentManager;
+	ECS::EntityManager* m_entityManager;
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 
+	int m_localEntity;
+
+	std::map<int, std::vector<Direction>*> m_pendingMoves;
 };
 
 #endif // __MOVEMENT_SYSTEM_H__

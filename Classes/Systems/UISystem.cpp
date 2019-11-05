@@ -8,8 +8,6 @@ UISystem::UISystem()
 {
 	cocos2d::log("%s Constructor", "[UI SYSTEM]");
 
-	m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
-
 	m_director = cocos2d::Director::getInstance();
 
 	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
@@ -29,7 +27,7 @@ void UISystem::Update()
 	//cocos2d::log("%s Update", LOGID);
 }
 
-void UISystem::clicked(unsigned int eid, unsigned int cid, cocos2d::Event * ccevnt)
+void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 {
 	cocos2d::EventMouse* mouseEvent;
 	try
@@ -42,11 +40,11 @@ void UISystem::clicked(unsigned int eid, unsigned int cid, cocos2d::Event * ccev
 		return;
 	}
 
-	cocos2d::log("ComponentID: %i | Mouse Button: %i | X: %f, Y: %f",
-		cid, mouseEvent->getMouseButton(), mouseEvent->getLocation().x, mouseEvent->getLocation().y);
+	cocos2d::log("Entity: %i | Mouse Button: %i | X: %f, Y: %f",
+		eid, mouseEvent->getMouseButton(), mouseEvent->getLocation().x, mouseEvent->getLocation().y);
 }
 
-void UISystem::toogleFullscreen(unsigned int eid, unsigned int cid, cocos2d::Event* ccevent)
+void UISystem::toogleFullscreen(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs)
 {
 #if(CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 	cocos2d::GLViewImpl* view = static_cast<cocos2d::GLViewImpl*>(m_director->getOpenGLView());

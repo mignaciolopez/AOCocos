@@ -1,27 +1,31 @@
 #ifndef __ENTITY_H__
 #define __ENTITY_H__
 
+#include <map>
 #include <vector>
 
-#include "ECS/Entities/Entity.h"
-#include "ECS/Components/Component.h"
+#include "../../ECS/Components/Component.h"
 
 namespace ECS
 {
-	using ContainerComponents = std::vector<unsigned int>;
+	using ContainerComponents = std::multimap<ComponentType, Component*>;
 
 	class Entity
 	{
 	public:
-		Entity(unsigned int id);
+		Entity(int id);
 		~Entity();
 
-		void AddComponent(unsigned int id);
+		template <typename COMPONENT>
+		inline void AddComponent(COMPONENT* component)
+		{
+			m_components.emplace(component->_type, component);
+		}
 
-		unsigned int GetNumOfComponents();
+		int GetNumOfComponents();
 
-		std::vector<unsigned int> GetComponents();
-		std::vector<unsigned int> GetComponents(ComponentType type);
+		std::vector<Component*> getComponents();
+		std::vector<Component*> getComponents(ComponentType type);
 
 	private:
 
@@ -29,7 +33,7 @@ namespace ECS
 		ContainerComponents m_components;
 
 	private:
-		unsigned int m_id;
+		int m_id;
 	};
 }
 #endif // __ENTITY_H__

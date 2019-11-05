@@ -3,7 +3,6 @@
 
 #include "ECS/Entities/EntityManager.h"
 #include "ECS/Systems/SystemManager.h"
-#include "ECS/Components/ComponentManager.h"
 #include "ECS/EventManager.h"
 
 namespace ECS
@@ -22,7 +21,6 @@ namespace ECS
 
 		EntityManager* GetEntityManager();
 		SystemManager* GetSystemManager();
-		ComponentManager* GetComponentManager();
 		EventManager* getEventManager();
 
 	private:
@@ -33,7 +31,6 @@ namespace ECS
 		EntityManager* m_entityManager;
 		EventManager* m_eventManager;
 		SystemManager* m_systemManager;
-		ComponentManager* m_componentManager;
 
 	};
 

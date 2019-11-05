@@ -1,7 +1,7 @@
 #include "AppDelegate.h"
 #include "extensions/cocos-ext.h"
 #include "ECS/ECSEngine.h"
-#include "MainScene.h"
+#include "Scenes/MainScene.h"
 
 USING_NS_CC;
 
@@ -30,7 +30,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	auto glview = director->getOpenGLView();
 	if (!glview)
 	{
-		glview = GLViewImpl::create("CCClientEnet");
+		glview = GLViewImpl::create("Industria Argentina");
 		director->setOpenGLView(glview);
 	}
 
@@ -80,7 +80,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 // This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
 void AppDelegate::applicationDidEnterBackground()
 {
-
+	
 }
 
 // this function will be called when the app is active again

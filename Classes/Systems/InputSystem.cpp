@@ -10,8 +10,6 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 
 	m_scene = scene;
 
-	m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
-
 	m_director = cocos2d::Director::getInstance();
 
 	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
@@ -44,8 +42,9 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 	m_mouseListener->onMouseScroll = CC_CALLBACK_1(InputSystem::onMouseScroll, this);
 	m_mouseListener->onMouseUp = CC_CALLBACK_1(InputSystem::onMouseUp, this);
 
+	m_eventManager->Subscribe(EVENTS::MY_EID, &InputSystem::setLocalEntity, this);
 
-	m_localEntity = 0;
+	m_localEntity = -1;
 }
 
 InputSystem::~InputSystem()
@@ -67,23 +66,15 @@ void InputSystem::Update()
 	//cocos2d::log("%s Update", LOGID);
 
 	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW))
-		m_eventManager->execute(EVENTS::MOVE_NORTH, 0, m_localEntity);
+		m_eventManager->execute(EVENTS::MOVE_NORTH, m_localEntity);
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
-		m_eventManager->execute(EVENTS::MOVE_EAST, 0, m_localEntity);
+		m_eventManager->execute(EVENTS::MOVE_EAST, m_localEntity);
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
-		m_eventManager->execute(EVENTS::MOVE_SOUTH, 0, m_localEntity);
+		m_eventManager->execute(EVENTS::MOVE_SOUTH, m_localEntity);
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
-		m_eventManager->execute(EVENTS::MOVE_WEST, 0, m_localEntity);
+		m_eventManager->execute(EVENTS::MOVE_WEST, m_localEntity);
 	
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_TAB))
-	{
-		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_TAB);
-		if (m_localEntity)
-			m_localEntity = 0;
-		else
-			m_localEntity = 1;
-	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE))
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE))
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE);
 		m_director->end();
@@ -91,8 +82,13 @@ void InputSystem::Update()
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F11))
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F11);
-		m_eventManager->execute(EVENTS::UI_TOGGLE_FULLSCREEN, 0, m_localEntity);
+		m_eventManager->execute(EVENTS::UI_TOGGLE_FULLSCREEN, m_localEntity);
 	}
+}
+
+void InputSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	m_localEntity = eid;
 }
 
 bool InputSystem::IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
@@ -110,26 +106,18 @@ void InputSystem::ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode keyCode)
 
 void InputSystem::onMouseDown(cocos2d::Event * ccevnt)
 {
-	try
-	{
-		cocos2d::EventMouse* mouseEvent = dynamic_cast<cocos2d::EventMouse*>(ccevnt);
-		m_eventManager->execute(EVENTS::MOUSE_PRESSED, 0, m_localEntity, ccevnt);
-	}
-	catch (std::bad_cast& e)
-	{
-		// Not sure what kind of event you passed us cocos, but it was the wrong one
-		return;
-	}
+	cocos2d::EventMouse* mouseEvent = dynamic_cast<cocos2d::EventMouse*>(ccevnt);
+	m_eventManager->execute(EVENTS::MOUSE_PRESSED, m_localEntity, ccevnt);
 }
 
 void InputSystem::onMouseMove(cocos2d::Event* ccevnt)
 {
-	m_eventManager->execute(EVENTS::MOUSE_MOVE, 0, m_localEntity, ccevnt);
+	m_eventManager->execute(EVENTS::MOUSE_MOVE, m_localEntity, ccevnt);
 }
 
 void InputSystem::onMouseScroll(cocos2d::Event * ccevnt)
 {
-	m_eventManager->execute(EVENTS::MOUSE_SCROLL, 0, m_localEntity, ccevnt);
+	m_eventManager->execute(EVENTS::MOUSE_SCROLL, m_localEntity, ccevnt);
 }
 
 void InputSystem::onMouseUp(cocos2d::Event * ccevnt)
@@ -137,11 +125,11 @@ void InputSystem::onMouseUp(cocos2d::Event * ccevnt)
 	try
 	{
 		cocos2d::EventMouse* mouseEvent = dynamic_cast<cocos2d::EventMouse*>(ccevnt);
-		m_eventManager->execute(EVENTS::MOUSE_RELEASED, 0, m_localEntity, ccevnt);
+		m_eventManager->execute(EVENTS::MOUSE_RELEASED, m_localEntity, ccevnt);
 	}
 	catch (std::bad_cast& e)
 	{
-		// Not sure what kind of event you passed us cocos, but it was the wrong one
+		cocos2d::log("%s onMouseUp: %s", "[INPUT SYSTEM]", e.what());
 		return;
 	}
 }

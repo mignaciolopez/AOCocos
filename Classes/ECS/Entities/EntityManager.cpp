@@ -1,7 +1,5 @@
 #include "EntityManager.h"
 
-#include "ECS/Components/ComponentManager.h"
-
 #include "cocos2d.h"
 
 namespace ECS
@@ -9,11 +7,9 @@ namespace ECS
 
 #define LOGID "[ENTITY MANAGER]"
 
-	EntityManager::EntityManager(ComponentManager* componentManager)
+	EntityManager::EntityManager()
 	{
 		cocos2d::log("%s Constructor", LOGID);
-
-		m_componentManager = componentManager;
 	}
 
 	EntityManager::~EntityManager()
@@ -29,32 +25,46 @@ namespace ECS
 		cocos2d::log("%s Destructor", LOGID);
 	}
 
-	unsigned int EntityManager::CreateEntity()
+	bool EntityManager::CreateEntity(int eid)
 	{
-		unsigned int id = 0;
+		if (m_entities.find(eid) != m_entities.end())
+			return false;
 
-		while (m_entities.find(id) != m_entities.end())
-			++id;
-
-		Entity* entity = new (std::nothrow) Entity(id);
+		Entity* entity = new (std::nothrow) Entity(eid);
 
 		if (entity)
-			m_entities.emplace(id, entity);
+			m_entities.emplace(eid, entity);
 		else
 		{
 			cocos2d::log("%s Allocation Error", LOGID);
 			cocos2d::log("%s Entity* entity = new (std::nothrow) Entity;", LOGID);
+			return false;
 		}
 
-		return id;
+		return true;
 	}
 
-	Entity * EntityManager::getEntity(unsigned int id)
+	Entity * EntityManager::getEntity(int id)
 	{
 		if (m_entities.find(id) != m_entities.end())
 			return m_entities.at(id);
 		
 		return nullptr;
+	}
+
+	ContainerEntity * EntityManager::getEntities()
+	{
+		return &m_entities;
+	}
+
+	void EntityManager::removeEntity(int eid)
+	{
+		if (m_entities.find(eid) != m_entities.end())
+		{
+			delete m_entities.at(eid);
+			m_entities.at(eid) = nullptr;
+			m_entities.erase(eid);
+		}
 	}
 
 }
