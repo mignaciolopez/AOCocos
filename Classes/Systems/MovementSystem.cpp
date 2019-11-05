@@ -43,6 +43,9 @@ MovementSystem::MovementSystem()
 	m_moveSouth->retain();
 	m_moveWest->retain();
 
+	m_delayCallToStopMoving = cocos2d::DelayTime::create(0.2f - 0.02f);
+	m_delayCallToStopMoving->retain();
+
 	m_localEntity = -1;
 }
 
@@ -188,10 +191,10 @@ void MovementSystem::moveLocal(Direction dir)
 			
 			(reinterpret_cast<SpriteComponent*>(it))->_moving = true;
 
-			m_delayCallToStopMoving = cocos2d::DelayTime::create(0.2f - 0.02f);
+			
 			m_stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localEntity));
-			m_secuence = cocos2d::Sequence::create(m_delayCallToStopMoving, m_stopMovingCB, nullptr);
-			spr->runAction(m_stopMovingCB);
+			m_secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), m_stopMovingCB, nullptr);
+			spr->runAction(m_secuence);
 
 			for (auto it : m_entityManager->getEntity(m_localEntity)->getComponents(ComponentType::POSITION))
 			{
