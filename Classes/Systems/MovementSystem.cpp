@@ -29,9 +29,7 @@ MovementSystem::MovementSystem()
 	m_moveSouth = nullptr;
 	m_moveWest = nullptr;
 
-	m_stopMovingCB = nullptr;
 	m_delayCallToStopMoving = nullptr;
-	m_secuence = nullptr;
 
 	m_moveNorth = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(0, 32));
 	m_moveEast = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(32, 0));
@@ -67,17 +65,9 @@ MovementSystem::~MovementSystem()
 		if (m_moveWest->getReferenceCount())
 			m_moveWest->release();
 
-	if (m_stopMovingCB)
-		if (m_stopMovingCB->getReferenceCount())
-			m_stopMovingCB->release();
-
 	if (m_delayCallToStopMoving)
 		if (m_delayCallToStopMoving->getReferenceCount())
 			m_delayCallToStopMoving->release();
-
-	if (m_secuence)
-		if (m_secuence->getReferenceCount())
-			m_secuence->release();
 
 	cocos2d::log("%s Destructor", "[MOVEMENT SYSTEM]");
 }
@@ -192,9 +182,9 @@ void MovementSystem::moveLocal(Direction dir)
 			(reinterpret_cast<SpriteComponent*>(it))->_moving = true;
 
 			
-			m_stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localEntity));
-			m_secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), m_stopMovingCB, nullptr);
-			spr->runAction(m_secuence);
+			cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localEntity));
+			cocos2d::Action* secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), stopMovingCB, nullptr);
+			spr->runAction(secuence);
 
 			for (auto it : m_entityManager->getEntity(m_localEntity)->getComponents(ComponentType::POSITION))
 			{
@@ -237,10 +227,9 @@ bool MovementSystem::moveRemote(Direction dir, int eid)
 			
 			(reinterpret_cast<SpriteComponent*>(it))->_moving = true;
 
-			m_delayCallToStopMoving = cocos2d::DelayTime::create(0.2f - 0.02f);
-			m_stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
-			m_secuence = cocos2d::Sequence::create(m_delayCallToStopMoving, m_stopMovingCB, nullptr);
-			spr->runAction(m_stopMovingCB);
+			cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
+			cocos2d::Action* secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), stopMovingCB, nullptr);
+			spr->runAction(secuence);
 
 			for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::POSITION))
 			{
