@@ -128,6 +128,8 @@ public:
     /** Exchanges the front and back buffers, subclass must implement this method. */
     virtual void swapBuffers() = 0;
 
+	virtual void setSwapInterval(int interval) = 0;
+
     /** Open or close IME keyboard , subclass must implement this method. 
      *
      * @param open Open or close IME keyboard.

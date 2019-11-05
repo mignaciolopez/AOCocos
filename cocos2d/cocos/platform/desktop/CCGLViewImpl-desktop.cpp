@@ -424,6 +424,12 @@ void GLViewImpl::swapBuffers()
         glfwSwapBuffers(_mainWindow);
 }
 
+void GLViewImpl::setSwapInterval(int interval)
+{
+	if (_mainWindow)
+		glfwSwapInterval(interval);
+}
+
 bool GLViewImpl::windowShouldClose()
 {
     if(_mainWindow)

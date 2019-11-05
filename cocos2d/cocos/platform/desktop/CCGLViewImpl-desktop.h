@@ -93,6 +93,7 @@ public:
     virtual bool isOpenGLReady() override;
     virtual void end() override;
     virtual void swapBuffers() override;
+	virtual void setSwapInterval(int interval) override;
     virtual void setFrameSize(float width, float height) override;
     virtual void setIMEKeyboardState(bool bOpen) override;
 
