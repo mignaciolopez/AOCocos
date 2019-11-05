@@ -40,7 +40,7 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 	bs->Read(x);
 	bs->Read(y);
 
-	SpriteComponent* body = new (std::nothrow) SpriteComponent(TP::Graphics::playerBodyHumanFemaleStandingSouth, x , y);
+	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(TP::Graphics::playerBodyHumanFemaleStandingSouth, x , y);
 	if (!body || !body->_sprite)
 		cocos2d::log("%s body Failed!", "[ENTITIES SYSTEM]");
 
@@ -77,7 +77,7 @@ void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
 {
 	m_entityManager->CreateEntity(eid);
 
-	SpriteComponent* body = new (std::nothrow) SpriteComponent(TP::Graphics::playerBodyHumanFemaleStandingSouth, x, y);
+	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(TP::Graphics::playerBodyHumanFemaleStandingSouth, x, y);
 	if (!body || !body->_sprite)
 		cocos2d::log("%s body Failed!", "[ENTITIES SYSTEM]");
 

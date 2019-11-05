@@ -1,7 +1,5 @@
 #include "InputSystem.h"
 
-#include "Components/SpriteComponent.h"
-
 #include "cocos2d.h"
 
 InputSystem::InputSystem(cocos2d::Scene* scene)

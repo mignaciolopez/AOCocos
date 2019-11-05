@@ -1,6 +1,6 @@
 #include "MovementSystem.h"
 
-#include "Components/SpriteComponent.h"
+#include "Components/PlayerBodyComponent.h"
 #include "Components/PositionComponent.h"
 
 MovementSystem::MovementSystem()
@@ -9,7 +9,7 @@ MovementSystem::MovementSystem()
 
 	m_director = cocos2d::Director::getInstance();
 
-	m_compatibleComponents.push_back(ComponentType::SPRITE);
+	m_compatibleComponents.push_back(ComponentType::PLAYER_BODY);
 	m_compatibleComponents.push_back(ComponentType::POSITION);
 
 	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
@@ -67,24 +67,39 @@ MovementSystem::~MovementSystem()
 		if (m_delayCallToStopMoving->getReferenceCount())
 			m_delayCallToStopMoving->release();
 
+	for (auto move : m_pendingMoves)
+	{
+		if (move.second)
+		{
+			delete move.second;
+			move.second = nullptr;
+		}
+	}
+
 	cocos2d::log("%s Destructor", "[MOVEMENT SYSTEM]");
 }
 
 void MovementSystem::Update()
 {
-	for (auto& it = m_pendingMoves.begin(); it != m_pendingMoves.end() /* not hoisted */; /* no increment */)
+	for (auto& itMove = m_pendingMoves.begin(); itMove != m_pendingMoves.end() /* not hoisted */; /* no increment */)
 	{
-		if (it->second->size() > 0)
+		if (itMove->second->size() > 0)
 		{
-			moveRemote(*it->second->begin(), it->first);
-			it->second->erase(it->second->begin());
-			++it;
+			for (auto itComp : m_entityManager->getEntity(itMove->first)->getComponents(ComponentType::PLAYER_BODY))
+				(reinterpret_cast<PlayerBodyComponent*>(itComp))->_moving = true;
+
+			moveRemote(*itMove->second->begin(), itMove->first);
+			itMove->second->erase(itMove->second->begin());
+			++itMove;
 		}
 		else
 		{
-			delete it->second;
-			it->second = nullptr;
-			m_pendingMoves.erase(it++);
+			for (auto itComp : m_entityManager->getEntity(itMove->first)->getComponents(ComponentType::PLAYER_BODY))
+				(reinterpret_cast<PlayerBodyComponent*>(itComp))->_moving = false;
+
+			delete itMove->second;
+			itMove->second = nullptr;
+			m_pendingMoves.erase(itMove++);
 		}
 	}
 }
@@ -138,11 +153,11 @@ void MovementSystem::move(Direction dir, int eid)
 
 void MovementSystem::moveLocal(Direction dir)
 {
-	for (auto it : m_entityManager->getEntity(m_localEntity)->getComponents(ComponentType::SPRITE))
+	for (auto it : m_entityManager->getEntity(m_localEntity)->getComponents(ComponentType::PLAYER_BODY))
 	{
-		if (!(reinterpret_cast<SpriteComponent*>(it))->_moving)
+		if (!(reinterpret_cast<PlayerBodyComponent*>(it))->_moving)
 		{
-			cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>(it))->_sprite;
+			cocos2d::Sprite* spr = (reinterpret_cast<PlayerBodyComponent*>(it))->_sprite;
 			SLNet::BitStream bsOut;
 			float x = 0, y = 0;
 			switch (dir)
@@ -177,7 +192,7 @@ void MovementSystem::moveLocal(Direction dir)
 				break;
 			}
 			
-			(reinterpret_cast<SpriteComponent*>(it))->_moving = true;
+			(reinterpret_cast<PlayerBodyComponent*>(it))->_moving = true;
 
 			
 			cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localEntity));
@@ -195,9 +210,9 @@ void MovementSystem::moveLocal(Direction dir)
 
 void MovementSystem::moveRemote(Direction dir, int eid)
 {
-	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::SPRITE))
+	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::PLAYER_BODY))
 	{
-		cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>(it))->_sprite;
+		cocos2d::Sprite* spr = (reinterpret_cast<PlayerBodyComponent*>(it))->_sprite;
 		float x = 0, y = 0;
 		switch (dir)
 		{
@@ -229,8 +244,8 @@ void MovementSystem::moveRemote(Direction dir, int eid)
 
 void MovementSystem::stopMoving(int eid)
 {
-	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::SPRITE))
-		(reinterpret_cast<SpriteComponent*>(it))->_moving = false;
+	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::PLAYER_BODY))
+		(reinterpret_cast<PlayerBodyComponent*>(it))->_moving = false;
 }
 
 void MovementSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)

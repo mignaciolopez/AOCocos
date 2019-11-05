@@ -4,7 +4,7 @@
 enum ComponentType
 {
 	NONE = -1,
-	SPRITE,
+	PLAYER_BODY,
 	POSITION
 };
 

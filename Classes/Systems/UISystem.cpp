@@ -1,7 +1,5 @@
 #include "UISystem.h"
 
-#include "Components/SpriteComponent.h"
-
 #include "cocos2d.h"
 
 UISystem::UISystem()

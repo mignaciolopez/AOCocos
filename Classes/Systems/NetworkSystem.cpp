@@ -1,7 +1,5 @@
 #include "NetworkSystem.h"
 
-#include "Components/SpriteComponent.h"
-
 #include "cocos2d.h"
 
 NetworkSystem::NetworkSystem()

@@ -3,10 +3,10 @@
 
 #include "ECS/Components/Component.h"
 
-class SpriteComponent : public ECS::Component
+class PlayerBodyComponent : public ECS::Component
 {
 public:
-	SpriteComponent(std::string sfn, float x, float y)
+	PlayerBodyComponent(std::string sfn, float x, float y)
 	{
 		cocos2d::log("%s Constructor", "[SPRITE COMPONENT]");
 
@@ -23,7 +23,7 @@ public:
 			_sprite->setPosition(x, x);
 		}
 	}
-	~SpriteComponent()
+	~PlayerBodyComponent()
 	{
 		auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
 		if (runningScene && _sprite)
@@ -37,7 +37,7 @@ public:
 	}
 
 	cocos2d::Sprite* _sprite;
-	const ComponentType _type = ComponentType::SPRITE;
+	const ComponentType _type = ComponentType::PLAYER_BODY;
 	bool  _moving = false;
 };
 
