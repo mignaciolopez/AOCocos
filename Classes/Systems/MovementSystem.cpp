@@ -24,11 +24,58 @@ MovementSystem::MovementSystem()
 
 	m_eventManager->Subscribe(EVENTS::MY_EID, &MovementSystem::setLocalEntity, this);
 
+	m_moveNorth = nullptr;
+	m_moveEast = nullptr;
+	m_moveSouth = nullptr;
+	m_moveWest = nullptr;
+
+	m_stopMovingCB = nullptr;
+	m_delayCallToStopMoving = nullptr;
+	m_secuence = nullptr;
+
+	m_moveNorth = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(0, 32));
+	m_moveEast = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(32, 0));
+	m_moveSouth = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(0, -32));
+	m_moveWest = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(-32, 0));
+
+	m_moveNorth->retain();
+	m_moveEast->retain();
+	m_moveSouth->retain();
+	m_moveWest->retain();
+
 	m_localEntity = -1;
 }
 
 MovementSystem::~MovementSystem()
 {
+	if (m_moveNorth)
+		if (m_moveNorth->getReferenceCount())
+			m_moveNorth->release();
+
+	if (m_moveEast)
+		if (m_moveEast->getReferenceCount())
+			m_moveEast->release();
+
+	if (m_moveSouth)
+		if (m_moveSouth->getReferenceCount())
+			m_moveSouth->release();
+	
+	if (m_moveWest)
+		if (m_moveWest->getReferenceCount())
+			m_moveWest->release();
+
+	if (m_stopMovingCB)
+		if (m_stopMovingCB->getReferenceCount())
+			m_stopMovingCB->release();
+
+	if (m_delayCallToStopMoving)
+		if (m_delayCallToStopMoving->getReferenceCount())
+			m_delayCallToStopMoving->release();
+
+	if (m_secuence)
+		if (m_secuence->getReferenceCount())
+			m_secuence->release();
+
 	cocos2d::log("%s Destructor", "[MOVEMENT SYSTEM]");
 }
 
@@ -114,35 +161,37 @@ void MovementSystem::moveLocal(Direction dir)
 				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_NORTH);
 				bsOut.Write(m_localEntity);
 				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
+				spr->runAction(m_moveNorth->clone());
 				break;
 			case East:
 				x = 32.0f;
 				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_EAST);
 				bsOut.Write(m_localEntity);
 				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
+				spr->runAction(m_moveEast->clone());
 				break;
 			case South:
 				y = -32.0f;
 				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_SOUTH);
 				bsOut.Write(m_localEntity);
 				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
+				spr->runAction(m_moveSouth->clone());
 				break;
 			case West:
 				x = -32.0f;
 				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_WEST);
 				bsOut.Write(m_localEntity);
 				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
+				spr->runAction(m_moveWest->clone());
 				break;
 			}
-			cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(x, y));
-			spr->runAction(move);
+			
 			(reinterpret_cast<SpriteComponent*>(it))->_moving = true;
 
-			cocos2d::DelayTime* pause = cocos2d::DelayTime::create(0.2f - 0.02f);
-			cocos2d::Action* action;
-			cocos2d::CallFuncN* CallBack = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localEntity));
-			action = cocos2d::Sequence::create(pause, CallBack, nullptr);
-			spr->runAction(action);
+			m_delayCallToStopMoving = cocos2d::DelayTime::create(0.2f - 0.02f);
+			m_stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localEntity));
+			m_secuence = cocos2d::Sequence::create(m_delayCallToStopMoving, m_stopMovingCB, nullptr);
+			spr->runAction(m_stopMovingCB);
 
 			for (auto it : m_entityManager->getEntity(m_localEntity)->getComponents(ComponentType::POSITION))
 			{
@@ -167,26 +216,28 @@ bool MovementSystem::moveRemote(Direction dir, int eid)
 			{
 			case North:
 				y = 32.0f;
+				spr->runAction(m_moveNorth->clone());
 				break;
 			case East:
 				x = 32.0f;
+				spr->runAction(m_moveEast->clone());
 				break;
 			case South:
 				y = -32.0f;
+				spr->runAction(m_moveSouth->clone());
 				break;
 			case West:
 				x = -32.0f;
+				spr->runAction(m_moveWest->clone());
 				break;
 			}
-			cocos2d::MoveBy* move = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(x, y));
-			spr->runAction(move);
+			
 			(reinterpret_cast<SpriteComponent*>(it))->_moving = true;
 
-			cocos2d::DelayTime* pause = cocos2d::DelayTime::create(0.2f - 0.02f);
-			cocos2d::Action* action;
-			cocos2d::CallFuncN* CallBack = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
-			action = cocos2d::Sequence::create(pause, CallBack, nullptr);
-			spr->runAction(action);
+			m_delayCallToStopMoving = cocos2d::DelayTime::create(0.2f - 0.02f);
+			m_stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
+			m_secuence = cocos2d::Sequence::create(m_delayCallToStopMoving, m_stopMovingCB, nullptr);
+			spr->runAction(m_stopMovingCB);
 
 			for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::POSITION))
 			{

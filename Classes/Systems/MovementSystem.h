@@ -47,6 +47,15 @@ private:
 	int m_localEntity;
 
 	std::map<int, std::vector<Direction>*> m_pendingMoves;
+
+	cocos2d::MoveBy* m_moveNorth;
+	cocos2d::MoveBy* m_moveEast;
+	cocos2d::MoveBy* m_moveSouth;
+	cocos2d::MoveBy* m_moveWest;
+
+	cocos2d::CallFuncN* m_stopMovingCB;
+	cocos2d::DelayTime* m_delayCallToStopMoving;
+	cocos2d::Action* m_secuence;
 };
 
 #endif // __MOVEMENT_SYSTEM_H__
