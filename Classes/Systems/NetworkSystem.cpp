@@ -79,7 +79,7 @@ void NetworkSystem::Update()
 				cocos2d::log("%s ID_CONNECTION_ATTEMPT_FAILED", "[NETWORK SYSTEM]");
 				break;
 			default:
-				cocos2d::log("%s Message with identifier %i has arrived.", "[NETWORK SYSTEM]", packet->data[0]);
+				//cocos2d::log("%s Message with identifier %i has arrived.", "[NETWORK SYSTEM]", packet->data[0]);
 				receive(packet->data[0], &bsIn);
 				break;
 			}
