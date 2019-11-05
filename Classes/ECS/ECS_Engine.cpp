@@ -1,4 +1,4 @@
-#include "ECSEngine.h"
+#include "ECS_Engine.h"
 
 #include <atomic>
 
@@ -7,19 +7,19 @@ namespace ECS
 
 #define LOGID "[ECS Engine]"
 
-	static ECSEngine* s_ecsEngine = nullptr;
+	static ECS_Engine* s_ecsEngine = nullptr;
 
-	ECSEngine * ECSEngine::GetInstance()
+	ECS_Engine * ECS_Engine::getInstance()
 	{
 		if (!s_ecsEngine)
 		{
-			s_ecsEngine = new (std::nothrow) ECSEngine;
+			s_ecsEngine = new (std::nothrow) ECS_Engine;
 		}
 
 		return s_ecsEngine;
 	}
 
-	void ECSEngine::DestroyInstance()
+	void ECS_Engine::destroyInstance()
 	{
 		if (s_ecsEngine)
 		{
@@ -28,7 +28,7 @@ namespace ECS
 		}
 	}
 
-	ECSEngine::ECSEngine()
+	ECS_Engine::ECS_Engine()
 	{
 		cocos2d::log("%s Constructor", LOGID);
 
@@ -45,7 +45,7 @@ namespace ECS
 			cocos2d::log("%s SystemManager allocation error", LOGID);
 	}
 
-	ECSEngine::~ECSEngine()
+	ECS_Engine::~ECS_Engine()
 	{
 		if (m_eventManager)
 		{
@@ -68,24 +68,32 @@ namespace ECS
 		cocos2d::log("%s Destructor", LOGID);
 	}
 
-	void ECSEngine::Update()
+	void ECS_Engine::update()
 	{
 			m_systemManager->Update();
 	}
 
-	EntityManager* ECSEngine::GetEntityManager()
+	EntityManager* ECS_Engine::getEntityManager()
 	{
 		return m_entityManager;
 	}
 
-	SystemManager* ECSEngine::GetSystemManager()
+	SystemManager* ECS_Engine::getSystemManager()
 	{
 		return m_systemManager;
 	}
 
-	EventManager* ECSEngine::getEventManager()
+	EventManager* ECS_Engine::getEventManager()
 	{
 		return m_eventManager;
+	}
+
+	void ECS_Engine::applicationDidEnterBackground()
+	{
+	}
+
+	void ECS_Engine::applicationWillEnterForeground()
+	{
 	}
 
 }

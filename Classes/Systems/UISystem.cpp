@@ -10,7 +10,7 @@ UISystem::UISystem()
 
 	m_director = cocos2d::Director::getInstance();
 
-	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
+	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager();
 
 	m_eventManager->Subscribe(EVENTS::MOUSE_PRESSED, &UISystem::clicked, this);
 	m_eventManager->Subscribe(EVENTS::MOUSE_RELEASED, &UISystem::clicked, this);
@@ -36,7 +36,7 @@ void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 	}
 	catch (std::bad_cast& e)
 	{
-		// Not sure what kind of event you passed us cocos, but it was the wrong one
+		cocos2d::log("%s onMouse##Event: %s", "[INPUT SYSTEM]", e.what());
 		return;
 	}
 

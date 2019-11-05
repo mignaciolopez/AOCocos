@@ -8,7 +8,7 @@
 
 namespace ECS
 {
-	class ECSEngine;
+	class ECS_Engine;
 }
 
 #include "cocos2d.h"
@@ -28,7 +28,7 @@ public:
 	void mainSceneOnExit();
 
 private:
-	ECS::ECSEngine* m_ECSEngine;
+	ECS::ECS_Engine* m_ECS_Engine;
 
 	int m_renderSystemID;
 	int m_inputSystemID;

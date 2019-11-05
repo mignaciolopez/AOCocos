@@ -27,7 +27,7 @@
 
 namespace ECS
 {
-	class ECSEngine;
+	class ECS_Engine;
 }
 
 #include "cocos2d.h"
@@ -43,7 +43,7 @@ public:
     AppDelegate();
     virtual ~AppDelegate();
 
-	ECS::ECSEngine* m_ECSEngine;
+	ECS::ECS_Engine* m_ECS_Engine;
 
     virtual void initGLContextAttrs();
 

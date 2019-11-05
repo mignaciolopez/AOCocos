@@ -8,9 +8,9 @@ NetworkSystem::NetworkSystem()
 {
 	cocos2d::log("%s Constructor", "[NETWORK SYSTEM]");
 
-	//m_componentManager = ECS::ECSEngine::GetInstance()->GetComponentManager();
+	//m_componentManager = ECS::ECS_Engine::getInstance()->GetComponentManager();
 	m_director = cocos2d::Director::getInstance();
-	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
+	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager();
 
 	m_peer = nullptr;
 

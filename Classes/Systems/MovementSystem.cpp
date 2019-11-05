@@ -14,9 +14,9 @@ MovementSystem::MovementSystem()
 	m_compatibleComponents.push_back(ComponentType::SPRITE);
 	m_compatibleComponents.push_back(ComponentType::POSITION);
 
-	m_entityManager = ECS::ECSEngine::GetInstance()->GetEntityManager();
+	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
 
-	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
+	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager();
 	m_eventManager->Subscribe(EVENTS::MOVE_NORTH, &MovementSystem::moveNorth, this);
 	m_eventManager->Subscribe(EVENTS::MOVE_EAST, &MovementSystem::moveEast, this);
 	m_eventManager->Subscribe(EVENTS::MOVE_SOUTH, &MovementSystem::moveSouth, this);

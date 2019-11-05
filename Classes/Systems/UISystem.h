@@ -1,7 +1,7 @@
 #ifndef __UI_SYSTEM_H__
 #define __UI_SYSTEM_H__
 
-#include "ECS/ECSEngine.h"
+#include "ECS/ECS_Engine.h"
 
 namespace cocos2d
 {

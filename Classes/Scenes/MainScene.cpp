@@ -1,5 +1,5 @@
 #include "MainScene.h"
-#include "ECS/ECSEngine.h"
+#include "ECS/ECS_Engine.h"
 
 #define LOGID "[MAIN SCENE]"
 
@@ -26,7 +26,7 @@ bool MainScene::init()
 	TP::Graphics::addSpriteFramesToCache();
 
 	// 1- Init Engine
-	m_ECSEngine = ECS::ECSEngine::GetInstance();
+	m_ECS_Engine = ECS::ECS_Engine::getInstance();
 
 	// 2- Create Systems
 	RenderSystem* renderSystem = new (std::nothrow) RenderSystem;
@@ -54,12 +54,12 @@ bool MainScene::init()
 		cocos2d::log("%s SpawnSystem Failed!", LOGID);
 
 	// 3- Register Systems
-	m_renderSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(renderSystem);
-	m_inputSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(inputSystem);
-	m_uiSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(uiSystem);
-	m_movementSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(movementSystem);
-	m_networkSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(networkSystem);
-	m_spawnSystemID = m_ECSEngine->GetSystemManager()->RegisterSystem(spawnSystem);
+	m_renderSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(renderSystem);
+	m_inputSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(inputSystem);
+	m_uiSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(uiSystem);
+	m_movementSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(movementSystem);
+	m_networkSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(networkSystem);
+	m_spawnSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(spawnSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
 
@@ -70,7 +70,7 @@ bool MainScene::init()
 
 void MainScene::update(float dt)
 {
-	m_ECSEngine->Update();
+	m_ECS_Engine->update();
 	//unscheduleUpdate();
 }
 

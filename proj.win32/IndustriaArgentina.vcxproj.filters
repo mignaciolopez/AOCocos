@@ -48,9 +48,6 @@
     <ClCompile Include="..\Classes\ECS\Entities\Entity.cpp">
       <Filter>src\ECS_ENGINE\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\ECS\ECSEngine.cpp">
-      <Filter>src\ECS_ENGINE</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\ECS\Systems\SystemManager.cpp">
       <Filter>src\ECS_ENGINE\Systems</Filter>
     </ClCompile>
@@ -90,6 +87,9 @@
     <ClCompile Include="..\Classes\Scenes\MainScene.cpp">
       <Filter>src\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\ECS\ECS_Engine.cpp">
+      <Filter>src\ECS_ENGINE</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -103,9 +103,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\Entities\EntityManager.h">
       <Filter>src\ECS_ENGINE\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\ECS\ECSEngine.h">
-      <Filter>src\ECS_ENGINE</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\Systems\SystemManager.h">
       <Filter>src\ECS_ENGINE\Systems</Filter>
@@ -163,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Scenes\MainScene.h">
       <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\ECS_Engine.h">
+      <Filter>src\ECS_ENGINE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

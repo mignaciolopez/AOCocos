@@ -12,7 +12,7 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 
 	m_director = cocos2d::Director::getInstance();
 
-	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
+	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager();
 
 	for (int i = 0; i < 256; i++)
 		m_keyStates[i] = false;

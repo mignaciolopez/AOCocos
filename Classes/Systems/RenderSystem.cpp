@@ -8,13 +8,13 @@ RenderSystem::RenderSystem()
 {
 	cocos2d::log("%s Constructor", "[RENDER SYSTEM]");
 
-	m_entiyManager = ECS::ECSEngine::GetInstance()->GetEntityManager();
+	m_entiyManager = ECS::ECS_Engine::getInstance()->getEntityManager();
 	
 	m_director = cocos2d::Director::getInstance();
 
 	m_compatibleComponents.push_back(ComponentType::SPRITE);
 
-	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager(); //del if not used
+	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager(); //del if not used
 }
 
 RenderSystem::~RenderSystem()

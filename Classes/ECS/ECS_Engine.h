@@ -8,20 +8,23 @@
 namespace ECS
 {
 
-	class ECSEngine
+	class ECS_Engine
 	{
 	public:
-		ECSEngine();
-		~ECSEngine();
+		ECS_Engine();
+		~ECS_Engine();
 
-		static ECSEngine* GetInstance();
-		static void DestroyInstance();
+		static ECS_Engine* getInstance();
+		static void destroyInstance();
 
-		void Update();
+		void update();
 
-		EntityManager* GetEntityManager();
-		SystemManager* GetSystemManager();
+		EntityManager* getEntityManager();
+		SystemManager* getSystemManager();
 		EventManager* getEventManager();
+
+		void applicationDidEnterBackground();
+		void applicationWillEnterForeground();
 
 	private:
 

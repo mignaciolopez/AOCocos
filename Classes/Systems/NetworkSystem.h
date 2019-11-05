@@ -1,7 +1,7 @@
 #ifndef __NETWORK_SYSTEM_H__
 #define __NETWORK_SYSTEM_H__
 
-#include "ECS/ECSEngine.h"
+#include "ECS/ECS_Engine.h"
 
 #include "RakPeerInterface.h"
 #include "slikenet/BitStream.h"

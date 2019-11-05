@@ -13,8 +13,8 @@ SpawnSystem::SpawnSystem()
 
 	m_director = cocos2d::Director::getInstance();
 
-	m_entityManager = ECS::ECSEngine::GetInstance()->GetEntityManager();
-	m_eventManager = ECS::ECSEngine::GetInstance()->getEventManager();
+	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
+	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager();
 
 	m_eventManager->Subscribe(EVENTS::MY_EID, &SpawnSystem::createPlayer, this);
 	m_eventManager->Subscribe(EVENTS::EID_JOINED, &SpawnSystem::createPlayer, this);

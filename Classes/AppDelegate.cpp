@@ -1,17 +1,17 @@
 #include "AppDelegate.h"
 #include "extensions/cocos-ext.h"
-#include "ECS/ECSEngine.h"
+#include "ECS/ECS_Engine.h"
 #include "Scenes/MainScene.h"
 
 USING_NS_CC;
 
-AppDelegate::AppDelegate() : m_ECSEngine(nullptr)
+AppDelegate::AppDelegate() : m_ECS_Engine(nullptr)
 {
 }
 
 AppDelegate::~AppDelegate()
 {
-	ECS::ECSEngine::DestroyInstance();
+	ECS::ECS_Engine::destroyInstance();
 }
 
 // if you want a different context, modify the value of glContextAttrs
@@ -66,7 +66,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	//auto console = director->getConsole();
 	//console->listenOnTCP(5678);
 
-	m_ECSEngine = ECS::ECSEngine::GetInstance();
+	m_ECS_Engine = ECS::ECS_Engine::getInstance();
 
 	auto mainScene = MainScene::createScene();
 	if (!mainScene)
@@ -80,11 +80,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
 // This function will be called when the app is inactive. Note, when receiving a phone call it is invoked.
 void AppDelegate::applicationDidEnterBackground()
 {
-	
+	m_ECS_Engine->applicationDidEnterBackground();
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground()
 {
-
+	m_ECS_Engine->applicationWillEnterForeground();
 }
