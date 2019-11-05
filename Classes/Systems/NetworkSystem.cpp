@@ -22,7 +22,7 @@ NetworkSystem::NetworkSystem()
 
 	m_online = false;
 
-	if (SLNet::CONNECTION_ATTEMPT_STARTED != m_peer->Connect("127.0.0.1", 6000, 0, 0))
+	if (SLNet::CONNECTION_ATTEMPT_STARTED != m_peer->Connect(SERVER_ADDRESS, SERVER_PORT, 0, 0))
 	{
 		cocos2d::log("%s Conection attempt failed!", "[NETWORK SYSTEM]");
 	}

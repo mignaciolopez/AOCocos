@@ -9,6 +9,9 @@
 #include "slikenet/SecureHandshake.h"
 
 
+#define SERVER_ADDRESS "migna.dnsabr.com"
+#define SERVER_PORT 6000
+
 namespace cocos2d
 {
 	class Director;
