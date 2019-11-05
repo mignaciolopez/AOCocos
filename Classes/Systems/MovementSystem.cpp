@@ -3,8 +3,6 @@
 #include "Components/SpriteComponent.h"
 #include "Components/PositionComponent.h"
 
-#include "cocos2d.h"
-
 MovementSystem::MovementSystem()
 {
 	cocos2d::log("%s Constructor", "[MOVEMENT SYSTEM]");

@@ -3,10 +3,7 @@
 
 #include "ECS/ECS_Engine.h"
 
-namespace cocos2d
-{
-	class Director;
-}
+#include "cocos2d.h"
 
 enum Direction
 {
@@ -55,6 +52,6 @@ private:
 
 	cocos2d::DelayTime* m_delayCallToStopMoving;
 
-}
+};
 
 #endif // __MOVEMENT_SYSTEM_H__
