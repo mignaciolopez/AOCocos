@@ -28,7 +28,7 @@ public:
 
 	void move(Direction dir, int eid);
 	void moveLocal(Direction dir);
-	bool moveRemote(Direction dir, int eid);
+	void moveRemote(Direction dir, int eid);
 
 	void stopMoving(int eid);
 

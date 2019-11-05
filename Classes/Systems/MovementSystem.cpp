@@ -76,8 +76,8 @@ void MovementSystem::Update()
 	{
 		if (it->second->size() > 0)
 		{
-			if (moveRemote(*it->second->begin(), it->first))
-				it->second->erase(it->second->begin());
+			moveRemote(*it->second->begin(), it->first);
+			it->second->erase(it->second->begin());
 			++it;
 		}
 		else
@@ -193,52 +193,38 @@ void MovementSystem::moveLocal(Direction dir)
 	}
 }
 
-bool MovementSystem::moveRemote(Direction dir, int eid)
+void MovementSystem::moveRemote(Direction dir, int eid)
 {
-	bool returnFlag = true;
-
 	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::SPRITE))
 	{
-		if (!(reinterpret_cast<SpriteComponent*>(it))->_moving)
+		cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>(it))->_sprite;
+		float x = 0, y = 0;
+		switch (dir)
 		{
-			cocos2d::Sprite* spr = (reinterpret_cast<SpriteComponent*>(it))->_sprite;
-			float x = 0, y = 0;
-			switch (dir)
-			{
-			case North:
-				y = 32.0f;
-				spr->runAction(m_moveNorth->clone());
-				break;
-			case East:
-				x = 32.0f;
-				spr->runAction(m_moveEast->clone());
-				break;
-			case South:
-				y = -32.0f;
-				spr->runAction(m_moveSouth->clone());
-				break;
-			case West:
-				x = -32.0f;
-				spr->runAction(m_moveWest->clone());
-				break;
-			}
-			
-			(reinterpret_cast<SpriteComponent*>(it))->_moving = true;
-
-			cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
-			cocos2d::Action* secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), stopMovingCB, nullptr);
-			spr->runAction(secuence);
-
-			for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::POSITION))
-			{
-				(reinterpret_cast<PositionComponent*>(it))->_x = spr->getPosition().x + x;
-				(reinterpret_cast<PositionComponent*>(it))->_y = spr->getPosition().y + y;
-			}
+		case North:
+			y = 32.0f;
+			spr->runAction(m_moveNorth->clone());
+			break;
+		case East:
+			x = 32.0f;
+			spr->runAction(m_moveEast->clone());
+			break;
+		case South:
+			y = -32.0f;
+			spr->runAction(m_moveSouth->clone());
+			break;
+		case West:
+			x = -32.0f;
+			spr->runAction(m_moveWest->clone());
+			break;
 		}
-		else
-			returnFlag = false;
+
+		for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::POSITION))
+		{
+			(reinterpret_cast<PositionComponent*>(it))->_x = spr->getPosition().x + x;
+			(reinterpret_cast<PositionComponent*>(it))->_y = spr->getPosition().y + y;
+		}
 	}
-	return returnFlag;
 }
 
 void MovementSystem::stopMoving(int eid)
