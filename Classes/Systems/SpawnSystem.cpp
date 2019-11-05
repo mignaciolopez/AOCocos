@@ -77,7 +77,7 @@ void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
 {
 	m_entityManager->CreateEntity(eid);
 
-	SpriteComponent* body = new (std::nothrow) SpriteComponent("HelloWorld.png", x, y);
+	SpriteComponent* body = new (std::nothrow) SpriteComponent(TP::Graphics::playerBodyHumanFemaleStandingSouth, x, y);
 	if (!body || !body->_sprite)
 		cocos2d::log("%s body Failed!", "[ENTITIES SYSTEM]");
 

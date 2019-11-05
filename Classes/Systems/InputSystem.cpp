@@ -37,9 +37,9 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 	m_mouseListener->retain();
 	m_scene->getEventDispatcher()->addEventListenerWithSceneGraphPriority(m_mouseListener, m_scene);
 	
-	m_mouseListener->onMouseDown = CC_CALLBACK_1(InputSystem::onMouseDown, this);
-	m_mouseListener->onMouseMove = CC_CALLBACK_1(InputSystem::onMouseMove, this);
-	m_mouseListener->onMouseScroll = CC_CALLBACK_1(InputSystem::onMouseScroll, this);
+	//m_mouseListener->onMouseDown = CC_CALLBACK_1(InputSystem::onMouseDown, this);
+	//m_mouseListener->onMouseMove = CC_CALLBACK_1(InputSystem::onMouseMove, this);
+	//m_mouseListener->onMouseScroll = CC_CALLBACK_1(InputSystem::onMouseScroll, this);
 	m_mouseListener->onMouseUp = CC_CALLBACK_1(InputSystem::onMouseUp, this);
 
 	m_eventManager->Subscribe(EVENTS::MY_EID, &InputSystem::setLocalEntity, this);
