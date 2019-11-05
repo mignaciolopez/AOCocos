@@ -28,6 +28,12 @@
     <Filter Include="src\Components">
       <UniqueIdentifier>{f8c6bd17-565c-43cf-b461-de4a14fc279e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Graphics">
+      <UniqueIdentifier>{427e63c1-9c8d-4d6e-9e7a-d3933df4e1e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scenes">
+      <UniqueIdentifier>{5194f9eb-1a80-4267-8b86-307f74ce843e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -44,9 +50,6 @@
     </ClCompile>
     <ClCompile Include="..\Classes\ECS\ECSEngine.cpp">
       <Filter>src\ECS_ENGINE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Classes\MainScene.cpp">
-      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\Classes\ECS\Systems\SystemManager.cpp">
       <Filter>src\ECS_ENGINE\Systems</Filter>
@@ -75,8 +78,17 @@
     <ClCompile Include="..\Classes\Systems\NetworkSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Systems\EntitiesSystem.cpp">
+    <ClCompile Include="..\Classes\Graphics\Graphics.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Graphics\Interface.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\SpawnSystem.cpp">
       <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\MainScene.cpp">
+      <Filter>src\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -94,9 +106,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\ECSEngine.h">
       <Filter>src\ECS_ENGINE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\MainScene.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\Systems\SystemManager.h">
       <Filter>src\ECS_ENGINE\Systems</Filter>
@@ -134,11 +143,26 @@
     <ClInclude Include="..\Classes\Systems\NetworkSystem.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\Systems\EntitiesSystem.h">
-      <Filter>src\Systems</Filter>
-    </ClInclude>
     <ClInclude Include="..\Classes\Components\PositionComponent.h">
       <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Graphics\Graphics.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Graphics\Interface.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\SpawnSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\IncludeSystems.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\IncludeComponents.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\MainScene.h">
+      <Filter>src\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

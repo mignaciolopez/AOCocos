@@ -6,14 +6,16 @@
 class SpriteComponent : public ECS::Component
 {
 public:
-	SpriteComponent(const char* spriteFileName, float x, float y)
+	SpriteComponent(std::string sfn, float x, float y)
 	{
 		cocos2d::log("%s Constructor", "[SPRITE COMPONENT]");
 
-		_sprite = cocos2d::Sprite::create(spriteFileName);
+		auto cache = cocos2d::SpriteFrameCache::getInstance();
+
+		_sprite = cocos2d::Sprite::createWithSpriteFrameName(sfn);
 
 		if (!_sprite)
-			cocos2d::log("%s _sprite failed with file name: %s", "[SPRITE COMPONENT]", spriteFileName);
+			cocos2d::log("%s _sprite failed with file name: %s", "[SPRITE COMPONENT]", sfn);
 		else
 		{
 			_sprite->retain();

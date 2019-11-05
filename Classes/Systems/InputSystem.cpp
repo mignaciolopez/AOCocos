@@ -106,16 +106,8 @@ void InputSystem::ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode keyCode)
 
 void InputSystem::onMouseDown(cocos2d::Event * ccevnt)
 {
-	try
-	{
-		cocos2d::EventMouse* mouseEvent = dynamic_cast<cocos2d::EventMouse*>(ccevnt);
-		m_eventManager->execute(EVENTS::MOUSE_PRESSED, m_localEntity, ccevnt);
-	}
-	catch (std::bad_cast& e)
-	{
-		// Not sure what kind of event you passed us cocos, but it was the wrong one
-		return;
-	}
+	cocos2d::EventMouse* mouseEvent = dynamic_cast<cocos2d::EventMouse*>(ccevnt);
+	m_eventManager->execute(EVENTS::MOUSE_PRESSED, m_localEntity, ccevnt);
 }
 
 void InputSystem::onMouseMove(cocos2d::Event* ccevnt)
@@ -137,7 +129,7 @@ void InputSystem::onMouseUp(cocos2d::Event * ccevnt)
 	}
 	catch (std::bad_cast& e)
 	{
-		// Not sure what kind of event you passed us cocos, but it was the wrong one
+		cocos2d::log("%s onMouseUp: %s", "[INPUT SYSTEM]", e.what());
 		return;
 	}
 }

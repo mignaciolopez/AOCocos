@@ -156,8 +156,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\ECS\EventManager.cpp" />
     <ClCompile Include="..\Classes\ECS\Systems\System.cpp" />
     <ClCompile Include="..\Classes\ECS\Systems\SystemManager.cpp" />
-    <ClCompile Include="..\Classes\MainScene.cpp" />
-    <ClCompile Include="..\Classes\Systems\EntitiesSystem.cpp" />
+    <ClCompile Include="..\Classes\Graphics\Graphics.cpp" />
+    <ClCompile Include="..\Classes\Graphics\Interface.cpp" />
+    <ClCompile Include="..\Classes\Scenes\MainScene.cpp" />
+    <ClCompile Include="..\Classes\Systems\SpawnSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\InputSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\MovementSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\NetworkSystem.cpp" />
@@ -168,6 +170,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Components\ComponentsList.h" />
+    <ClInclude Include="..\Classes\Components\IncludeComponents.h" />
     <ClInclude Include="..\Classes\Components\PositionComponent.h" />
     <ClInclude Include="..\Classes\Components\SpriteComponent.h" />
     <ClInclude Include="..\Classes\ECS\Components\Component.h" />
@@ -178,8 +181,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\ECS\EventManager.h" />
     <ClInclude Include="..\Classes\ECS\Systems\System.h" />
     <ClInclude Include="..\Classes\ECS\Systems\SystemManager.h" />
-    <ClInclude Include="..\Classes\MainScene.h" />
-    <ClInclude Include="..\Classes\Systems\EntitiesSystem.h" />
+    <ClInclude Include="..\Classes\Graphics\Graphics.h" />
+    <ClInclude Include="..\Classes\Graphics\Interface.h" />
+    <ClInclude Include="..\Classes\Scenes\MainScene.h" />
+    <ClInclude Include="..\Classes\Systems\IncludeSystems.h" />
+    <ClInclude Include="..\Classes\Systems\SpawnSystem.h" />
     <ClInclude Include="..\Classes\Systems\InputSystem.h" />
     <ClInclude Include="..\Classes\Systems\MovementSystem.h" />
     <ClInclude Include="..\Classes\Systems\NetworkSystem.h" />

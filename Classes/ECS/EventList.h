@@ -16,7 +16,7 @@ enum EVENTS
 	MY_EID,
 	EID_JOINED,
 	EID_QUIT,
-	SYNC,
+	SYNC_PLAYERS,
 
 	MOVE_NORTH,					//Movements
 	MOVE_EAST,

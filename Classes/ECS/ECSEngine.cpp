@@ -2,8 +2,6 @@
 
 #include <atomic>
 
-#include "cocos2d.h"
-
 namespace ECS
 {
 
