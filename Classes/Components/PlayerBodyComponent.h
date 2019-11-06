@@ -30,7 +30,7 @@ public:
 		{
 			_sprite->retain();
 
-			_sprite->setPosition(x, x);
+			_sprite->setPosition(x, y);
 		}
 
 		//Head
@@ -41,12 +41,9 @@ public:
 		{
 			_spriteHead->retain();
 
-			_spriteHead->setPosition(x, x);
+			_sprite->addChild(_spriteHead);
+			_spriteHead->setPosition(12.5f, 46.0f);
 		}
-
-		_sprite->addChild(_spriteHead);
-		_spriteHead->setPosition(12.5f, 46.0f);
-
 	}
 	~PlayerBodyComponent()
 	{
