@@ -45,7 +45,7 @@ public:
 		}
 
 		_sprite->addChild(_spriteHead);
-		_spriteHead->setPosition(16.0f, 48.0f);
+		_spriteHead->setPosition(12.5f, 46.0f);
 
 	}
 	~PlayerBodyComponent()
