@@ -3,25 +3,50 @@
 
 #include "ECS/Components/Component.h"
 
+enum Direction
+{
+	North,
+	East,
+	South,
+	West
+};
+
+
 class PlayerBodyComponent : public ECS::Component
 {
 public:
-	PlayerBodyComponent(std::string sfn, float x, float y)
+	PlayerBodyComponent(std::string bodySfn, float x, float y, std::string headSfn)
 	{
-		cocos2d::log("%s Constructor", "[SPRITE COMPONENT]");
+		cocos2d::log("%s Constructor", "[PLAYERBODYCOMPONENT COMPONENT]");
 
 		auto cache = cocos2d::SpriteFrameCache::getInstance();
 
-		_sprite = cocos2d::Sprite::createWithSpriteFrameName(sfn);
 
+		//body
+		_sprite = cocos2d::Sprite::createWithSpriteFrameName(bodySfn);
 		if (!_sprite)
-			cocos2d::log("%s _sprite failed with file name: %s", "[SPRITE COMPONENT]", sfn);
+			cocos2d::log("%s _sprite failed with file name: %s", "[PLAYERBODYCOMPONENT COMPONENT]", bodySfn);
 		else
 		{
 			_sprite->retain();
 
 			_sprite->setPosition(x, x);
 		}
+
+		//Head
+		_spriteHead = cocos2d::Sprite::createWithSpriteFrameName(headSfn);
+		if (!_spriteHead)
+			cocos2d::log("%s _sprite failed with file name: %s", "[PLAYERBODYCOMPONENT COMPONENT]", headSfn);
+		else
+		{
+			_spriteHead->retain();
+
+			_spriteHead->setPosition(x, x);
+		}
+
+		_sprite->addChild(_spriteHead);
+		_spriteHead->setPosition(16.0f, 48.0f);
+
 	}
 	~PlayerBodyComponent()
 	{
@@ -33,12 +58,25 @@ public:
 
 			_sprite->release();
 		}
-		cocos2d::log("%s Destructor", "[SPRITE COMPONENT]");
+
+		if (runningScene && _spriteHead)
+		{
+			if (_spriteHead->getParent() == runningScene)
+				runningScene->removeChild(_spriteHead);
+
+			_spriteHead->release();
+		}
+		cocos2d::log("%s Destructor", "[PLAYERBODYCOMPONENT COMPONENT]");
 	}
 
 	cocos2d::Sprite* _sprite;
+	cocos2d::Sprite* _spriteHead; //child of body
 	const ComponentType _type = ComponentType::PLAYER_BODY;
 	bool  _moving = false;
+	Direction _direction = Direction::South;
+
+private:
+
 };
 
 #endif // __SPRITE_COMPONENT_H__

@@ -9,7 +9,7 @@
 
 SpawnSystem::SpawnSystem()
 {
-	cocos2d::log("%s Constructor", "[ENTITIES SYSTEM]");
+	cocos2d::log("%s Constructor", "[SPAWN SYSTEM]");
 
 	m_director = cocos2d::Director::getInstance();
 
@@ -24,7 +24,7 @@ SpawnSystem::SpawnSystem()
 
 SpawnSystem::~SpawnSystem()
 {
-	cocos2d::log("%s Destructor", "[ENTITIES SYSTEM]");
+	cocos2d::log("%s Destructor", "[SPAWN SYSTEM]");
 }
 
 void SpawnSystem::Update()
@@ -40,15 +40,19 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 	bs->Read(x);
 	bs->Read(y);
 
-	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(TP::Graphics::playerBodyHumanFemaleStandingSouth, x , y);
-	if (!body || !body->_sprite)
-		cocos2d::log("%s body Failed!", "[ENTITIES SYSTEM]");
+	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(
+		TP::Graphics::playerBodyHumanFemaleStandingSouth,
+		x , y,
+		TP::Graphics::headsPlayerHeadPirateSouth);
+
+	if (!body || !body->_sprite || !body->_spriteHead)
+		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, body);
 
 	PositionComponent* pos = new (std::nothrow) PositionComponent(x, y);
 	if (!pos)
-		cocos2d::log("%s position Failed!", "[ENTITIES SYSTEM]");
+		cocos2d::log("%s PositionComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, pos);
 }
@@ -77,15 +81,19 @@ void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
 {
 	m_entityManager->CreateEntity(eid);
 
-	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(TP::Graphics::playerBodyHumanFemaleStandingSouth, x, y);
-	if (!body || !body->_sprite)
-		cocos2d::log("%s body Failed!", "[ENTITIES SYSTEM]");
+	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(
+		TP::Graphics::playerBodyHumanFemaleStandingSouth,
+		x, y,
+		TP::Graphics::headsPlayerHeadPirateSouth);
+
+	if (!body || !body->_sprite || !body->_spriteHead)
+		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, body);
 
 	PositionComponent* pos = new (std::nothrow) PositionComponent(x, y);
 	if (!pos)
-		cocos2d::log("%s position Failed!", "[ENTITIES SYSTEM]");
+		cocos2d::log("%s PositionComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, pos);
 }

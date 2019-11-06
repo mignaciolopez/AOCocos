@@ -1,16 +1,13 @@
 #include "MovementSystem.h"
 
-#include "Components/PlayerBodyComponent.h"
 #include "Components/PositionComponent.h"
+#include "Components/PlayerBodyComponent.h"
 
 MovementSystem::MovementSystem()
 {
 	cocos2d::log("%s Constructor", "[MOVEMENT SYSTEM]");
 
 	m_director = cocos2d::Director::getInstance();
-
-	m_compatibleComponents.push_back(ComponentType::PLAYER_BODY);
-	m_compatibleComponents.push_back(ComponentType::POSITION);
 
 	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
 
