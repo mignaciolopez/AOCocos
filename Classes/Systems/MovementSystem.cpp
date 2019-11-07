@@ -19,6 +19,12 @@ MovementSystem::MovementSystem()
 
 	m_eventManager->Subscribe(EVENTS::MY_EID, &MovementSystem::setLocalEntity, this);
 
+	m_eventManager->Subscribe(EVENTS::EID_JOINED, &MovementSystem::createVector, this);
+	m_eventManager->Subscribe(EVENTS::EID_QUIT, &MovementSystem::removeVector, this);
+
+	m_eventManager->Subscribe(EVENTS::SYNC_PLAYERS, &MovementSystem::createVectors, this);
+
+
 	m_moveNorth = nullptr;
 	m_moveEast = nullptr;
 	m_moveSouth = nullptr;
@@ -86,15 +92,14 @@ void MovementSystem::Update()
 
 			moveRemote(*it->second->begin(), it->first);
 			it->second->erase(it->second->begin());
-			++it;
+			//++it;
+			break;
 		}
 		else
 		{
+			//if (m_entityManager->getComp(it->first, PLAYER_BODY))
 			m_entityManager->getComp(it->first, PLAYER_BODY)->setMoving(false);
-
-			delete it->second;
-			it->second = nullptr;
-			m_pendingMoves.erase(it++);
+			break;
 		}
 	}
 }
@@ -133,13 +138,7 @@ void MovementSystem::move(Direction dir, int eid)
 	else
 	{
 		//It means it comes from server and is a remote player
-		if (m_pendingMoves.find(eid) == m_pendingMoves.end())
-		{
-			std::vector<Direction>* vec = new (std::nothrow) std::vector<Direction>;
-			vec->push_back(dir);
-			m_pendingMoves.emplace(eid, vec);
-		}
-		else
+		if (m_pendingMoves.find(eid) != m_pendingMoves.end())
 		{
 			m_pendingMoves.at(eid)->push_back(dir);
 		}
@@ -238,4 +237,39 @@ void MovementSystem::stopMoving(int eid)
 void MovementSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
 {
 	m_localeid = eid;
+}
+
+void MovementSystem::createVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	std::vector<Direction>* vec = new (std::nothrow) std::vector<Direction>;
+	m_pendingMoves.emplace(eid, vec);
+}
+
+void MovementSystem::removeVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	if (m_pendingMoves.find(eid) != m_pendingMoves.end())
+	{
+		delete m_pendingMoves.at(eid);
+		m_pendingMoves.at(eid) = nullptr;
+		m_pendingMoves.erase(eid);
+	}
+}
+
+void MovementSystem::createVectors(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	bs->ResetReadPointer();
+	bs->IgnoreBytes(sizeof(SLNet::MessageID));
+	bs->IgnoreBytes(sizeof(int));
+	unsigned int count = 0;
+	bs->Read(count);
+	for (unsigned int i = 0; i < count; i++)
+	{
+		int reid = -1;
+		float rx, ry;
+		bs->Read(reid);
+		bs->Read(rx);
+		bs->Read(ry);
+		std::vector<Direction>* vec = new (std::nothrow) std::vector<Direction>;
+		m_pendingMoves.emplace(reid, vec);
+	}
 }

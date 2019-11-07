@@ -59,6 +59,9 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 
 void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
 {
+	bs->ResetReadPointer();
+	bs->IgnoreBytes(sizeof(SLNet::MessageID));
+	bs->IgnoreBytes(sizeof(int));
 	unsigned int count = 0;
 	bs->Read(count);
 	for (unsigned int i = 0; i < count; i++)
