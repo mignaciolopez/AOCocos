@@ -45,7 +45,7 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 		x , y,
 		TP::Graphics::headsPlayerHeadPirateSouth);
 
-	if (!body || !body->_sprite || !body->_spriteHead)
+	if (!body || !body->getBody() || !body->getHead())
 		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, body);
@@ -86,7 +86,7 @@ void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
 		x, y,
 		TP::Graphics::headsPlayerHeadPirateSouth);
 
-	if (!body || !body->_sprite || !body->_spriteHead)
+	if (!body || !body->getBody() || !body->getHead())
 		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, body);

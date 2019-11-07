@@ -33,7 +33,7 @@ private:
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 
-	int m_localEntity;
+	int m_localeid;
 
 	std::map<int, std::vector<Direction>*> m_pendingMoves;
 
