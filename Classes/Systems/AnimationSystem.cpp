@@ -44,7 +44,8 @@ void AnimationSystem::Update()
 				return;
 
 			//stop animation
-			//and set sprites of current direction
+			setBody(it.first);
+			setHead(it.first);
 		}
 	}
 }

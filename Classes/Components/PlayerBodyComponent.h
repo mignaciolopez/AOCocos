@@ -55,6 +55,8 @@ public:
 			m_spriteBody->retain();
 
 			m_spriteBody->setPosition(x, y);
+
+			m_spriteBody->setScale(2.0f);
 		}
 
 		//Head
@@ -66,7 +68,7 @@ public:
 			m_spriteHead->retain();
 
 			m_spriteBody->addChild(m_spriteHead);
-			m_spriteHead->setPosition(12.5f, 46.0f);
+			m_spriteHead->setPosition(m_spriteBody->getContentSize().width / 2, m_spriteBody->getContentSize().height);
 		}
 	}
 	~PlayerBodyComponent()
