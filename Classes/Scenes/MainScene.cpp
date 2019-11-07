@@ -53,6 +53,10 @@ bool MainScene::init()
 	if (!spawnSystem)
 		cocos2d::log("%s SpawnSystem Failed!", LOGID);
 
+	AnimationSystem* animationSystem = new (std::nothrow) AnimationSystem;
+	if (!animationSystem)
+		cocos2d::log("%s AnimationSystem Failed!", LOGID);
+
 	// 3- Register Systems
 	m_renderSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(renderSystem);
 	m_inputSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(inputSystem);
@@ -60,6 +64,7 @@ bool MainScene::init()
 	m_movementSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(movementSystem);
 	m_networkSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(networkSystem);
 	m_spawnSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(spawnSystem);
+	m_animationSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(animationSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
 

@@ -8,11 +8,9 @@ RenderSystem::RenderSystem()
 {
 	cocos2d::log("%s Constructor", "[RENDER SYSTEM]");
 
-	m_entiyManager = ECS::ECS_Engine::getInstance()->getEntityManager();
+	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
 	
 	m_director = cocos2d::Director::getInstance();
-
-	m_compatibleComponents.push_back(ComponentType::PLAYER_BODY);
 
 	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager(); //del if not used
 }
@@ -24,19 +22,11 @@ RenderSystem::~RenderSystem()
 
 void RenderSystem::Update()
 {
-	//cocos2d::log("%s Update", "[RENDER SYSTEM]");
-
-	for (auto compatibleComponent : m_compatibleComponents)
+	for (auto it : *m_entityManager->getEntities())
 	{
-		for (auto entity : *m_entiyManager->getEntities())
-		{
-			for (auto it : entity.second->getComponents(ComponentType::PLAYER_BODY))
-			{
-				 cocos2d::Sprite* spr = (reinterpret_cast<PlayerBodyComponent*>(it))->_sprite;
-
-				if (spr->getParent() != m_director->getRunningScene())
-					m_director->getRunningScene()->addChild(spr);
-			}
-		}
+		if (m_entityManager->getComp(it.first, ComponentType::PLAYER_BODY)
+			->getBody()->getParent() != m_director->getRunningScene())
+			m_director->getRunningScene()->addChild(
+				m_entityManager->getComp(it.first, PLAYER_BODY)->getBody());
 	}
 }

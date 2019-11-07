@@ -5,13 +5,7 @@
 
 #include "cocos2d.h"
 
-enum Direction
-{
-	North,
-	East,
-	South,
-	West
-};
+enum Direction;
 
 class MovementSystem : public ECS::System
 {
@@ -34,14 +28,17 @@ public:
 
 	void setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
 
-private:
-	std::vector<ComponentType> m_compatibleComponents;
+	void createVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
+	void removeVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
 
+	void createVectors(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
+
+private:
 	ECS::EntityManager* m_entityManager;
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 
-	int m_localEntity;
+	int m_localeid;
 
 	std::map<int, std::vector<Direction>*> m_pendingMoves;
 

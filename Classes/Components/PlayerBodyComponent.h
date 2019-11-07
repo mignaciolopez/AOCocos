@@ -3,42 +3,117 @@
 
 #include "ECS/Components/Component.h"
 
+enum Direction
+{
+	North,
+	East,
+	South,
+	West
+};
+
+
 class PlayerBodyComponent : public ECS::Component
 {
 public:
-	PlayerBodyComponent(std::string sfn, float x, float y)
+	PlayerBodyComponent(std::string bodySfn, float x, float y, std::string headSfn)
 	{
-		cocos2d::log("%s Constructor", "[SPRITE COMPONENT]");
+		cocos2d::log("%s Constructor", "[PLAYERBODYCOMPONENT COMPONENT]");
 
 		auto cache = cocos2d::SpriteFrameCache::getInstance();
 
-		_sprite = cocos2d::Sprite::createWithSpriteFrameName(sfn);
 
-		if (!_sprite)
-			cocos2d::log("%s _sprite failed with file name: %s", "[SPRITE COMPONENT]", sfn);
+		//body
+		m_sprite = cocos2d::Sprite::createWithSpriteFrameName(bodySfn);
+		if (!m_sprite)
+			cocos2d::log("%s _sprite failed with file name: %s", "[PLAYERBODYCOMPONENT COMPONENT]", bodySfn);
 		else
 		{
-			_sprite->retain();
+			m_sprite->retain();
 
-			_sprite->setPosition(x, x);
+			m_sprite->setPosition(x, y);
+		}
+
+		//Head
+		m_spriteHead = cocos2d::Sprite::createWithSpriteFrameName(headSfn);
+		if (!m_spriteHead)
+			cocos2d::log("%s _sprite failed with file name: %s", "[PLAYERBODYCOMPONENT COMPONENT]", headSfn);
+		else
+		{
+			m_spriteHead->retain();
+
+			m_sprite->addChild(m_spriteHead);
+			m_spriteHead->setPosition(12.5f, 46.0f);
 		}
 	}
 	~PlayerBodyComponent()
 	{
 		auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
-		if (runningScene && _sprite)
+		if (runningScene && m_sprite)
 		{
-			if (_sprite->getParent() == runningScene)
-				runningScene->removeChild(_sprite);
+			if (m_sprite->getParent() == runningScene)
+				runningScene->removeChild(m_sprite);
 
-			_sprite->release();
+			m_sprite->release();
 		}
-		cocos2d::log("%s Destructor", "[SPRITE COMPONENT]");
+
+		if (runningScene && m_spriteHead)
+		{
+			if (m_spriteHead->getParent() == runningScene)
+				runningScene->removeChild(m_spriteHead);
+
+			m_spriteHead->release();
+		}
+		cocos2d::log("%s Destructor", "[PLAYERBODYCOMPONENT COMPONENT]");
 	}
 
-	cocos2d::Sprite* _sprite;
-	const ComponentType _type = ComponentType::PLAYER_BODY;
-	bool  _moving = false;
+	virtual cocos2d::Sprite* getBody() override
+	{
+		return m_sprite;
+	}
+	virtual void setBody(cocos2d::Sprite* body) override
+	{
+		m_sprite = body;
+	}
+
+	virtual cocos2d::Sprite* getHead() override
+	{
+		return m_spriteHead;
+	}
+	virtual void setHead(cocos2d::Sprite* head) override
+	{
+		m_spriteHead = head;
+	}
+
+	virtual ComponentType getType() override
+	{
+		return m_type;
+	}
+	virtual bool getMoving() override
+	{
+		return m_moving;
+	}
+	virtual void setMoving(bool m) override
+	{
+		m_moving = m;
+	}
+	virtual Direction getDirection() override
+	{
+		return m_direction;
+	}
+	virtual void setDirection(Direction dir) override
+	{
+		m_direction = dir;
+	}
+
+private:
+	cocos2d::Sprite* m_sprite;
+	cocos2d::Sprite* m_spriteHead; //child of body
+	const ComponentType m_type = ComponentType::PLAYER_BODY;
+	bool  m_moving = false;
+	Direction m_direction = Direction::South;
+
+private:
+
 };
 
 #endif // __SPRITE_COMPONENT_H__

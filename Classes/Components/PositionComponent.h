@@ -9,8 +9,8 @@ public:
 	PositionComponent(float x, float y)
 	{
 		cocos2d::log("%s Constructor", "[POSITION COMPONENT]");
-		_x = x;
-		_y = y;
+		m_x = x;
+		m_y = y;
 	}
 	~PositionComponent()
 	{
@@ -18,9 +18,32 @@ public:
 		cocos2d::log("%s Destructor", "[POSITION COMPONENT]");
 	}
 
-	const ComponentType _type = ComponentType::POSITION;
+	virtual ComponentType getType() override
+	{
+		return m_type;
+	}
 	
-	float _x, _y;
+	virtual float getX() override
+	{
+		return m_x;
+	}
+	virtual float getY() override
+	{
+		return m_y;
+	}
+
+	virtual void setX(float x) override
+	{
+		m_x = x;
+	}
+	virtual void setY(float y) override
+	{
+		m_y = y;
+	}
+
+private:
+	const ComponentType m_type = ComponentType::POSITION;
+	float m_x, m_y;
 };
 
 #endif // __SPRITE_COMPONENT_H__

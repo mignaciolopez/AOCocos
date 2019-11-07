@@ -90,6 +90,9 @@
     <ClCompile Include="..\Classes\ECS\ECS_Engine.cpp">
       <Filter>src\ECS_ENGINE</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Systems\AnimationSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -163,6 +166,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Components\PlayerBodyComponent.h">
       <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\AnimationSystem.h">
+      <Filter>src\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

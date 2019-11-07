@@ -36,6 +36,7 @@ private:
 	int m_movementSystemID;
 	int m_networkSystemID;
 	int m_spawnSystemID;
+	int m_animationSystemID;
 };
 
 #endif // __MAIN_SCENE_H__

@@ -17,9 +17,7 @@ public:
 	virtual void Update() override;
 
 private:
-	std::vector<ComponentType> m_compatibleComponents;
-
-	ECS::EntityManager* m_entiyManager;
+	ECS::EntityManager* m_entityManager;
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 

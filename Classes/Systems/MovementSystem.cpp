@@ -1,16 +1,13 @@
 #include "MovementSystem.h"
 
-#include "Components/PlayerBodyComponent.h"
 #include "Components/PositionComponent.h"
+#include "Components/PlayerBodyComponent.h"
 
 MovementSystem::MovementSystem()
 {
 	cocos2d::log("%s Constructor", "[MOVEMENT SYSTEM]");
 
 	m_director = cocos2d::Director::getInstance();
-
-	m_compatibleComponents.push_back(ComponentType::PLAYER_BODY);
-	m_compatibleComponents.push_back(ComponentType::POSITION);
 
 	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
 
@@ -21,6 +18,12 @@ MovementSystem::MovementSystem()
 	m_eventManager->Subscribe(EVENTS::MOVE_WEST, &MovementSystem::moveWest, this);
 
 	m_eventManager->Subscribe(EVENTS::MY_EID, &MovementSystem::setLocalEntity, this);
+
+	m_eventManager->Subscribe(EVENTS::EID_JOINED, &MovementSystem::createVector, this);
+	m_eventManager->Subscribe(EVENTS::EID_QUIT, &MovementSystem::removeVector, this);
+
+	m_eventManager->Subscribe(EVENTS::SYNC_PLAYERS, &MovementSystem::createVectors, this);
+
 
 	m_moveNorth = nullptr;
 	m_moveEast = nullptr;
@@ -42,7 +45,7 @@ MovementSystem::MovementSystem()
 	m_delayCallToStopMoving = cocos2d::DelayTime::create(0.2f - 0.02f);
 	m_delayCallToStopMoving->retain();
 
-	m_localEntity = -1;
+	m_localeid = -1;
 }
 
 MovementSystem::~MovementSystem()
@@ -81,25 +84,22 @@ MovementSystem::~MovementSystem()
 
 void MovementSystem::Update()
 {
-	for (auto& itMove = m_pendingMoves.begin(); itMove != m_pendingMoves.end() /* not hoisted */; /* no increment */)
+	for (auto& it = m_pendingMoves.begin(); it != m_pendingMoves.end() /* not hoisted */; /* no increment */)
 	{
-		if (itMove->second->size() > 0)
+		if (it->second->size() > 0)
 		{
-			for (auto itComp : m_entityManager->getEntity(itMove->first)->getComponents(ComponentType::PLAYER_BODY))
-				(reinterpret_cast<PlayerBodyComponent*>(itComp))->_moving = true;
+			m_entityManager->getComp(it->first, PLAYER_BODY)->setMoving(true);
 
-			moveRemote(*itMove->second->begin(), itMove->first);
-			itMove->second->erase(itMove->second->begin());
-			++itMove;
+			moveRemote(*it->second->begin(), it->first);
+			it->second->erase(it->second->begin());
+			//++it;
+			break;
 		}
 		else
 		{
-			for (auto itComp : m_entityManager->getEntity(itMove->first)->getComponents(ComponentType::PLAYER_BODY))
-				(reinterpret_cast<PlayerBodyComponent*>(itComp))->_moving = false;
-
-			delete itMove->second;
-			itMove->second = nullptr;
-			m_pendingMoves.erase(itMove++);
+			//if (m_entityManager->getComp(it->first, PLAYER_BODY))
+			m_entityManager->getComp(it->first, PLAYER_BODY)->setMoving(false);
+			break;
 		}
 	}
 }
@@ -130,7 +130,7 @@ void MovementSystem::move(Direction dir, int eid)
 		return; //if this happens client should ask server to resync players
 	//and check if the local player entity is ok.
 
-	if (eid == m_localEntity)
+	if (eid == m_localeid)
 	{
 		//this means the move comes from the inputSystem
 		moveLocal(dir);
@@ -138,13 +138,7 @@ void MovementSystem::move(Direction dir, int eid)
 	else
 	{
 		//It means it comes from server and is a remote player
-		if (m_pendingMoves.find(eid) == m_pendingMoves.end())
-		{
-			std::vector<Direction>* vec = new (std::nothrow) std::vector<Direction>;
-			vec->push_back(dir);
-			m_pendingMoves.emplace(eid, vec);
-		}
-		else
+		if (m_pendingMoves.find(eid) != m_pendingMoves.end())
 		{
 			m_pendingMoves.at(eid)->push_back(dir);
 		}
@@ -153,102 +147,129 @@ void MovementSystem::move(Direction dir, int eid)
 
 void MovementSystem::moveLocal(Direction dir)
 {
-	for (auto it : m_entityManager->getEntity(m_localEntity)->getComponents(ComponentType::PLAYER_BODY))
+	if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
 	{
-		if (!(reinterpret_cast<PlayerBodyComponent*>(it))->_moving)
-		{
-			cocos2d::Sprite* spr = (reinterpret_cast<PlayerBodyComponent*>(it))->_sprite;
-			SLNet::BitStream bsOut;
-			float x = 0, y = 0;
-			switch (dir)
-			{
-			case North:
-				y = 32.0f;
-				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_NORTH);
-				bsOut.Write(m_localEntity);
-				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
-				spr->runAction(m_moveNorth->clone());
-				break;
-			case East:
-				x = 32.0f;
-				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_EAST);
-				bsOut.Write(m_localEntity);
-				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
-				spr->runAction(m_moveEast->clone());
-				break;
-			case South:
-				y = -32.0f;
-				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_SOUTH);
-				bsOut.Write(m_localEntity);
-				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
-				spr->runAction(m_moveSouth->clone());
-				break;
-			case West:
-				x = -32.0f;
-				bsOut.Write((SLNet::MessageID)EVENTS::MOVE_WEST);
-				bsOut.Write(m_localEntity);
-				m_eventManager->execute(EVENTS::SEND_SERVER, m_localEntity, nullptr, &bsOut);
-				spr->runAction(m_moveWest->clone());
-				break;
-			}
-			
-			(reinterpret_cast<PlayerBodyComponent*>(it))->_moving = true;
-
-			
-			cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localEntity));
-			cocos2d::Action* secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), stopMovingCB, nullptr);
-			spr->runAction(secuence);
-
-			for (auto it : m_entityManager->getEntity(m_localEntity)->getComponents(ComponentType::POSITION))
-			{
-				(reinterpret_cast<PositionComponent*>(it))->_x = spr->getPosition().x + x;
-				(reinterpret_cast<PositionComponent*>(it))->_y = spr->getPosition().y + y;
-			}
-		}
-	}
-}
-
-void MovementSystem::moveRemote(Direction dir, int eid)
-{
-	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::PLAYER_BODY))
-	{
-		cocos2d::Sprite* spr = (reinterpret_cast<PlayerBodyComponent*>(it))->_sprite;
+		SLNet::BitStream bsOut;
 		float x = 0, y = 0;
 		switch (dir)
 		{
 		case North:
 			y = 32.0f;
-			spr->runAction(m_moveNorth->clone());
+			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_NORTH);
+			bsOut.Write(m_localeid);
+			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
+			m_entityManager->getComp(m_localeid, ComponentType::PLAYER_BODY)->getBody()->runAction(m_moveNorth->clone());
 			break;
 		case East:
 			x = 32.0f;
-			spr->runAction(m_moveEast->clone());
+			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_EAST);
+			bsOut.Write(m_localeid);
+			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->runAction(m_moveEast->clone());
 			break;
 		case South:
 			y = -32.0f;
-			spr->runAction(m_moveSouth->clone());
+			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_SOUTH);
+			bsOut.Write(m_localeid);
+			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->runAction(m_moveSouth->clone());
 			break;
 		case West:
 			x = -32.0f;
-			spr->runAction(m_moveWest->clone());
+			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_WEST);
+			bsOut.Write(m_localeid);
+			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->runAction(m_moveWest->clone());
 			break;
 		}
 
-		for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::POSITION))
-		{
-			(reinterpret_cast<PositionComponent*>(it))->_x = spr->getPosition().x + x;
-			(reinterpret_cast<PositionComponent*>(it))->_y = spr->getPosition().y + y;
-		}
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setMoving(true);
+
+
+		cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localeid));
+		cocos2d::Action* secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), stopMovingCB, nullptr);
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->runAction(secuence);
+
+		m_entityManager->getComp(m_localeid, POSITION)->setX(
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->getPosition().x + x);
+
+		m_entityManager->getComp(m_localeid, POSITION)->setX(
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->getPosition().y + y);
+
 	}
+}
+
+void MovementSystem::moveRemote(Direction dir, int eid)
+{
+	float x = 0, y = 0;
+	switch (dir)
+	{
+	case North:
+		y = 32.0f;
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->runAction(m_moveNorth->clone());
+		break;
+	case East:
+		x = 32.0f;
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->runAction(m_moveEast->clone());
+		break;
+	case South:
+		y = -32.0f;
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->runAction(m_moveSouth->clone());
+		break;
+	case West:
+		x = -32.0f;
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->runAction(m_moveWest->clone());
+		break;
+	}
+
+	m_entityManager->getComp(eid, POSITION)->setX(
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->getPosition().x + x);
+
+	m_entityManager->getComp(eid, POSITION)->setX(
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->getPosition().y + y);
 }
 
 void MovementSystem::stopMoving(int eid)
 {
-	for (auto it : m_entityManager->getEntity(eid)->getComponents(ComponentType::PLAYER_BODY))
-		(reinterpret_cast<PlayerBodyComponent*>(it))->_moving = false;
+	m_entityManager->getComp(eid, PLAYER_BODY)->setMoving(false);
 }
 
 void MovementSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
 {
-	m_localEntity = eid;
+	m_localeid = eid;
+}
+
+void MovementSystem::createVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	std::vector<Direction>* vec = new (std::nothrow) std::vector<Direction>;
+	m_pendingMoves.emplace(eid, vec);
+}
+
+void MovementSystem::removeVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	if (m_pendingMoves.find(eid) != m_pendingMoves.end())
+	{
+		delete m_pendingMoves.at(eid);
+		m_pendingMoves.at(eid) = nullptr;
+		m_pendingMoves.erase(eid);
+	}
+}
+
+void MovementSystem::createVectors(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	bs->ResetReadPointer();
+	bs->IgnoreBytes(sizeof(SLNet::MessageID));
+	bs->IgnoreBytes(sizeof(int));
+	unsigned int count = 0;
+	bs->Read(count);
+	for (unsigned int i = 0; i < count; i++)
+	{
+		int reid = -1;
+		float rx, ry;
+		bs->Read(reid);
+		bs->Read(rx);
+		bs->Read(ry);
+		std::vector<Direction>* vec = new (std::nothrow) std::vector<Direction>;
+		m_pendingMoves.emplace(reid, vec);
+	}
 }

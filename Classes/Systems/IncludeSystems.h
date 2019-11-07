@@ -7,5 +7,6 @@
 #include "Systems/MovementSystem.h"
 #include "Systems/NetworkSystem.h"
 #include "Systems/SpawnSystem.h"
+#include "Systems/AnimationSystem.h"
 
 #endif //__INCLUDE_SYSTEMS_H__
