@@ -25,8 +25,8 @@ void RenderSystem::Update()
 	for (auto it : *m_entityManager->getEntities())
 	{
 		if (m_entityManager->getComp(it.first, ComponentType::PLAYER_BODY)
-			->getBody()->getParent() != m_director->getRunningScene())
+			->getBodySpr()->getParent() != m_director->getRunningScene())
 			m_director->getRunningScene()->addChild(
-				m_entityManager->getComp(it.first, PLAYER_BODY)->getBody());
+				m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr());
 	}
 }

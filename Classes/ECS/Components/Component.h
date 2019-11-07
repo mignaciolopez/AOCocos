@@ -5,7 +5,11 @@
 
 #include "cocos2d.h"
 
+//PlayerBodyComponent
 enum Direction;
+enum Genre;
+enum Race;
+enum Head;
 
 namespace ECS
 {
@@ -18,17 +22,26 @@ namespace ECS
 		virtual ComponentType getType() = 0;
 
 		//PlayerBodyComponent
-		virtual cocos2d::Sprite* getBody();
-		virtual void setBody(cocos2d::Sprite* body);
+		virtual cocos2d::Sprite* getBodySpr();
+		virtual void setBodySpr(cocos2d::Sprite* body);
 
-		virtual cocos2d::Sprite* getHead();
-		virtual void setHead(cocos2d::Sprite* head);
+		virtual cocos2d::Sprite* getHeadSpr();
+		virtual void setHeadSpr(cocos2d::Sprite* head);
 
 		virtual bool getMoving();
 		virtual void setMoving(bool m);
 
 		virtual Direction getDirection();
 		virtual void setDirection(Direction dir);
+
+		virtual Race getRace();
+		virtual void setRace(Race race);
+
+		virtual Genre getGenre();
+		virtual void setGenre(Genre genre);
+
+		virtual Head getHead();
+		virtual void setHead(Head head);
 
 		//PositionComponent
 		virtual float getX();

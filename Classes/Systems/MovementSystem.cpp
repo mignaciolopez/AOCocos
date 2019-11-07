@@ -149,6 +149,7 @@ void MovementSystem::moveLocal(Direction dir)
 {
 	if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
 	{
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setDirection(dir);
 		SLNet::BitStream bsOut;
 		float x = 0, y = 0;
 		switch (dir)
@@ -158,43 +159,43 @@ void MovementSystem::moveLocal(Direction dir)
 			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_NORTH);
 			bsOut.Write(m_localeid);
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-			m_entityManager->getComp(m_localeid, ComponentType::PLAYER_BODY)->getBody()->runAction(m_moveNorth->clone());
+			m_entityManager->getComp(m_localeid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(m_moveNorth->clone());
 			break;
 		case East:
 			x = 32.0f;
 			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_EAST);
 			bsOut.Write(m_localeid);
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->runAction(m_moveEast->clone());
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(m_moveEast->clone());
 			break;
 		case South:
 			y = -32.0f;
 			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_SOUTH);
 			bsOut.Write(m_localeid);
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->runAction(m_moveSouth->clone());
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(m_moveSouth->clone());
 			break;
 		case West:
 			x = -32.0f;
 			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_WEST);
 			bsOut.Write(m_localeid);
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->runAction(m_moveWest->clone());
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(m_moveWest->clone());
 			break;
 		}
 
 		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setMoving(true);
-
+		m_eventManager->execute(EVENTS::ANIMATE, m_localeid, nullptr, nullptr);
 
 		cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localeid));
 		cocos2d::Action* secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), stopMovingCB, nullptr);
-		m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->runAction(secuence);
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(secuence);
 
 		m_entityManager->getComp(m_localeid, POSITION)->setX(
-			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->getPosition().x + x);
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->getPosition().x + x);
 
 		m_entityManager->getComp(m_localeid, POSITION)->setX(
-			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBody()->getPosition().y + y);
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->getPosition().y + y);
 
 	}
 }
@@ -202,31 +203,34 @@ void MovementSystem::moveLocal(Direction dir)
 void MovementSystem::moveRemote(Direction dir, int eid)
 {
 	float x = 0, y = 0;
+	m_entityManager->getComp(eid, PLAYER_BODY)->setDirection(dir);
 	switch (dir)
 	{
 	case North:
 		y = 32.0f;
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->runAction(m_moveNorth->clone());
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(m_moveNorth->clone());
 		break;
 	case East:
 		x = 32.0f;
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->runAction(m_moveEast->clone());
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(m_moveEast->clone());
 		break;
 	case South:
 		y = -32.0f;
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->runAction(m_moveSouth->clone());
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(m_moveSouth->clone());
 		break;
 	case West:
 		x = -32.0f;
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->runAction(m_moveWest->clone());
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(m_moveWest->clone());
 		break;
 	}
 
-	m_entityManager->getComp(eid, POSITION)->setX(
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->getPosition().x + x);
+	m_eventManager->execute(EVENTS::ANIMATE, eid, nullptr, nullptr);
 
 	m_entityManager->getComp(eid, POSITION)->setX(
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBody()->getPosition().y + y);
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->getPosition().x + x);
+
+	m_entityManager->getComp(eid, POSITION)->setX(
+		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->getPosition().y + y);
 }
 
 void MovementSystem::stopMoving(int eid)

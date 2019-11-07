@@ -5,32 +5,56 @@
 
 enum Direction
 {
-	North,
+	North = 0,
 	East,
 	South,
-	West
+	West,
 };
 
+enum Genre
+{
+	Male = 0,
+	Female
+};
+
+enum Race
+{
+	Human = 0,
+	Dwarf,
+	Gnome,
+	Elf,
+	DarkElf
+};
+enum Head
+{
+	Pirate = 0,
+	None
+};
 
 class PlayerBodyComponent : public ECS::Component
 {
 public:
-	PlayerBodyComponent(std::string bodySfn, float x, float y, std::string headSfn)
+	PlayerBodyComponent(std::string bodySfn, std::string headSfn, float x, float y, 
+		Direction dir, Genre genre, Race race, Head head)
 	{
 		cocos2d::log("%s Constructor", "[PLAYERBODYCOMPONENT COMPONENT]");
 
 		auto cache = cocos2d::SpriteFrameCache::getInstance();
 
+		m_direction = dir;
+		m_genre = genre;
+		m_race = race;
+		m_head = head;
 
 		//body
-		m_sprite = cocos2d::Sprite::createWithSpriteFrameName(bodySfn);
-		if (!m_sprite)
+		m_spriteBody = cocos2d::Sprite::createWithSpriteFrameName(bodySfn);
+		if (!m_spriteBody)
 			cocos2d::log("%s _sprite failed with file name: %s", "[PLAYERBODYCOMPONENT COMPONENT]", bodySfn);
 		else
 		{
-			m_sprite->retain();
+			m_spriteBody->retain();
 
-			m_sprite->setPosition(x, y);
+			m_spriteBody->setPosition(x, y);
 		}
 
 		//Head
@@ -41,19 +65,19 @@ public:
 		{
 			m_spriteHead->retain();
 
-			m_sprite->addChild(m_spriteHead);
+			m_spriteBody->addChild(m_spriteHead);
 			m_spriteHead->setPosition(12.5f, 46.0f);
 		}
 	}
 	~PlayerBodyComponent()
 	{
 		auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
-		if (runningScene && m_sprite)
+		if (runningScene && m_spriteBody)
 		{
-			if (m_sprite->getParent() == runningScene)
-				runningScene->removeChild(m_sprite);
+			if (m_spriteBody->getParent() == runningScene)
+				runningScene->removeChild(m_spriteBody);
 
-			m_sprite->release();
+			m_spriteBody->release();
 		}
 
 		if (runningScene && m_spriteHead)
@@ -66,20 +90,20 @@ public:
 		cocos2d::log("%s Destructor", "[PLAYERBODYCOMPONENT COMPONENT]");
 	}
 
-	virtual cocos2d::Sprite* getBody() override
+	virtual cocos2d::Sprite* getBodySpr() override
 	{
-		return m_sprite;
+		return m_spriteBody;
 	}
-	virtual void setBody(cocos2d::Sprite* body) override
+	virtual void setBodySpr(cocos2d::Sprite* body) override
 	{
-		m_sprite = body;
+		m_spriteBody = body;
 	}
 
-	virtual cocos2d::Sprite* getHead() override
+	virtual cocos2d::Sprite* getHeadSpr() override
 	{
 		return m_spriteHead;
 	}
-	virtual void setHead(cocos2d::Sprite* head) override
+	virtual void setHeadSpr(cocos2d::Sprite* head) override
 	{
 		m_spriteHead = head;
 	}
@@ -105,12 +129,42 @@ public:
 		m_direction = dir;
 	}
 
+	virtual Race getRace() override
+	{
+		return m_race;
+	}
+	virtual void setRace(Race race) override
+	{
+		m_race = race;
+	}
+
+	virtual Genre getGenre() override
+	{
+		return m_genre;
+	}
+	virtual void setGenre(Genre genre) override
+	{
+		m_genre = genre;
+	}
+
+	virtual Head getHead() override
+	{
+		return m_head;
+	}
+	virtual void setHead(Head head) override
+	{
+		m_head = head;
+	}
+
 private:
-	cocos2d::Sprite* m_sprite;
+	cocos2d::Sprite* m_spriteBody;
 	cocos2d::Sprite* m_spriteHead; //child of body
 	const ComponentType m_type = ComponentType::PLAYER_BODY;
 	bool  m_moving = false;
 	Direction m_direction = Direction::South;
+	Race m_race;
+	Genre m_genre;
+	Head m_head;
 
 private:
 
