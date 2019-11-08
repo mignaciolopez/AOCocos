@@ -10,7 +10,7 @@
 
 
 #define SERVER_ADDRESS "migna.dnsabr.com"
-#define SERVER_PORT 6000
+#define SERVER_PORT 6001
 
 namespace cocos2d
 {
