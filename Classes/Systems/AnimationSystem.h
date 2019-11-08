@@ -5,6 +5,31 @@
 
 #include "cocos2d.h"
 
+struct animationInfo
+{
+public:
+	int tagN;
+	int tagE;
+	int tagS;
+	int tagW;
+	std::string animationName;
+
+	std::string m_bodyNameNorth;
+	std::string m_bodyNameEast;
+	std::string m_bodyNameSouth;
+	std::string m_bodyNameWest;
+
+	std::string m_headNameNorth;
+	std::string m_headNameEast;
+	std::string m_headNameSouth;
+	std::string m_headNameWest;
+
+	cocos2d::Animate* m_animationNorth = nullptr;
+	cocos2d::Animate* m_animationEast = nullptr;
+	cocos2d::Animate* m_animationSouth = nullptr;
+	cocos2d::Animate* m_animationWest = nullptr;
+};
+
 class AnimationSystem : public ECS::System
 {
 public:
@@ -23,7 +48,7 @@ private:
 	void constructDirectionName(Direction dir);
 	void constructBodyName(int eid);
 	void constructHeadName(int eid);
-	void constructAnimationName(int eid);
+	void constructAnimation(int eid, Direction dir, animationInfo* animInfo);
 
 	void setBody(int eid);
 	void setHead(int eid);
@@ -35,22 +60,6 @@ private:
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 	cocos2d::SpriteFrameCache* m_sfCache;
-
-	struct animationInfo
-	{
-		int tag;
-		std::string animationName;
-
-		std::string m_bodyNameNorth;
-		std::string m_bodyNameEast;
-		std::string m_bodyNameSouth;
-		std::string m_bodyNameWest;
-
-		std::string m_headNameNorth;
-		std::string m_headNameEast;
-		std::string m_headNameSouth;
-		std::string m_headNameWest;
-	};
 
 	std::map<int, animationInfo*> m_animations;
 

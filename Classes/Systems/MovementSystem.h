@@ -48,6 +48,7 @@ private:
 	cocos2d::MoveBy* m_moveWest;
 
 	cocos2d::DelayTime* m_delayCallToStopMoving;
+	cocos2d::DelayTime* m_delayRemote;
 
 };
 

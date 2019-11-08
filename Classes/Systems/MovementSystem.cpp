@@ -45,6 +45,9 @@ MovementSystem::MovementSystem()
 	m_delayCallToStopMoving = cocos2d::DelayTime::create(0.2f - 0.02f);
 	m_delayCallToStopMoving->retain();
 
+	m_delayRemote = cocos2d::DelayTime::create(0.3f);
+	m_delayRemote->retain();
+
 	m_localeid = -1;
 }
 
@@ -70,6 +73,10 @@ MovementSystem::~MovementSystem()
 		if (m_delayCallToStopMoving->getReferenceCount())
 			m_delayCallToStopMoving->release();
 
+	if (m_delayRemote)
+		if (m_delayRemote->getReferenceCount())
+			m_delayRemote->release();
+
 	for (auto move : m_pendingMoves)
 	{
 		if (move.second)
@@ -88,8 +95,6 @@ void MovementSystem::Update()
 	{
 		if (it->second->size() > 0)
 		{
-			m_entityManager->getComp(it->first, PLAYER_BODY)->setMoving(true);
-
 			moveRemote(*it->second->begin(), it->first);
 			it->second->erase(it->second->begin());
 			//++it;
@@ -97,8 +102,8 @@ void MovementSystem::Update()
 		}
 		else
 		{
+			//m_entityManager->getComp(it->first, PLAYER_BODY)->setMoving(false);
 			//if (m_entityManager->getComp(it->first, PLAYER_BODY))
-			m_entityManager->getComp(it->first, PLAYER_BODY)->setMoving(false);
 			break;
 		}
 	}
@@ -152,6 +157,8 @@ void MovementSystem::moveLocal(Direction dir)
 		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setDirection(dir);
 		SLNet::BitStream bsOut;
 		float x = 0, y = 0;
+		cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localeid));
+		cocos2d::Action* secuence;
 		switch (dir)
 		{
 		case North:
@@ -159,37 +166,36 @@ void MovementSystem::moveLocal(Direction dir)
 			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_NORTH);
 			bsOut.Write(m_localeid);
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-			m_entityManager->getComp(m_localeid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(m_moveNorth->clone());
+			secuence = cocos2d::Sequence::create(m_moveNorth->clone(), stopMovingCB, nullptr);
 			break;
 		case East:
 			x = 32.0f;
 			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_EAST);
 			bsOut.Write(m_localeid);
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(m_moveEast->clone());
+			secuence = cocos2d::Sequence::create(m_moveEast->clone(), stopMovingCB, nullptr);
 			break;
 		case South:
 			y = -32.0f;
 			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_SOUTH);
 			bsOut.Write(m_localeid);
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(m_moveSouth->clone());
+			secuence = cocos2d::Sequence::create(m_moveSouth->clone(), stopMovingCB, nullptr);
 			break;
 		case West:
 			x = -32.0f;
 			bsOut.Write((SLNet::MessageID)EVENTS::MOVE_WEST);
 			bsOut.Write(m_localeid);
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(m_moveWest->clone());
+			//m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(m_moveWest->clone());
+			secuence = cocos2d::Sequence::create(m_moveWest->clone(), stopMovingCB, nullptr);
 			break;
 		}
 
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(secuence);
+
 		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setMoving(true);
 		m_eventManager->execute(EVENTS::ANIMATE, m_localeid, nullptr, nullptr);
-
-		cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, m_localeid));
-		cocos2d::Action* secuence = cocos2d::Sequence::create(m_delayCallToStopMoving->clone(), stopMovingCB, nullptr);
-		m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->runAction(secuence);
 
 		m_entityManager->getComp(m_localeid, POSITION)->setX(
 			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->getPosition().x + x);
@@ -209,27 +215,32 @@ void MovementSystem::moveRemote(Direction dir, int eid)
 {
 	float x = 0, y = 0;
 	m_entityManager->getComp(eid, PLAYER_BODY)->setDirection(dir);
+	cocos2d::CallFuncN* stopMovingCB = cocos2d::CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
+	cocos2d::Action* secuence;
 	switch (dir)
 	{
 	case North:
 		y = 32.0f;
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(m_moveNorth->clone());
+		secuence = cocos2d::Sequence::create(m_moveNorth->clone(), stopMovingCB, nullptr);
 		break;
 	case East:
 		x = 32.0f;
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(m_moveEast->clone());
+		secuence = cocos2d::Sequence::create(m_moveEast->clone(), stopMovingCB, nullptr);
 		break;
 	case South:
 		y = -32.0f;
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(m_moveSouth->clone());
+		secuence = cocos2d::Sequence::create(m_moveSouth->clone(), stopMovingCB, nullptr);
 		break;
 	case West:
 		x = -32.0f;
-		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(m_moveWest->clone());
+		secuence = cocos2d::Sequence::create(m_moveWest->clone(), stopMovingCB, nullptr);
 		break;
 	}
 
+	m_entityManager->getComp(eid, PLAYER_BODY)->setMoving(true);
 	m_eventManager->execute(EVENTS::ANIMATE, eid, nullptr, nullptr);
+
+	m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(secuence);
 
 	m_entityManager->getComp(eid, POSITION)->setX(
 		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->getPosition().x + x);

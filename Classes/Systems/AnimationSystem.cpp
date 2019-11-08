@@ -26,6 +26,15 @@ AnimationSystem::~AnimationSystem()
 	{
 		if (a.second)
 		{
+			if (a.second->m_animationNorth)
+				a.second->m_animationNorth->release();
+			if (a.second->m_animationEast)
+				a.second->m_animationEast->release();
+			if (a.second->m_animationSouth)
+				a.second->m_animationSouth->release();
+			if (a.second->m_animationWest)
+				a.second->m_animationWest->release();
+			
 			delete a.second;
 			a.second = nullptr;
 		}
@@ -38,15 +47,44 @@ void AnimationSystem::Update()
 {
 	for (auto it : *m_entityManager->getEntities())
 	{
-		if (!m_entityManager->getComp(it.first, PLAYER_BODY)->getMoving())
-		{
-			if (m_animations.find(it.first) == m_animations.end())
-				return;
+		if (m_animations.find(it.first) == m_animations.end())
+			return;
 
-			//stop animation
+			if (m_animations.find(it.first) != m_animations.end())
+				if (!m_entityManager->getComp(it.first, PLAYER_BODY)->getMoving())
+				{
+					setBody(it.first);
+					setHead(it.first);
+				}
+			
+		/*if (!m_entityManager->getComp(it.first, PLAYER_BODY)->getMoving())
+		{
+			if (m_animations.find(it.first) != m_animations.end())
+			{
+				switch (m_entityManager->getComp(it.first, ComponentType::PLAYER_BODY)->getDirection())
+				{
+				case Direction::North:
+					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
+						m_animations.at(it.first)->tagN);
+					break;
+				case Direction::East:
+					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
+						m_animations.at(it.first)->tagE);
+					break;
+				case Direction::South:
+					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
+						m_animations.at(it.first)->tagS);
+					break;
+				case Direction::West:
+					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
+						m_animations.at(it.first)->tagW);
+					break;
+				}
+			}
+			
 			setBody(it.first);
 			setHead(it.first);
-		}
+		}*/
 	}
 }
 
@@ -58,8 +96,25 @@ void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
 	setBody(eid);
 	setHead(eid);
 
-	//animate here
-	
+	switch (m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getDirection())
+	{
+	case Direction::North:
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
+			m_animations.at(eid)->m_animationNorth->clone());
+		break;
+	case Direction::East:
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
+			m_animations.at(eid)->m_animationEast->clone());
+		break;
+	case Direction::South:
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
+			m_animations.at(eid)->m_animationSouth->clone());
+		break;
+	case Direction::West:
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
+			m_animations.at(eid)->m_animationWest->clone());
+		break;
+	}
 }
 
 void AnimationSystem::setBody(int eid)
@@ -111,7 +166,10 @@ void AnimationSystem::setHead(int eid)
 void AnimationSystem::loadAnimationInfo(int eid, cocos2d::Event *, SLNet::BitStream * bs)
 {
 	animationInfo* animInfo = new (std::nothrow) animationInfo;
-	animInfo->tag = newTag();
+	animInfo->tagN = newTag();
+	animInfo->tagE = newTag();
+	animInfo->tagS = newTag();
+	animInfo->tagW = newTag();
 
 	for (int i = 0; i <= Direction::West; i++)
 	{
@@ -151,8 +209,18 @@ void AnimationSystem::loadAnimationInfo(int eid, cocos2d::Event *, SLNet::BitStr
 			break;
 		}
 
-		//void constructAnimationName(int eid);
+		constructAnimation(eid, dir, animInfo);
 	}
+
+	animInfo->m_animationNorth->setTag(animInfo->tagN);
+	animInfo->m_animationEast->setTag(animInfo->tagE);
+	animInfo->m_animationSouth->setTag(animInfo->tagS);
+	animInfo->m_animationWest->setTag(animInfo->tagW);
+
+	animInfo->m_animationNorth->retain();
+	animInfo->m_animationEast->retain();
+	animInfo->m_animationSouth->retain();
+	animInfo->m_animationWest->retain();
 
 	m_animations.emplace(eid, animInfo);
 
@@ -165,6 +233,15 @@ void AnimationSystem::removeInfo(int eid, cocos2d::Event *, SLNet::BitStream * b
 	
 	if (m_animations.at(eid))
 	{
+		if (m_animations.at(eid)->m_animationNorth)
+			m_animations.at(eid)->m_animationNorth->release();
+		if (m_animations.at(eid)->m_animationEast)
+			m_animations.at(eid)->m_animationEast->release();
+		if (m_animations.at(eid)->m_animationSouth)
+			m_animations.at(eid)->m_animationSouth->release();
+		if (m_animations.at(eid)->m_animationWest)
+			m_animations.at(eid)->m_animationWest->release();
+
 		delete m_animations.at(eid);
 		m_animations.at(eid) = nullptr;
 	}
@@ -251,7 +328,212 @@ void AnimationSystem::constructHeadName(int eid)
 	}
 }
 
-void AnimationSystem::constructAnimationName(int eid)
+void AnimationSystem::constructAnimation(int eid, Direction dir, animationInfo* animInfo)
 {
-	
+	switch (dir)
+	{
+	case Direction::North:
+		switch (m_entityManager->getComp(eid, PLAYER_BODY)->getGenre())
+		{
+		case Genre::Female:
+			switch (m_entityManager->getComp(eid, PLAYER_BODY)->getRace())
+			{
+			case Race::DarkElf:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_DARKELF_FEMALE_NORTHAnimateAction(m_NS);
+				break;
+			case Race::Dwarf:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_DWARF_FEMALE_NORTHAnimateAction(m_NS);
+				break;
+			case Race::Elf:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_ELF_FEMALE_NORTHAnimateAction(m_NS);
+				break;
+			case Race::Gnome:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_GNOME_FEMALE_NORTHAnimateAction(m_NS);
+				break;
+			case Race::Human:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_HUMAN_FEMALE_NORTHAnimateAction(m_NS);
+				break;
+			default:
+				break;
+			}
+			break;
+		case Genre::Male:
+			switch (m_entityManager->getComp(eid, PLAYER_BODY)->getRace())
+			{
+			case Race::DarkElf:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_DARKELF_MALE_NORTHAnimateAction(m_NS);
+				break;
+			case Race::Dwarf:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_DWARF_MALE_NORTHAnimateAction(m_NS);
+				break;
+			case Race::Elf:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_ELF_MALE_NORTHAnimateAction(m_NS);
+				break;
+			case Race::Gnome:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_GNOME_MALE_NORTHAnimateAction(m_NS);
+				break;
+			case Race::Human:
+				animInfo->m_animationNorth = TP::Graphics::createPLAYER_BODY_HUMAN_MALE_NORTHAnimateAction(m_NS);
+				break;
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
+		}
+	case Direction::East:
+		switch (m_entityManager->getComp(eid, PLAYER_BODY)->getGenre())
+		{
+		case Genre::Female:
+			switch (m_entityManager->getComp(eid, PLAYER_BODY)->getRace())
+			{
+			case Race::DarkElf:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_DARKELF_FEMALE_EASTAnimateAction(m_EW);
+				break;
+			case Race::Dwarf:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_DWARF_FEMALE_EASTAnimateAction(m_EW);
+				break;
+			case Race::Elf:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_ELF_FEMALE_EASTAnimateAction(m_EW);
+				break;
+			case Race::Gnome:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_GNOME_FEMALE_EASTAnimateAction(m_EW);
+				break;
+			case Race::Human:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_HUMAN_FEMALE_EASTAnimateAction(m_EW);
+				break;
+			default:
+				break;
+			}
+			break;
+		case Genre::Male:
+			switch (m_entityManager->getComp(eid, PLAYER_BODY)->getRace())
+			{
+			case Race::DarkElf:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_DARKELF_MALE_EASTAnimateAction(m_EW);
+				break;
+			case Race::Dwarf:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_DWARF_MALE_EASTAnimateAction(m_EW);
+				break;
+			case Race::Elf:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_ELF_MALE_EASTAnimateAction(m_EW);
+				break;
+			case Race::Gnome:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_GNOME_MALE_EASTAnimateAction(m_EW);
+				break;
+			case Race::Human:
+				animInfo->m_animationEast = TP::Graphics::createPLAYER_BODY_HUMAN_MALE_EASTAnimateAction(m_EW);
+				break;
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
+		}
+	case Direction::South:
+		switch (m_entityManager->getComp(eid, PLAYER_BODY)->getGenre())
+		{
+		case Genre::Female:
+			switch (m_entityManager->getComp(eid, PLAYER_BODY)->getRace())
+			{
+			case Race::DarkElf:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_DARKELF_FEMALE_SOUTHAnimateAction(m_NS);
+				break;
+			case Race::Dwarf:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_DWARF_FEMALE_SOUTHAnimateAction(m_NS);
+				break;
+			case Race::Elf:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_ELF_FEMALE_SOUTHAnimateAction(m_NS);
+				break;
+			case Race::Gnome:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_GNOME_FEMALE_SOUTHAnimateAction(m_NS);
+				break;
+			case Race::Human:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_HUMAN_FEMALE_SOUTHAnimateAction(m_NS);
+				break;
+			default:
+				break;
+			}
+			break;
+		case Genre::Male:
+			switch (m_entityManager->getComp(eid, PLAYER_BODY)->getRace())
+			{
+			case Race::DarkElf:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_DARKELF_MALE_SOUTHAnimateAction(m_NS);
+				break;
+			case Race::Dwarf:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_DWARF_MALE_SOUTHAnimateAction(m_NS);
+				break;
+			case Race::Elf:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_ELF_MALE_SOUTHAnimateAction(m_NS);
+				break;
+			case Race::Gnome:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_GNOME_MALE_SOUTHAnimateAction(m_NS);
+				break;
+			case Race::Human:
+				animInfo->m_animationSouth = TP::Graphics::createPLAYER_BODY_HUMAN_MALE_SOUTHAnimateAction(m_NS);
+				break;
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
+		}
+	case Direction::West:
+		switch (m_entityManager->getComp(eid, PLAYER_BODY)->getGenre())
+		{
+		case Genre::Female:
+			switch (m_entityManager->getComp(eid, PLAYER_BODY)->getRace())
+			{
+			case Race::DarkElf:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_DARKELF_FEMALE_WESTAnimateAction(m_EW);
+				break;
+			case Race::Dwarf:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_DWARF_FEMALE_WESTAnimateAction(m_EW);
+				break;
+			case Race::Elf:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_ELF_FEMALE_WESTAnimateAction(m_EW);
+				break;
+			case Race::Gnome:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_GNOME_FEMALE_WESTAnimateAction(m_EW);
+				break;
+			case Race::Human:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_HUMAN_FEMALE_WESTAnimateAction(m_EW);
+				break;
+			default:
+				break;
+			}
+			break;
+		case Genre::Male:
+			switch (m_entityManager->getComp(eid, PLAYER_BODY)->getRace())
+			{
+			case Race::DarkElf:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_DARKELF_MALE_WESTAnimateAction(m_EW);
+				break;
+			case Race::Dwarf:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_DWARF_MALE_WESTAnimateAction(m_EW);
+				break;
+			case Race::Elf:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_ELF_MALE_WESTAnimateAction(m_EW);
+				break;
+			case Race::Gnome:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_GNOME_MALE_WESTAnimateAction(m_EW);
+				break;
+			case Race::Human:
+				animInfo->m_animationWest = TP::Graphics::createPLAYER_BODY_HUMAN_MALE_WESTAnimateAction(m_EW);
+				break;
+			default:
+				break;
+			}
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
 }
