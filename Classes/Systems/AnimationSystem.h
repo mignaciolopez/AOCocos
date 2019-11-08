@@ -71,6 +71,48 @@ private:
 	std::string m_dirName;
 	std::string m_bodyName;
 	std::string m_headName;
+
+	//Indexado de animaciones
+	enum Items
+	{
+		TURTLE,
+		GOLD,
+		SPELL,
+		ARMOR_LEATHER,
+		ARMOR_IRON,
+		TUNIC_MAGE,
+		TUNIC_
+		//etc (small one)
+	};
+	std::map<Items, std::map<Direction, cocos2d::Animate*>> m_indexAnimatios;
+
+	//Indexado de Graphicos
+	enum ItemsType
+	{
+		SHIELD,
+		CLOTHES,
+		ARMOR,
+		TUNIC
+		//etc (huge one)
+	};
+	std::map<Items, std::string> m_itemsDiccionary;
+	std::map<ItemsType, std::string> m_itemsTypeDiccionary;
+	//switch para el contruido del nombre para cargar el spriteframeName
+	enum ItemOrientation
+	{
+		NORTH,
+		EAST,
+		SOUTH,
+		WEST,
+		INVENTORY
+	};
+	std::map<Items, std::map<ItemOrientation, cocos2d::Sprite*>> m_itemsSprites;
+
+	//crear un mapa de slots de inventario
+	//con la posision que la sprite tiene que tener segun el slot
+	//el item
+	//el estado (equipado o no) - bool equiped = true/false
+	//Hacerlo component o systema no lo se (sistema requiere de eventos para comunicarse
 };
 
 #endif //__ANIMATION_SYSTEM_H__
