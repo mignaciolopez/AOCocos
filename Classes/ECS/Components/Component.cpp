@@ -17,21 +17,21 @@ namespace ECS
 		cocos2d::log("%s Destructor", LOGID);
 	}
 
-	cocos2d::Sprite * Component::getBody()
+	cocos2d::Sprite * Component::getBodySpr()
 	{
 		return nullptr;
 	}
 
-	void Component::setBody(cocos2d::Sprite * body)
+	void Component::setBodySpr(cocos2d::Sprite * body)
 	{
 	}
 
-	cocos2d::Sprite * Component::getHead()
+	cocos2d::Sprite * Component::getHeadSpr()
 	{
 		return nullptr;
 	}
 
-	void Component::setHead(cocos2d::Sprite * head)
+	void Component::setHeadSpr(cocos2d::Sprite * head)
 	{
 	}
 
@@ -50,6 +50,33 @@ namespace ECS
 	}
 
 	void Component::setDirection(Direction dir)
+	{
+	}
+
+	Race Component::getRace()
+	{
+		return Race();
+	}
+
+	void Component::setRace(Race race)
+	{
+	}
+
+	Genre Component::getGenre()
+	{
+		return Genre();
+	}
+
+	void Component::setGenre(Genre genre)
+	{
+	}
+
+	Head Component::getHead()
+	{
+		return Head();
+	}
+
+	void Component::setHead(Head head)
 	{
 	}
 

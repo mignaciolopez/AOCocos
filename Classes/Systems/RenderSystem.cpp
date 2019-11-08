@@ -13,6 +13,10 @@ RenderSystem::RenderSystem()
 	m_director = cocos2d::Director::getInstance();
 
 	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager(); //del if not used
+
+	m_eventManager->Subscribe(EVENTS::MY_EID, &RenderSystem::setLocalEntity, this);
+
+	m_localeid = -1;
 }
 
 RenderSystem::~RenderSystem()
@@ -22,11 +26,24 @@ RenderSystem::~RenderSystem()
 
 void RenderSystem::Update()
 {
+	if (m_localeid != -1)
+	{
+		m_director->getRunningScene()->getDefaultCamera()->setPosition(
+			m_entityManager->getComp(m_localeid, ComponentType::PLAYER_BODY)
+			->getBodySpr()->getPosition());
+	}
+
 	for (auto it : *m_entityManager->getEntities())
 	{
 		if (m_entityManager->getComp(it.first, ComponentType::PLAYER_BODY)
-			->getBody()->getParent() != m_director->getRunningScene())
+			->getBodySpr()->getParent() != m_director->getRunningScene())
 			m_director->getRunningScene()->addChild(
-				m_entityManager->getComp(it.first, PLAYER_BODY)->getBody());
+				m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr());
 	}
+
+}
+
+void RenderSystem::setLocalEntity(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
+	m_localeid = eid;
 }

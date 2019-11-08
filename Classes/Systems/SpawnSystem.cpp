@@ -42,10 +42,14 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 
 	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(
 		TP::Graphics::playerBodyHumanFemaleStandingSouth,
-		x , y,
-		TP::Graphics::headsPlayerHeadPirateSouth);
+		TP::Graphics::headsPlayerHeadPirateSouth,
+		x, y,
+		Direction::South,
+		Genre::Female,
+		Race::Human,
+		Head::Pirate);
 
-	if (!body || !body->getBody() || !body->getHead())
+	if (!body || !body->getBodySpr() || !body->getHeadSpr())
 		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, body);
@@ -55,6 +59,11 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 		cocos2d::log("%s PositionComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, pos);
+
+	body->getBodySpr()->setGlobalZOrder(pos->getY() * -1 + 600);
+	body->getHeadSpr()->setGlobalZOrder(pos->getY() * -1 + 600);
+
+	m_eventManager->execute(EVENTS::LOAD_ANIMATION_INFO, eid, nullptr, nullptr);
 }
 
 void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
@@ -86,10 +95,14 @@ void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
 
 	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(
 		TP::Graphics::playerBodyHumanFemaleStandingSouth,
+		TP::Graphics::headsPlayerHeadPirateSouth,
 		x, y,
-		TP::Graphics::headsPlayerHeadPirateSouth);
+		Direction::South,
+		Genre::Female,
+		Race::Human,
+		Head::Pirate);
 
-	if (!body || !body->getBody() || !body->getHead())
+	if (!body || !body->getBodySpr() || !body->getHeadSpr())
 		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, body);
@@ -99,4 +112,9 @@ void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
 		cocos2d::log("%s PositionComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, pos);
+
+	body->getBodySpr()->setGlobalZOrder(pos->getY() * -1 + 600);
+	body->getHeadSpr()->setGlobalZOrder(pos->getY() * -1 + 600);
+
+	m_eventManager->execute(EVENTS::LOAD_ANIMATION_INFO, eid, nullptr, nullptr);
 }
