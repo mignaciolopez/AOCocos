@@ -42,6 +42,8 @@ public:
 	void loadAnimationInfo(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 	void removeInfo(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 
+	void setBodyCF(int eid);
+
 private:
 	int newTag();
 
@@ -69,7 +71,6 @@ private:
 	std::string m_dirName;
 	std::string m_bodyName;
 	std::string m_headName;
-
 };
 
 #endif //__ANIMATION_SYSTEM_H__

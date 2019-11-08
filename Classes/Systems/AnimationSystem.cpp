@@ -45,7 +45,7 @@ AnimationSystem::~AnimationSystem()
 
 void AnimationSystem::Update()
 {
-	for (auto it : *m_entityManager->getEntities())
+	/*for (auto it : *m_entityManager->getEntities())
 	{
 		if (m_animations.find(it.first) == m_animations.end())
 			return;
@@ -85,7 +85,7 @@ void AnimationSystem::Update()
 			setBody(it.first);
 			setHead(it.first);
 		}*/
-	}
+	//}
 }
 
 void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
@@ -93,28 +93,34 @@ void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
 	if (m_animations.find(eid) == m_animations.end())
 		return;
 
-	setBody(eid);
-	setHead(eid);
+	setBodyCF(eid);
+
+	cocos2d::CallFuncN* setBodyCF = cocos2d::CallFuncN::create(CC_CALLBACK_0(AnimationSystem::setBodyCF, this, eid));
+	cocos2d::Action* secuence;
 
 	switch (m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getDirection())
 	{
 	case Direction::North:
-		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
-			m_animations.at(eid)->m_animationNorth->clone());
+		secuence = cocos2d::Sequence::create(m_animations.at(eid)->m_animationNorth->clone(), setBodyCF, nullptr);
 		break;
 	case Direction::East:
-		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
-			m_animations.at(eid)->m_animationEast->clone());
+		secuence = cocos2d::Sequence::create(m_animations.at(eid)->m_animationEast->clone(), setBodyCF, nullptr);
 		break;
 	case Direction::South:
-		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
-			m_animations.at(eid)->m_animationSouth->clone());
+		secuence = cocos2d::Sequence::create(m_animations.at(eid)->m_animationSouth->clone(), setBodyCF, nullptr);
 		break;
 	case Direction::West:
-		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
-			m_animations.at(eid)->m_animationWest->clone());
+		secuence = cocos2d::Sequence::create(m_animations.at(eid)->m_animationWest->clone(), setBodyCF, nullptr);
 		break;
 	}
+
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(secuence);
+}
+
+void AnimationSystem::setBodyCF(int eid)
+{
+	setBody(eid);
+	setHead(eid);
 }
 
 void AnimationSystem::setBody(int eid)
