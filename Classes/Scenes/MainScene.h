@@ -37,6 +37,7 @@ private:
 	int m_networkSystemID;
 	int m_spawnSystemID;
 	int m_animationSystemID;
+	int m_mapSystemID;
 };
 
 #endif // __MAIN_SCENE_H__

@@ -93,6 +93,9 @@
     <ClCompile Include="..\Classes\Systems\AnimationSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Systems\MapSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -168,6 +171,12 @@
       <Filter>src\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Systems\AnimationSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\MapComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\MapSystem.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
   </ItemGroup>

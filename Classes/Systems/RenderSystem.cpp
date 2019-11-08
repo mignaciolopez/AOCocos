@@ -28,18 +28,18 @@ void RenderSystem::Update()
 {
 	if (m_localeid != -1)
 	{
-		m_director->getRunningScene()->getDefaultCamera()->setPosition(
-			m_entityManager->getComp(m_localeid, ComponentType::PLAYER_BODY)
-			->getBodySpr()->getPosition());
+		//m_director->getRunningScene()->getDefaultCamera()->setPosition(
+			//m_entityManager->getComp(m_localeid, ComponentType::PLAYER_BODY)
+			//->getBodySpr()->getPosition());
 	}
 
-	for (auto it : *m_entityManager->getEntities())
+	/*for (auto it : *m_entityManager->getEntities())
 	{
 		if (m_entityManager->getComp(it.first, ComponentType::PLAYER_BODY)
 			->getBodySpr()->getParent() != m_director->getRunningScene())
 			m_director->getRunningScene()->addChild(
 				m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr());
-	}
+	}*/
 
 }
 

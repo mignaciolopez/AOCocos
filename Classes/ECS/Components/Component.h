@@ -49,6 +49,10 @@ namespace ECS
 		virtual void setX(float x);
 		virtual void setY(float y);
 
+		//MapComponent
+		virtual cocos2d::experimental::TMXTiledMap* getMap();
+		virtual void setMap(cocos2d::experimental::TMXTiledMap* map);
+
 	private:
 		const ComponentType m_type = ComponentType::NONE;
 	};

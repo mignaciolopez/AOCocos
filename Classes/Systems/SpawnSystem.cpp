@@ -60,9 +60,6 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 
 	m_entityManager->AddComponentToEntity(eid, pos);
 
-	body->getBodySpr()->setGlobalZOrder(pos->getY() * -1 + 600);
-	body->getHeadSpr()->setGlobalZOrder(pos->getY() * -1 + 600);
-
 	m_eventManager->execute(EVENTS::LOAD_ANIMATION_INFO, eid, nullptr, nullptr);
 }
 
@@ -112,9 +109,6 @@ void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
 		cocos2d::log("%s PositionComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, pos);
-
-	body->getBodySpr()->setGlobalZOrder(pos->getY() * -1 + 600);
-	body->getHeadSpr()->setGlobalZOrder(pos->getY() * -1 + 600);
 
 	m_eventManager->execute(EVENTS::LOAD_ANIMATION_INFO, eid, nullptr, nullptr);
 }

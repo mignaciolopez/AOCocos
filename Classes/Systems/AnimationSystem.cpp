@@ -45,47 +45,7 @@ AnimationSystem::~AnimationSystem()
 
 void AnimationSystem::Update()
 {
-	/*for (auto it : *m_entityManager->getEntities())
-	{
-		if (m_animations.find(it.first) == m_animations.end())
-			return;
-
-			if (m_animations.find(it.first) != m_animations.end())
-				if (!m_entityManager->getComp(it.first, PLAYER_BODY)->getMoving())
-				{
-					setBody(it.first);
-					setHead(it.first);
-				}
-			
-		/*if (!m_entityManager->getComp(it.first, PLAYER_BODY)->getMoving())
-		{
-			if (m_animations.find(it.first) != m_animations.end())
-			{
-				switch (m_entityManager->getComp(it.first, ComponentType::PLAYER_BODY)->getDirection())
-				{
-				case Direction::North:
-					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
-						m_animations.at(it.first)->tagN);
-					break;
-				case Direction::East:
-					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
-						m_animations.at(it.first)->tagE);
-					break;
-				case Direction::South:
-					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
-						m_animations.at(it.first)->tagS);
-					break;
-				case Direction::West:
-					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
-						m_animations.at(it.first)->tagW);
-					break;
-				}
-			}
-			
-			setBody(it.first);
-			setHead(it.first);
-		}*/
-	//}
+	
 }
 
 void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)

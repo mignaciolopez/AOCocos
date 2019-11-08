@@ -5,5 +5,6 @@
 
 #include "Components/PlayerBodyComponent.h"
 #include "Components/PositionComponent.h"
+#include "Components/MapComponent.h"
 
 #endif //__INCLUDE_COMPONENTS_H__

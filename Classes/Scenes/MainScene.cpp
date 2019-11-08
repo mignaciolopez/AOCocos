@@ -57,6 +57,10 @@ bool MainScene::init()
 	if (!animationSystem)
 		cocos2d::log("%s AnimationSystem Failed!", LOGID);
 
+	MapSystem* mapSystem = new (std::nothrow) MapSystem;
+	if (!mapSystem)
+		cocos2d::log("%s MapSystem Failed!", LOGID);
+
 	// 3- Register Systems
 	m_renderSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(renderSystem);
 	m_inputSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(inputSystem);
@@ -65,6 +69,7 @@ bool MainScene::init()
 	m_networkSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(networkSystem);
 	m_spawnSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(spawnSystem);
 	m_animationSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(animationSystem);
+	m_mapSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(mapSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
 

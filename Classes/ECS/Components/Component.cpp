@@ -98,4 +98,13 @@ namespace ECS
 	{
 	}
 
+	cocos2d::experimental::TMXTiledMap * Component::getMap()
+	{
+		return nullptr;
+	}
+
+	void Component::setMap(cocos2d::experimental::TMXTiledMap * map)
+	{
+	}
+
 }

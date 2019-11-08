@@ -202,12 +202,6 @@ void MovementSystem::moveLocal(Direction dir)
 
 		m_entityManager->getComp(m_localeid, POSITION)->setY(
 			m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->getPosition().y + y);
-
-		m_entityManager->getComp(m_localeid, PLAYER_BODY)->getBodySpr()->setGlobalZOrder(
-			m_entityManager->getComp(m_localeid, POSITION)->getY() * -1 + 600);
-
-		m_entityManager->getComp(m_localeid, PLAYER_BODY)->getHeadSpr()->setGlobalZOrder(
-			m_entityManager->getComp(m_localeid, POSITION)->getY() * -1 + 600);
 	}
 }
 
@@ -247,12 +241,6 @@ void MovementSystem::moveRemote(Direction dir, int eid)
 
 	m_entityManager->getComp(eid, POSITION)->setY(
 		m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->getPosition().y + y);
-
-	m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->setGlobalZOrder(
-		m_entityManager->getComp(eid, POSITION)->getY() * -1 + 600);
-
-	m_entityManager->getComp(eid, PLAYER_BODY)->getHeadSpr()->setGlobalZOrder(
-		m_entityManager->getComp(eid, POSITION)->getY() * -1 + 600);
 }
 
 void MovementSystem::stopMoving(int eid)

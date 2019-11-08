@@ -160,6 +160,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Graphics\Interface.cpp" />
     <ClCompile Include="..\Classes\Scenes\MainScene.cpp" />
     <ClCompile Include="..\Classes\Systems\AnimationSystem.cpp" />
+    <ClCompile Include="..\Classes\Systems\MapSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\SpawnSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\InputSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\MovementSystem.cpp" />
@@ -172,6 +173,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Components\ComponentsList.h" />
     <ClInclude Include="..\Classes\Components\IncludeComponents.h" />
+    <ClInclude Include="..\Classes\Components\MapComponent.h" />
     <ClInclude Include="..\Classes\Components\PositionComponent.h" />
     <ClInclude Include="..\Classes\Components\PlayerBodyComponent.h" />
     <ClInclude Include="..\Classes\ECS\Components\Component.h" />
@@ -187,6 +189,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Scenes\MainScene.h" />
     <ClInclude Include="..\Classes\Systems\AnimationSystem.h" />
     <ClInclude Include="..\Classes\Systems\IncludeSystems.h" />
+    <ClInclude Include="..\Classes\Systems\MapSystem.h" />
     <ClInclude Include="..\Classes\Systems\SpawnSystem.h" />
     <ClInclude Include="..\Classes\Systems\InputSystem.h" />
     <ClInclude Include="..\Classes\Systems\MovementSystem.h" />

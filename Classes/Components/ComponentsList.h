@@ -5,7 +5,8 @@ enum ComponentType
 {
 	NONE = -1,
 	PLAYER_BODY,
-	POSITION
+	POSITION,
+	MAP
 };
 
 
