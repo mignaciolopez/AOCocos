@@ -35,8 +35,9 @@ void MapSystem::Update()
 
 		auto p = m_entityManager->getComp(eit.first, ComponentType::PLAYER_BODY)->getBodySpr()->getPosition();
 		p = CC_POINT_POINTS_TO_PIXELS(p);
-		float newZ = -(p.y + 32) / 32;
-		m_entityManager->getComp(eit.first, ComponentType::PLAYER_BODY)->getBodySpr()->setPositionZ(newZ);
+		float newZ = 20 - ((p.y-20) / 32);
+		m_entityManager->getComp(m_localeid, MAP)->getMap()->reorderChild(
+		m_entityManager->getComp(eit.first, ComponentType::PLAYER_BODY)->getBodySpr(), newZ);
 	}
 }
 
@@ -76,5 +77,6 @@ void MapSystem::loadMap(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 
 	m_entityManager->getComp(m_localeid, MAP)->setMap(cocos2d::experimental::TMXTiledMap::create(path));
 	m_entityManager->getComp(m_localeid, MAP)->getMap()->retain();
-	m_director->getRunningScene()->addChild(m_entityManager->getComp(m_localeid, MAP)->getMap());
+	m_director->getRunningScene()->getChildByTag(123)->addChild(m_entityManager->getComp(m_localeid, MAP)->getMap(), 0);
+	m_entityManager->getComp(m_localeid, MAP)->getMap()->setPosition3D(cocos2d::Vec3::ZERO);
 }

@@ -148,6 +148,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     </PreLinkEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\AREF\cocos2d-x\tests\cpp-tests\Classes\Sprite3DTest\DrawNode3D.cpp" />
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\ECS\Components\Component.cpp" />
     <ClCompile Include="..\Classes\ECS\ECS_Engine.cpp" />
@@ -170,6 +171,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\AREF\cocos2d-x\tests\cpp-tests\Classes\Sprite3DTest\DrawNode3D.h" />
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Components\ComponentsList.h" />
     <ClInclude Include="..\Classes\Components\IncludeComponents.h" />

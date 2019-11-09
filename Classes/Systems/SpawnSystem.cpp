@@ -36,7 +36,7 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 {
 	m_entityManager->CreateEntity(eid);
 
-	float x = 0.0f, y = 0.0f;
+	float x = 16.0f, y = 0.0f;
 	bs->Read(x);
 	bs->Read(y);
 

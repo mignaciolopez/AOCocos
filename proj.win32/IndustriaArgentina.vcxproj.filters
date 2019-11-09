@@ -96,6 +96,9 @@
     <ClCompile Include="..\Classes\Systems\MapSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\AREF\cocos2d-x\tests\cpp-tests\Classes\Sprite3DTest\DrawNode3D.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Systems\MapSystem.h">
       <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\AREF\cocos2d-x\tests\cpp-tests\Classes\Sprite3DTest\DrawNode3D.h">
+      <Filter>src\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
