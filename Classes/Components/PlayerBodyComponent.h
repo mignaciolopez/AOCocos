@@ -56,7 +56,8 @@ public:
 
 			m_spriteBody->setPosition(x, y);
 
-			m_spriteBody->setScale(2.0f);
+			//m_spriteBody->setScale(2.0f);
+			m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
 		}
 
 		//Head
@@ -67,6 +68,7 @@ public:
 		{
 			m_spriteHead->retain();
 
+			m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
 			m_spriteBody->addChild(m_spriteHead);
 			m_spriteHead->setPosition(m_spriteBody->getContentSize().width / 2, m_spriteBody->getContentSize().height);
 		}
@@ -76,16 +78,18 @@ public:
 		auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
 		if (runningScene && m_spriteBody)
 		{
-			if (m_spriteBody->getParent() == runningScene)
-				runningScene->removeChild(m_spriteBody);
+			if (runningScene->getChildByTag(123));
+				if (m_spriteBody->getParent() == runningScene->getChildByTag(123))
+					runningScene->getChildByTag(123)->removeChild(m_spriteBody);
 
 			m_spriteBody->release();
 		}
 
 		if (runningScene && m_spriteHead)
 		{
-			if (m_spriteHead->getParent() == runningScene)
-				runningScene->removeChild(m_spriteHead);
+			if (runningScene->getChildByTag(123));
+				if (m_spriteHead->getParent() == runningScene->getChildByTag(123))
+					runningScene->getChildByTag(123)->removeChild(m_spriteHead);
 
 			m_spriteHead->release();
 		}
