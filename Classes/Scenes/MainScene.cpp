@@ -1,5 +1,6 @@
 #include "MainScene.h"
 #include "ECS/ECS_Engine.h"
+#include "DrawNode3D.h"
 
 #define LOGID "[MAIN SCENE]"
 
@@ -22,6 +23,33 @@ bool MainScene::init()
     }
 
 	this->scheduleUpdate();
+
+	auto s = Director::getInstance()->getWinSize();
+	auto layer3D = Layer::create();
+	addChild(layer3D, 0);
+	layer3D->setTag(123);
+	//auto _camera = Camera::createPerspective(60, (GLfloat)s.width / s.height, 1, 1000);
+	auto _camera = Camera::createOrthographic(s.width, s.height, 1, 1000);
+	_camera->setCameraFlag(CameraFlag::USER1);
+	//removeChild(getDefaultCamera());
+	layer3D->addChild(_camera);
+	layer3D->setCameraMask(2);
+
+	cocos2d::DrawNode3D* line = cocos2d::DrawNode3D::create();
+	//draw x
+	for (int j = -20; j <= 20; j++)
+	{
+		line->drawLine(Vec3(-100, 0, 5 * j), Vec3(100, 0, 5 * j), Color4F(1, 0, 0, 1));
+	}
+	//draw z
+	for (int j = -20; j <= 20; j++)
+	{
+		line->drawLine(Vec3(5 * j, 0, -100), Vec3(5 * j, 0, 100), Color4F(0, 0, 1, 1));
+	}
+	//draw y
+	line->drawLine(Vec3(0, -50, 0), Vec3(0, 0, 0), Color4F(0, 0.5, 0, 1));
+	line->drawLine(Vec3(0, 0, 0), Vec3(0, 50, 0), Color4F(0, 1, 0, 1));
+	layer3D->addChild(line);
 
 	TP::Graphics::addSpriteFramesToCache();
 
