@@ -76,7 +76,7 @@ void CameraSystem::Update()
 
 		for (auto cam : m_director->getRunningScene()->getCameras())
 		{
-			cam->setPosition3D(cocos2d::Vec3(pos.x, pos.y, 500));
+			cam->setPosition3D(cocos2d::Vec3(pos.x, pos.y, 300));
 			cam->lookAt(cocos2d::Vec3(pos.x, pos.y, 10));
 			cam->setRotation3D(cocos2d::Vec3::ZERO);
 		}
