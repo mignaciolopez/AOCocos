@@ -34,7 +34,7 @@ enum Head
 class PlayerBodyComponent : public ECS::Component
 {
 public:
-	PlayerBodyComponent(std::string bodySfn, std::string headSfn, float x, float y, 
+	PlayerBodyComponent(std::string bodySfn, std::string headSfn, int x, int y,
 		Direction dir, Genre genre, Race race, Head head)
 	{
 		cocos2d::log("%s Constructor", "[PLAYERBODYCOMPONENT COMPONENT]");
@@ -54,7 +54,7 @@ public:
 		{
 			m_spriteBody->retain();
 
-			m_spriteBody->setPosition(x, y);
+			m_spriteBody->setPosition(x * 32 + 16, y * 32);
 
 			//m_spriteBody->setScale(2.0f);
 			m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
@@ -116,6 +116,16 @@ public:
 	{
 		m_moving = m;
 	}
+
+	virtual bool getCanWalk() override
+	{
+		return m_canWalk;
+	}
+	virtual void setCanWalk(bool w) override
+	{
+		m_canWalk = w;
+	}
+
 	virtual Direction getDirection() override
 	{
 		return m_direction;
@@ -156,7 +166,8 @@ private:
 	cocos2d::Sprite* m_spriteBody;
 	cocos2d::Sprite* m_spriteHead; //child of body
 	const ComponentType m_type = ComponentType::PLAYER_BODY;
-	bool  m_moving = false;
+	bool m_moving = false;
+	bool m_canWalk = true;
 	Direction m_direction = Direction::South;
 	Race m_race;
 	Genre m_genre;

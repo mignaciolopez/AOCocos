@@ -56,7 +56,7 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 {
 	m_entityManager->CreateEntity(eid);
 
-	float x = 16.0f, y = 0.0f;
+	int x = 0, y = 0;
 	bs->Read(x);
 	bs->Read(y);
 
@@ -91,7 +91,7 @@ void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 	for (unsigned int i = 0; i < count; i++)
 	{
 		int reid = -1;
-		float rx, ry;
+		int rx, ry;
 		bs->Read(reid);
 		bs->Read(rx);
 		bs->Read(ry);
@@ -111,7 +111,7 @@ void SpawnSystem::removePlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 	m_entityManager->removeEntity(eid);
 }
 
-void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
+void SpawnSystem::syncCreatePlayer(int eid, int x, int y)
 {
 	m_entityManager->CreateEntity(eid);
 

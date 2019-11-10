@@ -32,7 +32,7 @@ CameraSystem::CameraSystem(cocos2d::Scene* scene)
 	m_localeid = -1;
 
 	//just to debug camera, remove after////////////////////////////
-	cocos2d::DrawNode3D* line = cocos2d::DrawNode3D::create();
+	/*cocos2d::DrawNode3D* line = cocos2d::DrawNode3D::create();
 	//draw x
 	for (int j = -20; j <= 20; j++)
 	{
@@ -46,7 +46,7 @@ CameraSystem::CameraSystem(cocos2d::Scene* scene)
 	//draw y
 	line->drawLine(Vec3(0, -50, 0), Vec3(0, 0, 0), Color4F(0, 0.5, 0, 1));
 	line->drawLine(Vec3(0, 0, 0), Vec3(0, 50, 0), Color4F(0, 1, 0, 1));
-	m_layer3D->getLayer()->addChild(line);
+	m_layer3D->getLayer()->addChild(line);*/
 	//just to debug camera, remove after////////////////////////////
 }
 

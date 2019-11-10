@@ -20,6 +20,8 @@ public:
 	void moveSouth(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 	void moveWest(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 
+	void switchRemoteFacing(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
+
 	void move(Direction dir, int eid);
 	void moveLocal(Direction dir);
 	void moveRemote(Direction dir, int eid);

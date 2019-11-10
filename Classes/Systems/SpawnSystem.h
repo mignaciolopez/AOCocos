@@ -23,7 +23,7 @@ public:
 	void removePlayer(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 
 private:
-	void syncCreatePlayer(int eid, float x, float y);
+	void syncCreatePlayer(int eid, int x, int y);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;

@@ -6,7 +6,7 @@
 class PositionComponent : public ECS::Component
 {
 public:
-	PositionComponent(float x, float y)
+	PositionComponent(int x, int y)
 	{
 		cocos2d::log("%s Constructor", "[POSITION COMPONENT]");
 		m_x = x;
@@ -23,27 +23,27 @@ public:
 		return m_type;
 	}
 	
-	virtual float getX() override
+	virtual int getX() override
 	{
 		return m_x;
 	}
-	virtual float getY() override
+	virtual int getY() override
 	{
 		return m_y;
 	}
 
-	virtual void setX(float x) override
+	virtual void setX(int x) override
 	{
 		m_x = x;
 	}
-	virtual void setY(float y) override
+	virtual void setY(int y) override
 	{
 		m_y = y;
 	}
 
 private:
 	const ComponentType m_type = ComponentType::POSITION;
-	float m_x, m_y;
+	int m_x, m_y;
 };
 
 #endif // __SPRITE_COMPONENT_H__

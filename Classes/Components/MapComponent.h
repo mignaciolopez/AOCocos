@@ -29,12 +29,12 @@ public:
 		return m_type;
 	}
 
-	virtual cocos2d::experimental::TMXTiledMap* getMap() override
+	virtual cocos2d::TMXTiledMap* getMap() override
 	{
 		return m_map;
 	}
 
-	virtual void setMap(cocos2d::experimental::TMXTiledMap* map) override
+	virtual void setMap(cocos2d::TMXTiledMap* map) override
 	{
 		m_map = map;
 	}
@@ -42,7 +42,7 @@ public:
 private:
 	const ComponentType m_type = ComponentType::MAP;
 
-	cocos2d::experimental::TMXTiledMap* m_map;
+	cocos2d::TMXTiledMap* m_map;
 
 	int m_tag;
 	

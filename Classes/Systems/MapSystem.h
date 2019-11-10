@@ -12,11 +12,17 @@ public:
 	~MapSystem();
 
 	virtual void Update() override;
+	
 	virtual void setLocaleid(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	virtual void addeidChild(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	virtual void removeChild(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+	
 	virtual void createMapC(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	virtual void loadMap(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+
+	virtual void canMove(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+
+	virtual void toggleDebug(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 
 private:
 

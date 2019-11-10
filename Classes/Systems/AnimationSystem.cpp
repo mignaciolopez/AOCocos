@@ -14,6 +14,7 @@ AnimationSystem::AnimationSystem()
 	m_sfCache = cocos2d::SpriteFrameCache::getInstance();
 
 	m_eventManager->Subscribe(EVENTS::ANIMATE, &AnimationSystem::animate, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATION_SWITCH_FACING, &AnimationSystem::setBodyCF, this);
 
 	m_eventManager->Subscribe(EVENTS::ANIMATION_LOAD_INFO, &AnimationSystem::loadAnimationInfo, this);
 
@@ -53,9 +54,9 @@ void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
 	if (m_animations.find(eid) == m_animations.end())
 		return;
 
-	setBodyCF(eid);
+	setBodyCF(eid, nullptr, nullptr);
 
-	cocos2d::CallFuncN* setBodyCF = cocos2d::CallFuncN::create(CC_CALLBACK_0(AnimationSystem::setBodyCF, this, eid));
+	cocos2d::CallFuncN* setBodyCF = cocos2d::CallFuncN::create(CC_CALLBACK_0(AnimationSystem::setBodyCF, this, eid, nullptr, nullptr));
 	cocos2d::Action* secuence;
 
 	switch (m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getDirection())
@@ -77,7 +78,7 @@ void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
 	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(secuence);
 }
 
-void AnimationSystem::setBodyCF(int eid)
+void AnimationSystem::setBodyCF(int eid, cocos2d::Event*, SLNet::BitStream* bs)
 {
 	setBody(eid);
 	setHead(eid);

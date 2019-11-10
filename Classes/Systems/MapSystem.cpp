@@ -1,5 +1,7 @@
 #include "MapSystem.h"
 
+USING_NS_CC;
+
 MapSystem::MapSystem()
 {
 	cocos2d::log("%s Constructor", "[MAP SYSTEM]");
@@ -14,6 +16,10 @@ MapSystem::MapSystem()
 
 	m_eventManager->Subscribe(EVENTS::MAP_CREATE, &MapSystem::createMapC, this);
 	m_eventManager->Subscribe(EVENTS::MAP_LOAD, &MapSystem::loadMap, this);
+
+	m_eventManager->Subscribe(EVENTS::MAP_CAN_MOVE, &MapSystem::canMove, this);
+
+	m_eventManager->Subscribe(EVENTS::MAP_TOGGLE_DEBUG, &MapSystem::toggleDebug, this);
 
 	m_localeid = -1;
 }
@@ -34,7 +40,7 @@ void MapSystem::Update()
 	{
 		auto p = m_entityManager->getComp(eit.first, ComponentType::PLAYER_BODY)->getBodySpr()->getPosition();
 		p = CC_POINT_POINTS_TO_PIXELS(p);
-		float newZ = 20 - ((p.y-20) / 32);
+		float newZ = 20 - ((p.y-20) / 32); //tiles in Y - ((p.y-Tiles in Y) / Tile Height);
 		m_entityManager->getComp(m_localeid, MAP)->getMap()->reorderChild( //localeid is the only one entity who has a map, remote ones dont, this is not wrong
 		m_entityManager->getComp(eit.first, ComponentType::PLAYER_BODY)->getBodySpr(), newZ);
 	}
@@ -92,11 +98,67 @@ void MapSystem::loadMap(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 			m_entityManager->getComp(eid, LAYER3D)->getLayer()->removeChild(m_currentMapC->getMap());
 	}
 
-	m_currentMapC->setMap(cocos2d::experimental::TMXTiledMap::create(path));
+	m_currentMapC->setMap(cocos2d::TMXTiledMap::create(path));
 	
 	if (m_currentMapC->getMap())
 		m_currentMapC->getMap()->retain();
 
+	m_currentMapC->getMap()->getLayer("blocks")->setVisible(false);
+
 	m_entityManager->getComp(eid, LAYER3D)->getLayer()->addChild(m_currentMapC->getMap(), 0);
 	m_currentMapC->getMap()->setPosition3D(cocos2d::Vec3::ZERO);
+}
+
+void MapSystem::canMove(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
+	int nx = m_entityManager->getComp(eid, POSITION)->getX();
+	int ny = m_entityManager->getComp(eid, POSITION)->getY();
+
+	int tilesY = m_currentMapC->getMap()->getMapSize().height - 1;
+
+	m_entityManager->getComp(m_localeid, PLAYER_BODY)->setCanWalk(true);
+
+	switch (m_entityManager->getComp(m_localeid, PLAYER_BODY)->getDirection())
+	{
+	case Direction::North:
+		ny++;
+		break;
+	case Direction::East:
+		nx++;
+		break;
+	case Direction::South:
+		ny--;
+		break;
+	case Direction::West:
+		nx--;
+		break;
+	default:
+		break;
+	}
+
+	//cocos2d::log("Next: (%i, %i)", nx, ny);
+	for (auto e : *m_entityManager->getEntities())
+	{
+		if (eid == e.first)
+			continue;
+		if (m_entityManager->getComp(e.first, POSITION)->getX() == nx &&
+			m_entityManager->getComp(e.first, POSITION)->getY() == ny)
+		{
+			m_entityManager->getComp(m_localeid, PLAYER_BODY)->setCanWalk(false);
+			return;
+		}
+	}
+
+	if (nx < 0 || ny < 0 || nx > 19 || ny > 19)
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setCanWalk(false);
+	else if (m_currentMapC->getMap()->getLayer("blocks")->getTileAt(Vec2(nx, tilesY - ny)))
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setCanWalk(false);
+}
+
+void MapSystem::toggleDebug(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
+	if (m_currentMapC->getMap()->getLayer("blocks")->isVisible())
+		m_currentMapC->getMap()->getLayer("blocks")->setVisible(false);
+	else
+		m_currentMapC->getMap()->getLayer("blocks")->setVisible(true);
 }
