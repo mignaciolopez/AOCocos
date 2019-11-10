@@ -75,24 +75,14 @@ public:
 	}
 	~PlayerBodyComponent()
 	{
-		auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
-		if (runningScene && m_spriteBody)
-		{
-			if (runningScene->getChildByTag(123))
-				if (m_spriteBody->getParent() == runningScene->getChildByTag(123))
-					runningScene->getChildByTag(123)->removeChild(m_spriteBody);
+		if (m_spriteBody)
+			if (m_spriteBody->getReferenceCount() > 0)
+				m_spriteBody->release();
 
-			m_spriteBody->release();
-		}
+		if (m_spriteHead)
+			if (m_spriteHead->getReferenceCount() > 0)
+				m_spriteHead->release();
 
-		if (runningScene && m_spriteHead)
-		{
-			if (runningScene->getChildByTag(123))
-				if (m_spriteHead->getParent() == runningScene->getChildByTag(123))
-					runningScene->getChildByTag(123)->removeChild(m_spriteHead);
-
-			m_spriteHead->release();
-		}
 		cocos2d::log("%s Destructor", "[PLAYERBODYCOMPONENT COMPONENT]");
 	}
 

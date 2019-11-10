@@ -107,4 +107,12 @@ namespace ECS
 	{
 	}
 
+	cocos2d::Layer * Component::getLayer()
+	{
+		return nullptr;
+	}
+	void Component::setLayer(cocos2d::Layer* layer3D)
+	{
+	}
+
 }

@@ -53,6 +53,10 @@ namespace ECS
 		virtual cocos2d::experimental::TMXTiledMap* getMap();
 		virtual void setMap(cocos2d::experimental::TMXTiledMap* map);
 
+		//Layer3D
+		virtual cocos2d::Layer* getLayer();
+		virtual void setLayer(cocos2d::Layer* layer3D);
+
 	private:
 		const ComponentType m_type = ComponentType::NONE;
 	};

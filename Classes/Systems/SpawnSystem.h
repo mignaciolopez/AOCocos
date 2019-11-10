@@ -16,6 +16,8 @@ public:
 
 	virtual void Update() override;
 
+	void createLocal(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
+	void createRemote(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 	void createPlayer(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 	void syncPlayers(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 	void removePlayer(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);

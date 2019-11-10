@@ -31,8 +31,6 @@ public:
 	void createVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
 	void removeVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
 
-	void createVectors(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
-
 private:
 	ECS::EntityManager* m_entityManager;
 	ECS::EventManager* m_eventManager;

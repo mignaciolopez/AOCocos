@@ -16,11 +16,13 @@ SpawnSystem::SpawnSystem()
 	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
 	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager();
 
-	m_eventManager->Subscribe(EVENTS::MY_EID, &SpawnSystem::createPlayer, this);
-	m_eventManager->Subscribe(EVENTS::EID_JOINED, &SpawnSystem::createPlayer, this);
+	m_eventManager->Subscribe(EVENTS::MY_EID, &SpawnSystem::createLocal, this);
+	m_eventManager->Subscribe(EVENTS::EID_JOINED, &SpawnSystem::createRemote, this);
 	m_eventManager->Subscribe(EVENTS::SYNC_PLAYERS, &SpawnSystem::syncPlayers, this);
 	m_eventManager->Subscribe(EVENTS::EID_QUIT, &SpawnSystem::removePlayer, this);
 }
+
+
 
 SpawnSystem::~SpawnSystem()
 {
@@ -30,6 +32,24 @@ SpawnSystem::~SpawnSystem()
 void SpawnSystem::Update()
 {
 	//cocos2d::log("%s Update", LOGID);
+}
+
+void SpawnSystem::createLocal(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	createPlayer(eid, ccevent, bs);
+	m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::CAMERA_LAYER_ADD, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::MAP_CREATE, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::MAP_CHILD_ADD, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::MOVES_V_CREATE, eid, nullptr, nullptr);
+}
+
+void SpawnSystem::createRemote(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
+{
+	createPlayer(eid, ccevent, bs);
+	m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::MAP_CHILD_ADD, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::MOVES_V_CREATE, eid, nullptr, nullptr);
 }
 
 void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
@@ -59,8 +79,6 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 		cocos2d::log("%s PositionComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, pos);
-
-	m_eventManager->execute(EVENTS::LOAD_ANIMATION_INFO, eid, nullptr, nullptr);
 }
 
 void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
@@ -78,11 +96,18 @@ void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 		bs->Read(rx);
 		bs->Read(ry);
 		syncCreatePlayer(reid, rx, ry);
+		
+		m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, reid, nullptr, nullptr);
+		m_eventManager->execute(EVENTS::MAP_CHILD_ADD, reid, nullptr, nullptr);
+		m_eventManager->execute(EVENTS::MOVES_V_CREATE, reid, nullptr, nullptr);
 	}
 }
 
 void SpawnSystem::removePlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
 {
+	m_eventManager->execute(EVENTS::MAP_CHILD_REMOVE, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::ANIMATION_REMOVE_INFO, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::MOVES_V_REMOVE, eid, nullptr, nullptr);
 	m_entityManager->removeEntity(eid);
 }
 
@@ -109,6 +134,4 @@ void SpawnSystem::syncCreatePlayer(int eid, float x, float y)
 		cocos2d::log("%s PositionComponent Failed!", "[SPAWN SYSTEM]");
 
 	m_entityManager->AddComponentToEntity(eid, pos);
-
-	m_eventManager->execute(EVENTS::LOAD_ANIMATION_INFO, eid, nullptr, nullptr);
 }

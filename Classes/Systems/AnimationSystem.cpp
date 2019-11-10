@@ -15,9 +15,9 @@ AnimationSystem::AnimationSystem()
 
 	m_eventManager->Subscribe(EVENTS::ANIMATE, &AnimationSystem::animate, this);
 
-	m_eventManager->Subscribe(EVENTS::LOAD_ANIMATION_INFO, &AnimationSystem::loadAnimationInfo, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATION_LOAD_INFO, &AnimationSystem::loadAnimationInfo, this);
 
-	m_eventManager->Subscribe(EVENTS::EID_QUIT, &AnimationSystem::removeInfo, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATION_REMOVE_INFO, &AnimationSystem::removeInfo, this);
 }
 
 AnimationSystem::~AnimationSystem()

@@ -30,7 +30,7 @@ public:
 private:
 	ECS::ECS_Engine* m_ECS_Engine;
 
-	int m_renderSystemID;
+	int m_cameraSystemID;
 	int m_inputSystemID;
 	int m_uiSystemID;
 	int m_movementSystemID;

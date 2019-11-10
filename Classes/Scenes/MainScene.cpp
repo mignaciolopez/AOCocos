@@ -1,6 +1,5 @@
 #include "MainScene.h"
 #include "ECS/ECS_Engine.h"
-#include "DrawNode3D.h"
 
 #define LOGID "[MAIN SCENE]"
 
@@ -24,43 +23,12 @@ bool MainScene::init()
 
 	this->scheduleUpdate();
 
-	auto s = Director::getInstance()->getWinSize();
-	auto layer3D = Layer::create();
-	addChild(layer3D, 0);
-	layer3D->setTag(123);
-	//auto _camera = Camera::createPerspective(60, (GLfloat)s.width / s.height, 1, 1000);
-	auto _camera = Camera::createOrthographic(s.width, s.height, 1, 1000);
-	_camera->setCameraFlag(CameraFlag::USER1);
-	//removeChild(getDefaultCamera());
-	layer3D->addChild(_camera);
-	layer3D->setCameraMask(2);
-
-	cocos2d::DrawNode3D* line = cocos2d::DrawNode3D::create();
-	//draw x
-	for (int j = -20; j <= 20; j++)
-	{
-		line->drawLine(Vec3(-100, 0, 5 * j), Vec3(100, 0, 5 * j), Color4F(1, 0, 0, 1));
-	}
-	//draw z
-	for (int j = -20; j <= 20; j++)
-	{
-		line->drawLine(Vec3(5 * j, 0, -100), Vec3(5 * j, 0, 100), Color4F(0, 0, 1, 1));
-	}
-	//draw y
-	line->drawLine(Vec3(0, -50, 0), Vec3(0, 0, 0), Color4F(0, 0.5, 0, 1));
-	line->drawLine(Vec3(0, 0, 0), Vec3(0, 50, 0), Color4F(0, 1, 0, 1));
-	layer3D->addChild(line);
-
 	TP::Graphics::addSpriteFramesToCache();
 
 	// 1- Init Engine
 	m_ECS_Engine = ECS::ECS_Engine::getInstance();
 
 	// 2- Create Systems
-	RenderSystem* renderSystem = new (std::nothrow) RenderSystem;
-	if (!renderSystem)
-		cocos2d::log("%s RenderSystem Failed!", LOGID);
-
 	InputSystem* inputSystem = new (std::nothrow) InputSystem(this);
 	if (!inputSystem)
 		cocos2d::log("%s InputSystem Failed!", LOGID);
@@ -81,6 +49,10 @@ bool MainScene::init()
 	if (!spawnSystem)
 		cocos2d::log("%s SpawnSystem Failed!", LOGID);
 
+	CameraSystem* cameraSystem = new (std::nothrow) CameraSystem(this);
+	if (!cameraSystem)
+		cocos2d::log("%s CameraSystem Failed!", LOGID);
+
 	AnimationSystem* animationSystem = new (std::nothrow) AnimationSystem;
 	if (!animationSystem)
 		cocos2d::log("%s AnimationSystem Failed!", LOGID);
@@ -90,12 +62,12 @@ bool MainScene::init()
 		cocos2d::log("%s MapSystem Failed!", LOGID);
 
 	// 3- Register Systems
-	m_renderSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(renderSystem);
 	m_inputSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(inputSystem);
 	m_uiSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(uiSystem);
 	m_movementSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(movementSystem);
 	m_networkSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(networkSystem);
 	m_spawnSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(spawnSystem);
+	m_cameraSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(cameraSystem);
 	m_animationSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(animationSystem);
 	m_mapSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(mapSystem);
 

@@ -19,11 +19,8 @@ MovementSystem::MovementSystem()
 
 	m_eventManager->Subscribe(EVENTS::MY_EID, &MovementSystem::setLocalEntity, this);
 
-	m_eventManager->Subscribe(EVENTS::EID_JOINED, &MovementSystem::createVector, this);
-	m_eventManager->Subscribe(EVENTS::EID_QUIT, &MovementSystem::removeVector, this);
-
-	m_eventManager->Subscribe(EVENTS::SYNC_PLAYERS, &MovementSystem::createVectors, this);
-
+	m_eventManager->Subscribe(EVENTS::MOVES_V_CREATE, &MovementSystem::createVector, this);
+	m_eventManager->Subscribe(EVENTS::MOVES_V_REMOVE, &MovementSystem::removeVector, this);
 
 	m_moveNorth = nullptr;
 	m_moveEast = nullptr;
@@ -104,7 +101,7 @@ void MovementSystem::Update()
 		{
 			//m_entityManager->getComp(it->first, PLAYER_BODY)->setMoving(false);
 			//if (m_entityManager->getComp(it->first, PLAYER_BODY))
-			break;
+			++it;
 		}
 	}
 }
@@ -266,24 +263,5 @@ void MovementSystem::removeVector(int eid, cocos2d::Event * ccevent, SLNet::BitS
 		delete m_pendingMoves.at(eid);
 		m_pendingMoves.at(eid) = nullptr;
 		m_pendingMoves.erase(eid);
-	}
-}
-
-void MovementSystem::createVectors(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
-{
-	bs->ResetReadPointer();
-	bs->IgnoreBytes(sizeof(SLNet::MessageID));
-	bs->IgnoreBytes(sizeof(int));
-	unsigned int count = 0;
-	bs->Read(count);
-	for (unsigned int i = 0; i < count; i++)
-	{
-		int reid = -1;
-		float rx, ry;
-		bs->Read(reid);
-		bs->Read(rx);
-		bs->Read(ry);
-		std::vector<Direction>* vec = new (std::nothrow) std::vector<Direction>;
-		m_pendingMoves.emplace(reid, vec);
 	}
 }

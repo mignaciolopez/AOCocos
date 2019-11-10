@@ -166,7 +166,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Systems\InputSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\MovementSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\NetworkSystem.cpp" />
-    <ClCompile Include="..\Classes\Systems\RenderSystem.cpp" />
+    <ClCompile Include="..\Classes\Systems\CameraSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\UISystem.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -175,6 +175,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Components\ComponentsList.h" />
     <ClInclude Include="..\Classes\Components\IncludeComponents.h" />
+    <ClInclude Include="..\Classes\Components\Layer3DComponent.h" />
     <ClInclude Include="..\Classes\Components\MapComponent.h" />
     <ClInclude Include="..\Classes\Components\PositionComponent.h" />
     <ClInclude Include="..\Classes\Components\PlayerBodyComponent.h" />
@@ -196,7 +197,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Systems\InputSystem.h" />
     <ClInclude Include="..\Classes\Systems\MovementSystem.h" />
     <ClInclude Include="..\Classes\Systems\NetworkSystem.h" />
-    <ClInclude Include="..\Classes\Systems\RenderSystem.h" />
+    <ClInclude Include="..\Classes\Systems\CameraSystem.h" />
     <ClInclude Include="..\Classes\Systems\UISystem.h" />
     <ClInclude Include="main.h" />
   </ItemGroup>
