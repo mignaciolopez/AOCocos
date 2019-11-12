@@ -15,6 +15,8 @@ public:
 		m_layer3D = nullptr;
 		m_layer3D = cocos2d::Layer::create();
 		m_layer3D->retain();
+		m_layer3D->setCameraMask(static_cast<int>(
+			cocos2d::CameraFlag::USER1));
 	}
 	~Layer3DComponent()
 	{

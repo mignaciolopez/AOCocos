@@ -106,7 +106,13 @@ void MapSystem::loadMap(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 	m_currentMapC->getMap()->getLayer("blocks")->setVisible(false);
 
 	m_entityManager->getComp(eid, LAYER3D)->getLayer()->addChild(m_currentMapC->getMap(), 0);
+	m_currentMapC->getMap()->setCameraMask(static_cast<int>(CameraFlag::USER2));
+
+	Vec2 mapPos = m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->getPosition();
+
 	m_currentMapC->getMap()->setPosition3D(cocos2d::Vec3::ZERO);
+	//m_currentMapC->getMap()->setPosition3D(cocos2d::Vec3(208.0f + 6 -mapPos.x, 416.0f / 2.0f + 32 - mapPos.y, 0.0f));
+	m_currentMapC->getMap()->setAnchorPoint(Vec2(0.0f, 0.0f));
 }
 
 void MapSystem::canMove(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)

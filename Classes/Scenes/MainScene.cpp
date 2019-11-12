@@ -33,7 +33,7 @@ bool MainScene::init()
 	if (!inputSystem)
 		cocos2d::log("%s InputSystem Failed!", LOGID);
 
-	UISystem* uiSystem = new (std::nothrow) UISystem;
+	UISystem* uiSystem = new (std::nothrow) UISystem(this);
 	if (!uiSystem)
 		cocos2d::log("%s UISystem Failed!", LOGID);
 

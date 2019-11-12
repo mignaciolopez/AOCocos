@@ -53,8 +53,8 @@ public:
 		else
 		{
 			m_spriteBody->retain();
-
-			m_spriteBody->setPosition(x * 32 + 16, y * 32);
+			m_spriteBody->setCameraMask(static_cast<int>(cocos2d::CameraFlag::USER2));
+			m_spriteBody->setPosition(x * 32 + 16, y * 32 + 10);
 
 			//m_spriteBody->setScale(2.0f);
 			m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
@@ -67,7 +67,7 @@ public:
 		else
 		{
 			m_spriteHead->retain();
-
+			m_spriteHead->setCameraMask(static_cast<int>(cocos2d::CameraFlag::USER2));
 			m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
 			m_spriteBody->addChild(m_spriteHead);
 			m_spriteHead->setPosition(m_spriteBody->getContentSize().width / 2, m_spriteBody->getContentSize().height);

@@ -38,6 +38,8 @@ private:
 	int m_spawnSystemID;
 	int m_animationSystemID;
 	int m_mapSystemID;
+
+	cocos2d::Layer* m_layer;
 };
 
 #endif // __MAIN_SCENE_H__
