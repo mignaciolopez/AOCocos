@@ -31,6 +31,9 @@ namespace ECS
 		virtual bool getMoving();
 		virtual void setMoving(bool m);
 
+		virtual bool getCanWalk();
+		virtual void setCanWalk(bool w);
+
 		virtual Direction getDirection();
 		virtual void setDirection(Direction dir);
 
@@ -44,10 +47,18 @@ namespace ECS
 		virtual void setHead(Head head);
 
 		//PositionComponent
-		virtual float getX();
-		virtual float getY();
-		virtual void setX(float x);
-		virtual void setY(float y);
+		virtual int getX();
+		virtual int getY();
+		virtual void setX(int x);
+		virtual void setY(int y);
+
+		//MapComponent
+		virtual cocos2d::TMXTiledMap* getMap();
+		virtual void setMap(cocos2d::TMXTiledMap* map);
+
+		//Layer3D
+		virtual cocos2d::Layer* getLayer();
+		virtual void setLayer(cocos2d::Layer* layer3D);
 
 	private:
 		const ComponentType m_type = ComponentType::NONE;

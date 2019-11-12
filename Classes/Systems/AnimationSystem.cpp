@@ -14,10 +14,11 @@ AnimationSystem::AnimationSystem()
 	m_sfCache = cocos2d::SpriteFrameCache::getInstance();
 
 	m_eventManager->Subscribe(EVENTS::ANIMATE, &AnimationSystem::animate, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATION_SWITCH_FACING, &AnimationSystem::setBodyCF, this);
 
-	m_eventManager->Subscribe(EVENTS::LOAD_ANIMATION_INFO, &AnimationSystem::loadAnimationInfo, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATION_LOAD_INFO, &AnimationSystem::loadAnimationInfo, this);
 
-	m_eventManager->Subscribe(EVENTS::EID_QUIT, &AnimationSystem::removeInfo, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATION_REMOVE_INFO, &AnimationSystem::removeInfo, this);
 }
 
 AnimationSystem::~AnimationSystem()
@@ -45,47 +46,7 @@ AnimationSystem::~AnimationSystem()
 
 void AnimationSystem::Update()
 {
-	/*for (auto it : *m_entityManager->getEntities())
-	{
-		if (m_animations.find(it.first) == m_animations.end())
-			return;
-
-			if (m_animations.find(it.first) != m_animations.end())
-				if (!m_entityManager->getComp(it.first, PLAYER_BODY)->getMoving())
-				{
-					setBody(it.first);
-					setHead(it.first);
-				}
-			
-		/*if (!m_entityManager->getComp(it.first, PLAYER_BODY)->getMoving())
-		{
-			if (m_animations.find(it.first) != m_animations.end())
-			{
-				switch (m_entityManager->getComp(it.first, ComponentType::PLAYER_BODY)->getDirection())
-				{
-				case Direction::North:
-					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
-						m_animations.at(it.first)->tagN);
-					break;
-				case Direction::East:
-					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
-						m_animations.at(it.first)->tagE);
-					break;
-				case Direction::South:
-					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
-						m_animations.at(it.first)->tagS);
-					break;
-				case Direction::West:
-					m_entityManager->getComp(it.first, PLAYER_BODY)->getBodySpr()->stopActionByTag(
-						m_animations.at(it.first)->tagW);
-					break;
-				}
-			}
-			
-			setBody(it.first);
-			setHead(it.first);
-		}*/
-	//}
+	
 }
 
 void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
@@ -93,9 +54,9 @@ void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
 	if (m_animations.find(eid) == m_animations.end())
 		return;
 
-	setBodyCF(eid);
+	setBodyCF(eid, nullptr, nullptr);
 
-	cocos2d::CallFuncN* setBodyCF = cocos2d::CallFuncN::create(CC_CALLBACK_0(AnimationSystem::setBodyCF, this, eid));
+	cocos2d::CallFuncN* setBodyCF = cocos2d::CallFuncN::create(CC_CALLBACK_0(AnimationSystem::setBodyCF, this, eid, nullptr, nullptr));
 	cocos2d::Action* secuence;
 
 	switch (m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getDirection())
@@ -117,7 +78,7 @@ void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
 	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(secuence);
 }
 
-void AnimationSystem::setBodyCF(int eid)
+void AnimationSystem::setBodyCF(int eid, cocos2d::Event*, SLNet::BitStream* bs)
 {
 	setBody(eid);
 	setHead(eid);

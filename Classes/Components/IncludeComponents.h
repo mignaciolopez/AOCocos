@@ -5,5 +5,7 @@
 
 #include "Components/PlayerBodyComponent.h"
 #include "Components/PositionComponent.h"
+#include "Components/MapComponent.h"
+#include "Components/Layer3DComponent.h"
 
 #endif //__INCLUDE_COMPONENTS_H__

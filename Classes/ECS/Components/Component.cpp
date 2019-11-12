@@ -44,6 +44,15 @@ namespace ECS
 	{
 	}
 
+	bool Component::getCanWalk()
+	{
+		return false;
+	}
+
+	void Component::setCanWalk(bool w)
+	{
+	}
+
 	Direction Component::getDirection()
 	{
 		return Direction();
@@ -80,21 +89,38 @@ namespace ECS
 	{
 	}
 
-	float Component::getX()
+	int Component::getX()
 	{
 		return 0.0f;
 	}
 
-	float Component::getY()
+	int Component::getY()
 	{
 		return 0.0f;
 	}
 
-	void Component::setX(float x)
+	void Component::setX(int x)
 	{
 	}
 
-	void Component::setY(float y)
+	void Component::setY(int y)
+	{
+	}
+
+	cocos2d::TMXTiledMap * Component::getMap()
+	{
+		return nullptr;
+	}
+
+	void Component::setMap(cocos2d::TMXTiledMap * map)
+	{
+	}
+
+	cocos2d::Layer * Component::getLayer()
+	{
+		return nullptr;
+	}
+	void Component::setLayer(cocos2d::Layer* layer3D)
 	{
 	}
 

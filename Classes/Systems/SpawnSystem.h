@@ -16,12 +16,14 @@ public:
 
 	virtual void Update() override;
 
+	void createLocal(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
+	void createRemote(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 	void createPlayer(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 	void syncPlayers(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 	void removePlayer(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 
 private:
-	void syncCreatePlayer(int eid, float x, float y);
+	void syncCreatePlayer(int eid, int x, int y);
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;

@@ -54,9 +54,6 @@
     <ClCompile Include="..\Classes\ECS\Systems\System.cpp">
       <Filter>src\ECS_ENGINE\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="..\Classes\Systems\RenderSystem.cpp">
-      <Filter>src\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="..\Classes\ECS\Components\Component.cpp">
       <Filter>src\ECS_ENGINE\Components</Filter>
     </ClCompile>
@@ -93,6 +90,15 @@
     <ClCompile Include="..\Classes\Systems\AnimationSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Systems\MapSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\AREF\cocos2d-x\tests\cpp-tests\Classes\Sprite3DTest\DrawNode3D.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\CameraSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -112,9 +118,6 @@
     </ClInclude>
     <ClInclude Include="..\Classes\ECS\Systems\System.h">
       <Filter>src\ECS_ENGINE\Systems</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Classes\Systems\RenderSystem.h">
-      <Filter>src\Systems</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Components\ComponentsList.h">
       <Filter>src\Components</Filter>
@@ -168,6 +171,21 @@
       <Filter>src\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Systems\AnimationSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\MapComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\MapSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\AREF\cocos2d-x\tests\cpp-tests\Classes\Sprite3DTest\DrawNode3D.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\Layer3DComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\CameraSystem.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
   </ItemGroup>

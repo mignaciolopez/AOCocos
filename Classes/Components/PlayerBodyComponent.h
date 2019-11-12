@@ -34,7 +34,7 @@ enum Head
 class PlayerBodyComponent : public ECS::Component
 {
 public:
-	PlayerBodyComponent(std::string bodySfn, std::string headSfn, float x, float y, 
+	PlayerBodyComponent(std::string bodySfn, std::string headSfn, int x, int y,
 		Direction dir, Genre genre, Race race, Head head)
 	{
 		cocos2d::log("%s Constructor", "[PLAYERBODYCOMPONENT COMPONENT]");
@@ -53,10 +53,11 @@ public:
 		else
 		{
 			m_spriteBody->retain();
+			m_spriteBody->setCameraMask(static_cast<int>(cocos2d::CameraFlag::USER2));
+			m_spriteBody->setPosition(x * 32 + 16, y * 32 + 10);
 
-			m_spriteBody->setPosition(x, y);
-
-			m_spriteBody->setScale(2.0f);
+			//m_spriteBody->setScale(2.0f);
+			m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
 		}
 
 		//Head
@@ -66,29 +67,22 @@ public:
 		else
 		{
 			m_spriteHead->retain();
-
+			m_spriteHead->setCameraMask(static_cast<int>(cocos2d::CameraFlag::USER2));
+			m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
 			m_spriteBody->addChild(m_spriteHead);
 			m_spriteHead->setPosition(m_spriteBody->getContentSize().width / 2, m_spriteBody->getContentSize().height);
 		}
 	}
 	~PlayerBodyComponent()
 	{
-		auto runningScene = cocos2d::Director::getInstance()->getRunningScene();
-		if (runningScene && m_spriteBody)
-		{
-			if (m_spriteBody->getParent() == runningScene)
-				runningScene->removeChild(m_spriteBody);
+		if (m_spriteBody)
+			if (m_spriteBody->getReferenceCount() > 0)
+				m_spriteBody->release();
 
-			m_spriteBody->release();
-		}
+		if (m_spriteHead)
+			if (m_spriteHead->getReferenceCount() > 0)
+				m_spriteHead->release();
 
-		if (runningScene && m_spriteHead)
-		{
-			if (m_spriteHead->getParent() == runningScene)
-				runningScene->removeChild(m_spriteHead);
-
-			m_spriteHead->release();
-		}
 		cocos2d::log("%s Destructor", "[PLAYERBODYCOMPONENT COMPONENT]");
 	}
 
@@ -122,6 +116,16 @@ public:
 	{
 		m_moving = m;
 	}
+
+	virtual bool getCanWalk() override
+	{
+		return m_canWalk;
+	}
+	virtual void setCanWalk(bool w) override
+	{
+		m_canWalk = w;
+	}
+
 	virtual Direction getDirection() override
 	{
 		return m_direction;
@@ -162,7 +166,8 @@ private:
 	cocos2d::Sprite* m_spriteBody;
 	cocos2d::Sprite* m_spriteHead; //child of body
 	const ComponentType m_type = ComponentType::PLAYER_BODY;
-	bool  m_moving = false;
+	bool m_moving = false;
+	bool m_canWalk = true;
 	Direction m_direction = Direction::South;
 	Race m_race;
 	Genre m_genre;

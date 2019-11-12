@@ -30,13 +30,16 @@ public:
 private:
 	ECS::ECS_Engine* m_ECS_Engine;
 
-	int m_renderSystemID;
+	int m_cameraSystemID;
 	int m_inputSystemID;
 	int m_uiSystemID;
 	int m_movementSystemID;
 	int m_networkSystemID;
 	int m_spawnSystemID;
 	int m_animationSystemID;
+	int m_mapSystemID;
+
+	cocos2d::Layer* m_layer;
 };
 
 #endif // __MAIN_SCENE_H__

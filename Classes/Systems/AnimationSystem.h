@@ -42,7 +42,7 @@ public:
 	void loadAnimationInfo(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 	void removeInfo(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 
-	void setBodyCF(int eid);
+	void setBodyCF(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 
 private:
 	int newTag();

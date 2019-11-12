@@ -20,6 +20,8 @@ public:
 	void moveSouth(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 	void moveWest(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 
+	void switchRemoteFacing(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
+
 	void move(Direction dir, int eid);
 	void moveLocal(Direction dir);
 	void moveRemote(Direction dir, int eid);
@@ -30,8 +32,6 @@ public:
 
 	void createVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
 	void removeVector(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
-
-	void createVectors(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
 
 private:
 	ECS::EntityManager* m_entityManager;
