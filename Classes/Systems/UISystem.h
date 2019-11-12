@@ -31,6 +31,9 @@ private:
 
 	void createlblNetwork();
 
+	void createInventoryAndSpells();
+	void toggleInventory(int x, int y);
+
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;
@@ -53,6 +56,10 @@ private:
 	//LABELS
 	cocos2d::Label* m_lblPosition;
 	cocos2d::Label* m_lblNetwork;
+
+	//SPRITES
+	cocos2d::Sprite* m_sprInventory;
+	cocos2d::Sprite* m_sprSpells;
 };
 
 #endif // __UI_SYSTEM_H__

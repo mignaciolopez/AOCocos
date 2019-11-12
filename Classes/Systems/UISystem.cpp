@@ -48,6 +48,7 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 	m_showDebug = false;
 
 	createLabels();
+	createInventoryAndSpells();
 
 	m_layer->setCameraMask(static_cast<int>(CameraFlag::USER1));
 }
@@ -93,6 +94,8 @@ void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 		cocos2d::log("%s onMouse##Event: %s", "[INPUT SYSTEM]", e.what());
 		return;
 	}
+
+	toggleInventory(mouseEvent->getLocation().x, mouseEvent->getLocation().y);
 
 	cocos2d::log("Entity: %i | Mouse Button: %i | X: %f, Y: %f",
 		eid, mouseEvent->getMouseButton(), mouseEvent->getLocation().x, mouseEvent->getLocation().y);
@@ -196,4 +199,36 @@ void UISystem::createlblNetwork()
 	m_lblNetwork->setPosition(Vec2(50, 473));
 	m_layer->addChild(m_lblNetwork);
 	m_lblNetwork->setVisible(false);
+}
+
+void UISystem::createInventoryAndSpells()
+{
+	m_sprInventory = TP::Interface::createCentroInventarioSprite();
+	m_sprSpells = TP::Interface::createCentroHechizosSprite();
+
+	m_layer->addChild(m_sprInventory);
+	m_layer->addChild(m_sprSpells);
+
+	m_sprInventory->setAnchorPoint(Vec2(0, 0));
+	m_sprSpells->setAnchorPoint(Vec2(0, 0));
+
+	m_sprInventory->setPosition(567, 200);
+	m_sprSpells->setPosition(567, 200);
+
+	m_sprSpells->setVisible(false);
+
+}
+
+void UISystem::toggleInventory(int x, int y)
+{
+	if (x > 570 && y > 115 && x < 667 && y < 145)
+	{
+		m_sprInventory->setVisible(true);
+		m_sprSpells->setVisible(false);
+	}
+	else if(x > 668 && y > 115 && x < 762 && y < 145)
+	{
+		m_sprInventory->setVisible(false);
+		m_sprSpells->setVisible(true);
+	}
 }
