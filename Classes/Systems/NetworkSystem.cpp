@@ -50,6 +50,8 @@ NetworkSystem::~NetworkSystem()
 
 void NetworkSystem::Update()
 {
+	SLNet::BitStream fakeBs;
+
 	SLNet::Packet* packet;
 	if (m_peer)
 		for (packet = m_peer->Receive(); packet; m_peer->DeallocatePacket(packet), packet = m_peer->Receive())
@@ -75,6 +77,9 @@ void NetworkSystem::Update()
 				break;
 			case ID_CONNECTION_ATTEMPT_FAILED:
 				cocos2d::log("%s ID_CONNECTION_ATTEMPT_FAILED", "[NETWORK SYSTEM]");
+				fakeBs.Write(10);
+				fakeBs.Write(10);
+				m_eventManager->execute(EVENTS::MY_EID, 0, nullptr, &fakeBs);
 				break;
 			default:
 				//cocos2d::log("%s Message with identifier %i has arrived.", "[NETWORK SYSTEM]", packet->data[0]);
