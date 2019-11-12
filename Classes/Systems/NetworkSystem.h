@@ -12,10 +12,8 @@
 #define SERVER_ADDRESS "migna.dnsabr.com"
 #define SERVER_PORT 6000
 
-namespace cocos2d
-{
-	class Director;
-}
+#include "cocos2d.h"
+#include <ctime>
 
 class NetworkSystem : public ECS::System
 {
@@ -31,6 +29,8 @@ private:
 	void receive(int evntid, SLNet::BitStream* bsIn);
 
 	void conectionAccepted(SLNet::Packet* packet);
+
+	void updateUILatencylbl();
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;
@@ -48,6 +48,9 @@ private:
 	SLNet::RakNetGUID m_serverGUID;
 
 	bool m_online;
+
+	clock_t m_clock_b;
+	clock_t m_clock_e;
 };
 
 #endif // __NETWORK_SYSTEM_H__

@@ -1,7 +1,5 @@
 #include "NetworkSystem.h"
 
-#include "cocos2d.h"
-
 NetworkSystem::NetworkSystem()
 {
 	cocos2d::log("%s Constructor", "[NETWORK SYSTEM]");
@@ -30,6 +28,8 @@ NetworkSystem::NetworkSystem()
 	}
 
 	m_eventManager->Subscribe(EVENTS::SEND_SERVER, &NetworkSystem::send, this);
+
+	m_clock_b = clock();
 }
 
 NetworkSystem::~NetworkSystem()
@@ -64,15 +64,21 @@ void NetworkSystem::Update()
 				break;
 			case ID_CONNECTION_REQUEST_ACCEPTED:
 				conectionAccepted(packet);
+				updateUILatencylbl();
 				break;
 			case ID_NO_FREE_INCOMING_CONNECTIONS:
 				cocos2d::log("%s ID_NO_FREE_INCOMING_CONNECTIONS", "[NETWORK SYSTEM]");
+				updateUILatencylbl();
 				break;
 			case ID_DISCONNECTION_NOTIFICATION:
 				cocos2d::log("%s ID_DISCONNECTION_NOTIFICATION", "[NETWORK SYSTEM]");
+				m_online = false;
+				updateUILatencylbl();
 				break;
 			case ID_CONNECTION_LOST:
 				cocos2d::log("%s ID_CONNECTION_LOST", "[NETWORK SYSTEM]");
+				m_online = false;
+				updateUILatencylbl();
 				//Go Back to LOGIN SCENE
 				break;
 			case ID_CONNECTION_ATTEMPT_FAILED:
@@ -80,6 +86,8 @@ void NetworkSystem::Update()
 				fakeBs.Write(10);
 				fakeBs.Write(10);
 				m_eventManager->execute(EVENTS::MY_EID, 0, nullptr, &fakeBs);
+				m_online = false;
+				updateUILatencylbl();
 				break;
 			default:
 				//cocos2d::log("%s Message with identifier %i has arrived.", "[NETWORK SYSTEM]", packet->data[0]);
@@ -87,6 +95,13 @@ void NetworkSystem::Update()
 				break;
 			}
 		}
+	m_clock_e = clock();
+	double elapsed_secs = double(m_clock_e - m_clock_b) / CLOCKS_PER_SEC;
+	if (m_online && elapsed_secs > 3)
+	{
+		updateUILatencylbl();
+		m_clock_b = clock();
+	}
 }
 
 void NetworkSystem::send(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs)
@@ -114,4 +129,22 @@ void NetworkSystem::conectionAccepted(SLNet::Packet* packet)
 	SLNet::BitStream bsOut;
 	bsOut.Write((SLNet::MessageID)EVENTS::REQUEST_EID);
 	m_peer->Send(&bsOut, HIGH_PRIORITY, RELIABLE_ORDERED, 0, m_serverGUID, false);
+}
+
+void NetworkSystem::updateUILatencylbl()
+{
+	SLNet::BitStream bsOut;
+
+	if (!m_peer || !m_online)
+	{
+		bsOut.Write(false);
+		bsOut.Write(-1);
+	}
+	else
+	{
+		bsOut.Write(true);
+		bsOut.Write(m_peer->GetLastPing(m_serverGUID));
+	}
+
+	m_eventManager->execute(EVENTS::UI_LBL_NETWORK, 0, nullptr, &bsOut);
 }

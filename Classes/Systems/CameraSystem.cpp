@@ -40,7 +40,7 @@ CameraSystem::CameraSystem(cocos2d::Scene* scene) : m_scene(scene)
 	sprite->setPosition(10, 44);
 	sprite->setAnchorPoint(Vec2(0.0f, 0.0f));
 	sprite->setCameraMask(static_cast<int>(CameraFlag::USER1));
-	scene->addChild(sprite);
+	scene->addChild(sprite, 3);
 
 	
 	//m_camera = Camera::createPerspective(60, (GLfloat)fboSize.width / fboSize.height, 0.0f, 3000.0f);

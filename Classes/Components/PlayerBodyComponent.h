@@ -54,7 +54,7 @@ public:
 		{
 			m_spriteBody->retain();
 			m_spriteBody->setCameraMask(static_cast<int>(cocos2d::CameraFlag::USER2));
-			m_spriteBody->setPosition(x * 32 + 16, y * 32 + 10);
+			m_spriteBody->setPosition(x * 32 + 16, y * 32 + 6);
 
 			//m_spriteBody->setScale(2.0f);
 			m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));

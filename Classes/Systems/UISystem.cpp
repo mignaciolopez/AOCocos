@@ -7,8 +7,11 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 	cocos2d::log("%s Constructor", "[UI SYSTEM]");
 
 	m_director = cocos2d::Director::getInstance();
+	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
 	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager();
 	sfCache = SpriteFrameCache::getInstance();
+
+	m_localeid = -1;
 
 	TP::Interface::addSpriteFramesToCache();
 
@@ -18,20 +21,18 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 	camera->retain();
 	camera->setCameraFlag(CameraFlag::USER1);
 
-	auto layer = Layer::create();
-	layer->addChild(camera);
-	layer->setCameraMask(static_cast<int>(CameraFlag::USER1));
-	m_scene->addChild(layer, 1);
+	m_layer = Layer::create();
+	m_layer->addChild(camera);
+	m_layer->setCameraMask(static_cast<int>(CameraFlag::USER1));
+	m_scene->addChild(m_layer, 1);
 
 
 	Sprite* mainWindow = Sprite::createWithSpriteFrameName(TP::Interface::ventanaPrincipal);
 	mainWindow->setAnchorPoint(Vec2(0.0f, 0.0f));
 	mainWindow->setCameraMask(static_cast<int>(CameraFlag::USER1));
-	layer->addChild(mainWindow);
+	m_layer->addChild(mainWindow);
 
-	layer->setCameraMask(static_cast<int>(CameraFlag::USER1));
-
-	cocos2d::log("[UI SYSTEM] mainWindowSprite camera mask: %i", mainWindow->getCameraMask());
+	m_eventManager->Subscribe(EVENTS::MY_EID, &UISystem::setLocaleid, this);
 
 	m_eventManager->Subscribe(EVENTS::MOUSE_PRESSED, &UISystem::clicked, this);
 	m_eventManager->Subscribe(EVENTS::MOUSE_RELEASED, &UISystem::clicked, this);
@@ -39,6 +40,16 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 
 	m_eventManager->Subscribe(EVENTS::MOUSE_SCROLL, &UISystem::scroll, this);
 	//m_eventManager->Subscribe(EVENTS::MOUSE_MOVE, &UISystem::clicked, this);
+
+	m_eventManager->Subscribe(EVENTS::UI_TOGGLE_DEBUG, &UISystem::toggleDebugInfo, this);
+	m_eventManager->Subscribe(EVENTS::UI_LBL_NETWORK, &UISystem::setlblNetwork, this);
+	
+
+	m_showDebug = false;
+
+	createLabels();
+
+	m_layer->setCameraMask(static_cast<int>(CameraFlag::USER1));
 }
 
 UISystem::~UISystem()
@@ -50,7 +61,24 @@ UISystem::~UISystem()
 
 void UISystem::Update()
 {
-	//cocos2d::log("%s Update", LOGID);
+	if (m_localeid == -1)
+		return;
+
+	updatelblPosition();
+
+	if (m_showDebug)
+	{
+		m_lblNetwork->setVisible(true);
+	}
+	else
+	{
+		m_lblNetwork->setVisible(false);
+	}
+}
+
+void UISystem::setLocaleid(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
+	m_localeid = eid;
 }
 
 void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
@@ -107,4 +135,65 @@ void UISystem::toogleFullscreen(int eid, cocos2d::Event* ccevnt, SLNet::BitStrea
 		view->setFullscreen();
 	}
 #endif
+}
+
+void UISystem::toggleDebugInfo(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
+	m_showDebug = !m_showDebug;
+}
+
+void UISystem::setlblNetwork(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
+	if (!bs)
+		return;
+
+	bool online = false;
+	int latency = -1;
+	bs->Read(online);
+	bs->Read(latency);
+
+	if (online)
+	{
+		m_lblNetwork->setTextColor(Color4B::GREEN);
+		m_lblNetwork->setString("LATENCY: " + std::to_string(latency));
+	}
+	else
+	{
+		m_lblNetwork->setTextColor(Color4B::RED);
+		m_lblNetwork->setString("O F F L I N E");
+	}
+}
+
+void UISystem::createLabels()
+{
+	createlblPosition();
+	createlblNetwork();
+}
+
+void UISystem::createlblPosition()
+{
+	TTFConfig ttf("fonts/American Typewriter.ttf", 12.0f);
+	ttf.bold = true;
+
+	m_lblPosition = Label::createWithTTF(ttf, "American Typewriter", TextHAlignment::LEFT);
+	m_lblPosition->setPosition(Vec2(625, 24));
+	m_layer->addChild(m_lblPosition);
+}
+
+void UISystem::updatelblPosition()
+{
+	int x = m_entityManager->getComp(m_localeid, POSITION)->getX();
+	int y = m_entityManager->getComp(m_localeid, POSITION)->getY();
+	m_lblPosition->setString("Mapa: 1 (" + std::to_string(x) + ", " + std::to_string(y) + ")");
+}
+
+void UISystem::createlblNetwork()
+{
+	TTFConfig ttf("fonts/American Typewriter.ttf", 16.0f);
+	ttf.bold = false;
+
+	m_lblNetwork = Label::createWithTTF(ttf, "American Typewriter", TextHAlignment::LEFT);
+	m_lblNetwork->setPosition(Vec2(50, 473));
+	m_layer->addChild(m_lblNetwork);
+	m_lblNetwork->setVisible(false);
 }

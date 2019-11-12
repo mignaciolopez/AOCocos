@@ -68,17 +68,17 @@ void InputSystem::Update()
 		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW);
 		m_eventManager->execute(EVENTS::MOVE_NORTH, m_localEntity);
 	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
 	{
 		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW);
 		m_eventManager->execute(EVENTS::MOVE_EAST, m_localEntity);
 	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
 	{
 		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW);
 		m_eventManager->execute(EVENTS::MOVE_SOUTH, m_localEntity);
 	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
 	{
 		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW);
 		m_eventManager->execute(EVENTS::MOVE_WEST, m_localEntity);
@@ -98,6 +98,11 @@ void InputSystem::Update()
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F1);
 		m_eventManager->execute(EVENTS::MAP_TOGGLE_DEBUG, m_localEntity);
+	}
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F2))
+	{
+		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F2);
+		m_eventManager->execute(EVENTS::UI_TOGGLE_DEBUG, m_localEntity);
 	}
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_PG_UP))
 	{

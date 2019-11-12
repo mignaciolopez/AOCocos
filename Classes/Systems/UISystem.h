@@ -15,13 +15,27 @@ public:
 
 	virtual void Update() override;
 
+	void setLocaleid(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+
 	void clicked(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void scroll(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void toogleFullscreen(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+	void toggleDebugInfo(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+	void setlblNetwork(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+
+private:
+	void createLabels();
+
+	void createlblPosition();
+	void updatelblPosition();
+
+	void createlblNetwork();
+
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;
 
+	ECS::EntityManager* m_entityManager;
 	ECS::EventManager* m_eventManager;
 	cocos2d::Director* m_director;
 	cocos2d::SpriteFrameCache* sfCache;
@@ -29,6 +43,16 @@ private:
 	cocos2d::Scene* m_scene;
 
 	const cocos2d::Size m_windowSize = cocos2d::Size(800, 600);
+
+	int m_localeid;
+
+	cocos2d::Layer* m_layer;
+
+	bool m_showDebug;
+
+	//LABELS
+	cocos2d::Label* m_lblPosition;
+	cocos2d::Label* m_lblNetwork;
 };
 
 #endif // __UI_SYSTEM_H__
