@@ -60,6 +60,17 @@ namespace ECS
 		virtual cocos2d::Layer* getLayer();
 		virtual void setLayer(cocos2d::Layer* layer3D);
 
+		//Audio
+		virtual int getMusic();
+		virtual void setMusic(int musicID);
+		virtual int getPrevMusic();
+		virtual void setPrevMusic(int musicID);
+		virtual void addAudio(int audioID);
+		virtual void removeAudio(int audioID);
+		virtual std::map<int, int>* getAudios();
+		virtual int getAeid();
+		virtual void setAeid(int aeid);
+
 	private:
 		const ComponentType m_type = ComponentType::NONE;
 	};

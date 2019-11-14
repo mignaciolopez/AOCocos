@@ -7,7 +7,8 @@ enum ComponentType
 	PLAYER_BODY,
 	POSITION,
 	MAP,
-	LAYER3D
+	LAYER3D,
+	AUDIO
 };
 
 

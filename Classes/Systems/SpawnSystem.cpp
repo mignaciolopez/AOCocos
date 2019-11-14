@@ -42,6 +42,7 @@ void SpawnSystem::createLocal(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 	m_eventManager->execute(EVENTS::MAP_CREATE, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MAP_CHILD_ADD, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MOVES_V_CREATE, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::AUDIO_C_CREATE, eid, nullptr, nullptr);
 }
 
 void SpawnSystem::createRemote(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
@@ -50,6 +51,7 @@ void SpawnSystem::createRemote(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 	m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MAP_CHILD_ADD, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MOVES_V_CREATE, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::AUDIO_C_CREATE, eid, nullptr, nullptr);
 }
 
 void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
@@ -100,6 +102,7 @@ void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 		m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, reid, nullptr, nullptr);
 		m_eventManager->execute(EVENTS::MAP_CHILD_ADD, reid, nullptr, nullptr);
 		m_eventManager->execute(EVENTS::MOVES_V_CREATE, reid, nullptr, nullptr);
+		m_eventManager->execute(EVENTS::AUDIO_C_CREATE, reid, nullptr, nullptr);
 	}
 }
 
@@ -108,6 +111,7 @@ void SpawnSystem::removePlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 	m_eventManager->execute(EVENTS::MAP_CHILD_REMOVE, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::ANIMATION_REMOVE_INFO, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MOVES_V_REMOVE, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::AUDIO_C_REMOVE, eid, nullptr, nullptr);
 	m_entityManager->removeEntity(eid);
 }
 

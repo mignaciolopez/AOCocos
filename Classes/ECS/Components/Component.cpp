@@ -124,4 +124,43 @@ namespace ECS
 	{
 	}
 
+	int Component::getMusic()
+	{
+		return 0;
+	}
+
+	void Component::setMusic(int musicID)
+	{
+	}
+
+	int Component::getPrevMusic()
+	{
+		return 0;
+	}
+
+	void Component::setPrevMusic(int musicID)
+	{
+	}
+
+	void Component::addAudio(int audioID)
+	{
+	}
+
+	void Component::removeAudio(int audioID)
+	{
+	}
+
+	std::map<int, int>* Component::getAudios()
+	{
+		return nullptr;
+	}
+
+	int Component::getAeid()
+	{
+		return -1;
+	}
+	void ECS::Component::setAeid(int aeid)
+	{
+	}
+
 }

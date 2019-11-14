@@ -114,6 +114,11 @@ void InputSystem::Update()
 		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_PG_DOWN);
 		m_eventManager->execute(EVENTS::CAMERA_ZOOM_OUT, m_localEntity);
 	}
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_M))
+	{
+		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_M);
+		m_eventManager->execute(EVENTS::AUDIO_MUSIC_TOGGLE, m_localEntity);
+	}
 }
 
 void InputSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)

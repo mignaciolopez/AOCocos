@@ -61,6 +61,10 @@ bool MainScene::init()
 	if (!mapSystem)
 		cocos2d::log("%s MapSystem Failed!", LOGID);
 
+	AudioSystem* audioSystem = new (std::nothrow) AudioSystem;
+	if (!audioSystem)
+		cocos2d::log("%s AudioSystem Failed!", LOGID);
+
 	// 3- Register Systems
 	m_inputSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(inputSystem);
 	m_uiSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(uiSystem);
@@ -70,6 +74,7 @@ bool MainScene::init()
 	m_cameraSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(cameraSystem);
 	m_animationSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(animationSystem);
 	m_mapSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(mapSystem);
+	m_AudioSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(audioSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
 

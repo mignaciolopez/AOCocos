@@ -99,6 +99,9 @@
     <ClCompile Include="..\Classes\Systems\CameraSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Systems\AudioSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -187,6 +190,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Systems\CameraSystem.h">
       <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\AudioSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\AudioComponent.h">
+      <Filter>src\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

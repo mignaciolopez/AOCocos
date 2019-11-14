@@ -9,5 +9,6 @@
 #include "Systems/SpawnSystem.h"
 #include "Systems/AnimationSystem.h"
 #include "Systems/MapSystem.h"
+#include "Systems/AudioSystem.h"
 
 #endif //__INCLUDE_SYSTEMS_H__

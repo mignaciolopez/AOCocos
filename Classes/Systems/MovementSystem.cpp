@@ -225,6 +225,8 @@ void MovementSystem::moveLocal(Direction dir)
 		m_entityManager->getComp(m_localeid, POSITION)->setY(
 			m_entityManager->getComp(m_localeid, POSITION)->getY() + y);
 
+
+		m_entityManager->getComp(m_localeid, AUDIO)->addAudio(23);
 		//cocos2d::log("Pos: %i, %i", 
 			//m_entityManager->getComp(m_localeid, POSITION)->getX(),
 			//m_entityManager->getComp(m_localeid, POSITION)->getY());
@@ -267,6 +269,8 @@ void MovementSystem::moveRemote(Direction dir, int eid)
 
 	m_entityManager->getComp(eid, POSITION)->setY(
 		m_entityManager->getComp(eid, POSITION)->getY() + y);
+
+	m_entityManager->getComp(eid, AUDIO)->addAudio(23);
 }
 
 void MovementSystem::stopMoving(int eid)
