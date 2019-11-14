@@ -25,9 +25,7 @@ AudioSystem::AudioSystem()
 	m_musicOn = false;
 
 	preloadSounds();
-	preloadMusic();
-
-	playMusic(1);
+	//preloadMusic();
 }
 
 AudioSystem::~AudioSystem()
@@ -72,6 +70,16 @@ void AudioSystem::Update()
 			break;
 		}
 	}
+
+	if (!m_entityManager->getComp(m_localeid, AUDIO))
+		return;
+
+	if (m_entityManager->getComp(m_localeid, AUDIO)->getMusic() !=
+		m_entityManager->getComp(m_localeid, AUDIO)->getPrevMusic())
+	{
+		stopMusic(m_entityManager->getComp(m_localeid, AUDIO)->getAeid());
+		playMusic(m_entityManager->getComp(m_localeid, AUDIO)->getMusic());
+	}
 }
 
 void AudioSystem::setLocaleid(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
@@ -95,9 +103,9 @@ void AudioSystem::removeComponent(int eid, cocos2d::Event * ccevnt, SLNet::BitSt
 void AudioSystem::musicToggle(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 {
 	if (m_musicOn)
-		stopMusic();
+		stopMusic(m_entityManager->getComp(eid, AUDIO)->getAeid());
 	else
-		playMusic(1);
+		playMusic(m_entityManager->getComp(eid, AUDIO)->getAeid());
 }
 
 void AudioSystem::preloadSounds()
@@ -124,16 +132,19 @@ void AudioSystem::playSound(int i)
 	m_SAE->playEffect(path.c_str());
 }
 
-void AudioSystem::playMusic(int i)
+void AudioSystem::playMusic(int id)
 {
-	std::string path = "mp3/" + std::to_string(i) + ".mp3";
-	m_SAE->playBackgroundMusic(path.c_str(), true);
-	m_SAE->setBackgroundMusicVolume(0.1f);
+	int aeid = -1;
+	std::string path = "mp3/" + std::to_string(id) + ".mp3";
+	aeid = experimental::AudioEngine::play2d(path.c_str(), true);
+	experimental::AudioEngine::setVolume(aeid, 0.4f);
 	m_musicOn = true;
+	m_entityManager->getComp(m_localeid, AUDIO)->setAeid(aeid);
+	m_entityManager->getComp(m_localeid, AUDIO)->setPrevMusic(id);
 }
 
-void AudioSystem::stopMusic()
+void AudioSystem::stopMusic(int aeid)
 {
-	m_SAE->stopBackgroundMusic();
+	experimental::AudioEngine::stop(aeid);
 	m_musicOn = false;
 }

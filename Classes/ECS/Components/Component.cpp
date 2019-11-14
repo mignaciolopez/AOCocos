@@ -155,4 +155,12 @@ namespace ECS
 		return nullptr;
 	}
 
+	int Component::getAeid()
+	{
+		return -1;
+	}
+	void ECS::Component::setAeid(int aeid)
+	{
+	}
+
 }

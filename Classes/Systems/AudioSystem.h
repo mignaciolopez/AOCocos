@@ -25,8 +25,8 @@ private:
 	void preloadMusic();
 
 	void playSound(int i);
-	void playMusic(int i);
-	void stopMusic();
+	void playMusic(int id);
+	void stopMusic(int aeid);
 
 private:
 	ECS::EntityManager* m_entityManager;

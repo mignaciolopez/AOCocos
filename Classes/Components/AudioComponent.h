@@ -13,7 +13,7 @@ public:
 		cocos2d::log("%s Constructor", "[AUDIO COMPONENT]");
 
 		m_prevMusic = 0;
-		m_music = 1;
+		m_music = 5;
 	}
 	~AudioComponent()
 	{
@@ -43,6 +43,15 @@ public:
 		m_prevMusic = musicID;
 	}
 
+	virtual int getAeid() override
+	{
+		return m_aeid;
+	}
+	virtual void setAeid(int aeid) override
+	{
+		m_aeid = aeid;
+	}
+
 	virtual void addAudio(int audioID) override
 	{
 		m_audios.emplace(audioID, audioID);
@@ -63,6 +72,7 @@ private:
 
 	int m_music;
 	int m_prevMusic;
+	int m_aeid;
 	std::map<int, int> m_audios;
 
 };
