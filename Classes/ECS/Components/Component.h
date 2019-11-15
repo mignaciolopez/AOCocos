@@ -48,9 +48,11 @@ namespace ECS
 
 		//PositionComponent
 		virtual int getX();
-		virtual int getY();
 		virtual void setX(int x);
+		virtual int getY();
 		virtual void setY(int y);
+		virtual Direction getNextMove();
+		virtual void setNextMove(Direction dir);
 
 		//MapComponent
 		virtual cocos2d::TMXTiledMap* getMap();

@@ -34,6 +34,7 @@ private:
 	std::vector<ComponentType> m_compatibleComponents;
 
 	ECS::EventManager* m_eventManager;
+	ECS::EntityManager* m_entityManager;
 	cocos2d::Director* m_director;
 	cocos2d::Scene* m_scene;
 
@@ -43,7 +44,7 @@ private:
 	
 	cocos2d::EventListenerMouse* m_mouseListener;
 
-	int m_localEntity = 0;//que me de error //tengo que actualizar esta variable con el evento del servidor que trae el ID local;
+	int m_localeid;
 
 };
 

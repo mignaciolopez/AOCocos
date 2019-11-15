@@ -11,6 +11,7 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 	m_director = cocos2d::Director::getInstance();
 
 	m_eventManager = ECS::ECS_Engine::getInstance()->getEventManager();
+	m_entityManager = ECS::ECS_Engine::getInstance()->getEntityManager();
 
 	for (int i = 0; i < 256; i++)
 		m_keyStates[i] = false;
@@ -42,7 +43,7 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 
 	m_eventManager->Subscribe(EVENTS::MY_EID, &InputSystem::setLocalEntity, this);
 
-	m_localEntity = -1;
+	m_localeid = -1;
 }
 
 InputSystem::~InputSystem()
@@ -61,69 +62,72 @@ InputSystem::~InputSystem()
 
 void InputSystem::Update()
 {
-	//cocos2d::log("%s Update", LOGID);
-
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW))
-	{
-		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW);
-		m_eventManager->execute(EVENTS::MOVE_NORTH, m_localEntity);
-	}
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
-	{
-		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW);
-		m_eventManager->execute(EVENTS::MOVE_EAST, m_localEntity);
-	}
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
-	{
-		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW);
-		m_eventManager->execute(EVENTS::MOVE_SOUTH, m_localEntity);
-	}
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
-	{
-		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW);
-		m_eventManager->execute(EVENTS::MOVE_WEST, m_localEntity);
-	}
-	
 	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE))
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE);
 		m_director->end();
 	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F11))
+
+	if (m_localeid == -1)
+		return;
+
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW))
+	{
+		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
+			m_eventManager->execute(EVENTS::MOVE_NORTH, m_localeid);
+	}
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
+	{
+		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
+			m_eventManager->execute(EVENTS::MOVE_EAST, m_localeid);
+	}
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
+	{
+		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
+			m_eventManager->execute(EVENTS::MOVE_SOUTH, m_localeid);
+	}
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
+	{
+		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
+			m_eventManager->execute(EVENTS::MOVE_WEST, m_localeid);
+	}
+	
+	
+	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F11))
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F11);
-		m_eventManager->execute(EVENTS::UI_TOGGLE_FULLSCREEN, m_localEntity);
+		m_eventManager->execute(EVENTS::UI_TOGGLE_FULLSCREEN, m_localeid);
 	}
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F1))
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F1);
-		m_eventManager->execute(EVENTS::MAP_TOGGLE_DEBUG, m_localEntity);
+		m_eventManager->execute(EVENTS::MAP_TOGGLE_DEBUG, m_localeid);
 	}
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F2))
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F2);
-		m_eventManager->execute(EVENTS::UI_TOGGLE_DEBUG, m_localEntity);
+		m_eventManager->execute(EVENTS::UI_TOGGLE_DEBUG, m_localeid);
 	}
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_PG_UP))
 	{
 		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_PG_UP);
-		m_eventManager->execute(EVENTS::CAMERA_ZOOM_IN, m_localEntity);
+		m_eventManager->execute(EVENTS::CAMERA_ZOOM_IN, m_localeid);
 	}
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_PG_DOWN))
 	{
 		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_PG_DOWN);
-		m_eventManager->execute(EVENTS::CAMERA_ZOOM_OUT, m_localEntity);
+		m_eventManager->execute(EVENTS::CAMERA_ZOOM_OUT, m_localeid);
 	}
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_M))
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_M);
-		m_eventManager->execute(EVENTS::AUDIO_MUSIC_TOGGLE, m_localEntity);
+		m_eventManager->execute(EVENTS::AUDIO_MUSIC_TOGGLE, m_localeid);
 	}
 }
 
 void InputSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
 {
-	m_localEntity = eid;
+	m_localeid = eid;
 }
 
 bool InputSystem::IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
@@ -141,20 +145,20 @@ void InputSystem::ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode keyCode)
 
 void InputSystem::onMouseDown(cocos2d::Event * ccevnt)
 {
-	m_eventManager->execute(EVENTS::MOUSE_PRESSED, m_localEntity, ccevnt);
+	m_eventManager->execute(EVENTS::MOUSE_PRESSED, m_localeid, ccevnt);
 }
 
 void InputSystem::onMouseMove(cocos2d::Event* ccevnt)
 {
-	m_eventManager->execute(EVENTS::MOUSE_MOVE, m_localEntity, ccevnt);
+	m_eventManager->execute(EVENTS::MOUSE_MOVE, m_localeid, ccevnt);
 }
 
 void InputSystem::onMouseScroll(cocos2d::Event * ccevnt)
 {
-	m_eventManager->execute(EVENTS::MOUSE_SCROLL, m_localEntity, ccevnt);
+	m_eventManager->execute(EVENTS::MOUSE_SCROLL, m_localeid, ccevnt);
 }
 
 void InputSystem::onMouseUp(cocos2d::Event * ccevnt)
 {
-	m_eventManager->execute(EVENTS::MOUSE_RELEASED, m_localEntity, ccevnt);
+	m_eventManager->execute(EVENTS::MOUSE_RELEASED, m_localeid, ccevnt);
 }

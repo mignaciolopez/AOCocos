@@ -27,23 +27,39 @@ public:
 	{
 		return m_x;
 	}
-	virtual int getY() override
-	{
-		return m_y;
-	}
-
 	virtual void setX(int x) override
 	{
 		m_x = x;
+	}
+
+	virtual int getY() override
+	{
+		return m_y;
 	}
 	virtual void setY(int y) override
 	{
 		m_y = y;
 	}
 
+	virtual Direction getNextMove() override
+	{
+		Direction dir = Direction::INVALID;
+		if (m_pendingMoves.size() > 0)
+		{
+			dir = m_pendingMoves[0];
+			m_pendingMoves.erase(m_pendingMoves.begin());
+		}
+		return dir;
+	}
+	virtual void setNextMove(Direction dir) override
+	{
+		m_pendingMoves.push_back(dir);
+	}
+
 private:
 	const ComponentType m_type = ComponentType::POSITION;
 	int m_x, m_y;
+	std::vector<Direction> m_pendingMoves;
 };
 
 #endif // __SPRITE_COMPONENT_H__

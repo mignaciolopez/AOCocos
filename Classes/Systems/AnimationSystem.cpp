@@ -14,7 +14,7 @@ AnimationSystem::AnimationSystem()
 	m_sfCache = cocos2d::SpriteFrameCache::getInstance();
 
 	m_eventManager->Subscribe(EVENTS::ANIMATE, &AnimationSystem::animate, this);
-	m_eventManager->Subscribe(EVENTS::ANIMATION_SWITCH_FACING, &AnimationSystem::setBodyCF, this);
+	//m_eventManager->Subscribe(EVENTS::ANIMATION_SWITCH_FACING, &AnimationSystem::setBodyCF, this);
 
 	m_eventManager->Subscribe(EVENTS::ANIMATION_LOAD_INFO, &AnimationSystem::loadAnimationInfo, this);
 
@@ -46,39 +46,42 @@ AnimationSystem::~AnimationSystem()
 
 void AnimationSystem::Update()
 {
-	
+	for (auto e : *m_entityManager->getEntities())
+	{
+		if (!m_entityManager->getComp(e.first, PLAYER_BODY)->getMoving())
+			setBodyCF(e.first);
+	}
 }
 
-void AnimationSystem::animate(int eid, cocos2d::Event *, SLNet::BitStream* bs)
+void AnimationSystem::animate(int eid, cocos2d::Event*, SLNet::BitStream* bs)
 {
 	if (m_animations.find(eid) == m_animations.end())
 		return;
 
-	setBodyCF(eid, nullptr, nullptr);
-
-	cocos2d::CallFuncN* setBodyCF = cocos2d::CallFuncN::create(CC_CALLBACK_0(AnimationSystem::setBodyCF, this, eid, nullptr, nullptr));
-	cocos2d::Action* secuence;
+	setHead(eid);
 
 	switch (m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getDirection())
 	{
 	case Direction::North:
-		secuence = cocos2d::Sequence::create(m_animations.at(eid)->m_animationNorth->clone(), setBodyCF, nullptr);
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->
+			runAction(m_animations.at(eid)->m_animationNorth->clone());
 		break;
 	case Direction::East:
-		secuence = cocos2d::Sequence::create(m_animations.at(eid)->m_animationEast->clone(), setBodyCF, nullptr);
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->
+			runAction(m_animations.at(eid)->m_animationEast->clone());
 		break;
 	case Direction::South:
-		secuence = cocos2d::Sequence::create(m_animations.at(eid)->m_animationSouth->clone(), setBodyCF, nullptr);
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->
+			runAction(m_animations.at(eid)->m_animationSouth->clone());
 		break;
 	case Direction::West:
-		secuence = cocos2d::Sequence::create(m_animations.at(eid)->m_animationWest->clone(), setBodyCF, nullptr);
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->
+			runAction(m_animations.at(eid)->m_animationWest->clone());
 		break;
 	}
-
-	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(secuence);
 }
 
-void AnimationSystem::setBodyCF(int eid, cocos2d::Event*, SLNet::BitStream* bs)
+void AnimationSystem::setBodyCF(int eid)
 {
 	setBody(eid);
 	setHead(eid);

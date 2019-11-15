@@ -1,5 +1,7 @@
 #include "Component.h"
 
+#include "Components/IncludeComponents.h"
+
 #include "cocos2d.h"
 
 namespace ECS
@@ -94,16 +96,25 @@ namespace ECS
 		return 0.0f;
 	}
 
+	void Component::setX(int x)
+	{
+	}
+
 	int Component::getY()
 	{
 		return 0.0f;
 	}
 
-	void Component::setX(int x)
+	void Component::setY(int y)
 	{
 	}
 
-	void Component::setY(int y)
+	Direction Component::getNextMove()
+	{
+		return Direction::INVALID;
+	}
+
+	void Component::setNextMove(Direction dir)
 	{
 	}
 

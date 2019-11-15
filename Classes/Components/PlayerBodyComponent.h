@@ -5,6 +5,7 @@
 
 enum Direction
 {
+	INVALID = -1,
 	North = 0,
 	East,
 	South,
