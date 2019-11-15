@@ -121,6 +121,9 @@ void MovementSystem::move(int eid, Direction dir)
 
 	if (eid == m_localeid)
 	{
+		if (m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
+			return;
+
 		m_eventManager->execute(EVENTS::MAP_CAN_MOVE, m_localeid, nullptr, nullptr);
 		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getCanWalk())
 		{
@@ -130,8 +133,6 @@ void MovementSystem::move(int eid, Direction dir)
 			m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
 			return;
 		}
-		if (m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
-			return;
 
 		bsOut.Reset();
 	}
@@ -168,10 +169,11 @@ void MovementSystem::move(int eid, Direction dir)
 		return;
 	}
 
-	m_entityManager->getComp(eid, PLAYER_BODY)->setMoving(true);
-	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
-	Action* secuence = Sequence::create(m_dtcb, callback, nullptr);
-	m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(secuence);
+	if (eid == m_localeid)
+	{
+		bsOut.Write(m_localeid);
+		m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
+	}
 
 	m_entityManager->getComp(eid, POSITION)->setX(
 		m_entityManager->getComp(eid, POSITION)->getX() + x);
@@ -179,11 +181,10 @@ void MovementSystem::move(int eid, Direction dir)
 	m_entityManager->getComp(eid, POSITION)->setY(
 		m_entityManager->getComp(eid, POSITION)->getY() + y);
 
-	if (eid == m_localeid)
-	{
-		bsOut.Write(m_localeid);
-		m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
-	}
+	m_entityManager->getComp(eid, PLAYER_BODY)->setMoving(true);
+	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
+	Action* secuence = Sequence::create(m_dtcb, callback, nullptr);
+	m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(secuence);
 
 	m_entityManager->getComp(eid, AUDIO)->addAudio(23);
 
