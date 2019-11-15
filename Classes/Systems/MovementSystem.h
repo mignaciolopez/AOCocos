@@ -4,6 +4,7 @@
 #include "ECS/ECS_Engine.h"
 
 #include "cocos2d.h"
+#include <ctime>
 
 enum Direction;
 
@@ -36,12 +37,18 @@ private:
 
 	int m_localeid;
 
+	clock_t m_clock_b;
+	clock_t m_clock_e;
+
+	const float m_vel = 0.2f;
+	double m_fpsPivot;
+	int m_fpsCounter;
+	int m_fps;
+
 	cocos2d::MoveBy* m_moveNorth;
 	cocos2d::MoveBy* m_moveEast;
 	cocos2d::MoveBy* m_moveSouth;
 	cocos2d::MoveBy* m_moveWest;
-
-	cocos2d::DelayTime* m_dtcb;
 };
 
 #endif // __MOVEMENT_SYSTEM_H__

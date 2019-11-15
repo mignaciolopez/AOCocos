@@ -28,8 +28,6 @@ MovementSystem::MovementSystem()
 	m_moveSouth = nullptr;
 	m_moveWest = nullptr;
 
-	m_dtcb = nullptr;
-
 	m_moveNorth = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(0, 32));
 	m_moveEast = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(32, 0));
 	m_moveSouth = cocos2d::MoveBy::create(0.2f, cocos2d::Vec2(0, -32));
@@ -40,10 +38,11 @@ MovementSystem::MovementSystem()
 	m_moveSouth->retain();
 	m_moveWest->retain();
 
-	m_dtcb = cocos2d::DelayTime::create(0.2f - 0.018f);
-	m_dtcb->retain();
+	m_fpsPivot = 0.02f;
 
 	m_localeid = -1;
+
+	m_fpsCounter = 60;
 }
 
 MovementSystem::~MovementSystem()
@@ -64,9 +63,6 @@ MovementSystem::~MovementSystem()
 		if (m_moveWest->getReferenceCount())
 			m_moveWest->release();
 
-	if (m_dtcb)
-		if (m_dtcb->getReferenceCount())
-			m_dtcb->release();
 #if _DEBUG
 	cocos2d::log("%s Destructor", "[MOVEMENT SYSTEM]");
 #endif
@@ -76,6 +72,19 @@ void MovementSystem::Update()
 {
 	if (m_localeid == -1)
 		return;
+
+	m_fpsCounter++;
+
+	m_clock_e = clock();
+	double elapsed_secs = double(m_clock_e - m_clock_b) / CLOCKS_PER_SEC;
+	if (elapsed_secs > 1)
+	{
+		m_fpsCounter = std::min(200, m_fpsCounter);
+		double rel = (m_fpsCounter * 100) / 60;
+		m_fpsPivot = 0.02 / (rel / 100.0);
+		m_fpsCounter = 0;
+		m_clock_b = clock();
+	}
 
 	for (auto e : *m_entityManager->getEntities())
 	{
@@ -206,7 +215,8 @@ bool MovementSystem::move(int eid, Direction dir)
 		m_entityManager->getComp(eid, POSITION)->getY() + y);
 
 	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
-	Action* secuence = Sequence::create(m_dtcb, callback, nullptr);
+	DelayTime* dtcb = cocos2d::DelayTime::create(m_vel - m_fpsPivot);
+	Action* secuence = Sequence::create(dtcb, callback, nullptr);
 	m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(secuence);
 
 	m_entityManager->getComp(eid, AUDIO)->addAudio(23);
