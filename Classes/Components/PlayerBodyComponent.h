@@ -83,8 +83,9 @@ public:
 		if (m_spriteHead)
 			if (m_spriteHead->getReferenceCount() > 0)
 				m_spriteHead->release();
-
+#if _DEBUG
 		cocos2d::log("%s Destructor", "[PLAYERBODYCOMPONENT COMPONENT]");
+#endif
 	}
 
 	virtual cocos2d::Sprite* getBodySpr() override

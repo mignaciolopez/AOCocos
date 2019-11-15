@@ -14,7 +14,9 @@ namespace ECS
 
 	System::~System()
 	{
+#if _DEBUG
 		cocos2d::log("%s Destructor", LOGID);
+#endif
 	}
 
 }

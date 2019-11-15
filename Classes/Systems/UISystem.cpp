@@ -43,9 +43,16 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 
 	m_eventManager->Subscribe(EVENTS::UI_TOGGLE_DEBUG, &UISystem::toggleDebugInfo, this);
 	m_eventManager->Subscribe(EVENTS::UI_LBL_NETWORK, &UISystem::setlblNetwork, this);
-	
 
+	m_eventManager->Subscribe(EVENTS::UI_TOGGLE_VSYNC, &UISystem::toggleVSync, this);
+	
+#if _DEBUG
+	m_showDebug = true;
+#else
 	m_showDebug = false;
+#endif
+	
+	m_vsync = false;
 
 	createLabels();
 	createInventoryAndSpells();
@@ -56,8 +63,9 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 UISystem::~UISystem()
 {
 	TP::Interface::removeSpriteFramesFromCache();
-
+#if _DEBUG
 	cocos2d::log("%s Destructor", "[UI SYSTEM]");
+#endif
 }
 
 void UISystem::Update()
@@ -70,10 +78,12 @@ void UISystem::Update()
 	if (m_showDebug)
 	{
 		m_lblNetwork->setVisible(true);
+		m_director->setDisplayStats(true);
 	}
 	else
 	{
 		m_lblNetwork->setVisible(false);
+		m_director->setDisplayStats(false);
 	}
 }
 
@@ -164,6 +174,21 @@ void UISystem::setlblNetwork(int eid, cocos2d::Event * ccevnt, SLNet::BitStream 
 	{
 		m_lblNetwork->setTextColor(Color4B::RED);
 		m_lblNetwork->setString("O F F L I N E");
+	}
+}
+
+void UISystem::toggleVSync(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
+	if (m_vsync)
+	{
+		m_director->getOpenGLView()->setSwapInterval(0);
+		m_director->setAnimationInterval(1.0f / 2000);
+		m_vsync = false;
+	}
+	else
+	{
+		m_director->getOpenGLView()->setSwapInterval(1);
+		m_vsync = true;
 	}
 }
 

@@ -66,7 +66,13 @@ void Interface::addSpriteFramesToCache()
 void Interface::removeSpriteFramesFromCache()
 {
 	SpriteFrameCache *cache = SpriteFrameCache::getInstance();
+	if (!cache)
+		return;
+
 	FileUtils* fileUtils = FileUtils::getInstance();
+
+	if (!fileUtils)
+		return;
 
 	int i = 1;
 	int files = 4;
@@ -75,7 +81,10 @@ void Interface::removeSpriteFramesFromCache()
 		std::string plist = fileUtils->fullPathForFilename("Interface-1-" + std::to_string(i) + ".plist");
 
 		if (fileUtils->isFileExist(plist))
-			cache->removeSpriteFramesFromFile(plist);
+		{
+			if (cache->isSpriteFramesWithFileLoaded(plist))
+				cache->removeSpriteFramesFromFile(plist);
+		}
 	}
 
     /*cache->removeSpriteFramesFromFile(Y_INTERFACE_DIR + "Interface-1-0.plist");

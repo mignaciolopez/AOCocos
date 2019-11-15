@@ -27,8 +27,9 @@ MapSystem::MapSystem()
 MapSystem::~MapSystem()
 {
 	m_entityManager->removeComponent(m_localeid, ComponentType::MAP);
-
+#if _DEBUG
 	cocos2d::log("%s Destructor", "[MAP SYSTEM]");
+#endif
 }
 
 void MapSystem::Update()

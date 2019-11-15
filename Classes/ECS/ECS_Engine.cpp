@@ -30,7 +30,9 @@ namespace ECS
 
 	ECS_Engine::ECS_Engine()
 	{
+#if _DEBUG
 		cocos2d::log("%s Constructor", LOGID);
+#endif
 
 		m_entityManager = new (std::nothrow) EntityManager();
 		if (!m_entityManager)
@@ -64,8 +66,9 @@ namespace ECS
 			delete m_entityManager;
 			m_entityManager = nullptr;
 		}
-
+#if _DEBUG
 		cocos2d::log("%s Destructor", LOGID);
+#endif
 	}
 
 	void ECS_Engine::update()

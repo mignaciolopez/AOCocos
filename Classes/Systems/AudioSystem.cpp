@@ -46,8 +46,9 @@ AudioSystem::~AudioSystem()
 		m_SAE->end();
 		m_SAE = nullptr;
 	}
-
+#if _DEBUG
 	cocos2d::log("[AUDIO SYSTEM] Destructor");
+#endif
 }
 
 void AudioSystem::Update()

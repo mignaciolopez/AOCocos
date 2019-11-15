@@ -46,8 +46,9 @@ namespace ECS
 				}
 			}
 		}
-
+#if _DEBUG
 		cocos2d::log("%s Destructor", LOGID);
+#endif
 	}
 
 	bool EntityManager::CreateEntity(int eid)
@@ -129,9 +130,12 @@ namespace ECS
 
 		if (cleanup)
 		{
-			delete m_components.at(eid)->at(type);
-			m_components.at(eid)->at(type) = nullptr;
-			m_components.at(eid)->erase(type);
+			if (m_components.at(eid)->at(type))
+			{
+				delete m_components.at(eid)->at(type);
+				m_components.at(eid)->at(type) = nullptr;
+				m_components.at(eid)->erase(type);
+			}
 		}
 		else
 		{

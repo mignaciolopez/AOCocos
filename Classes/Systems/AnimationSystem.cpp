@@ -28,20 +28,28 @@ AnimationSystem::~AnimationSystem()
 		if (a.second)
 		{
 			if (a.second->m_animationNorth)
-				a.second->m_animationNorth->release();
+				if (a.second->m_animationNorth->getReferenceCount() > 0)
+					a.second->m_animationNorth->release();
+
 			if (a.second->m_animationEast)
-				a.second->m_animationEast->release();
+				if (a.second->m_animationEast->getReferenceCount() > 0)
+						a.second->m_animationEast->release();
+
 			if (a.second->m_animationSouth)
-				a.second->m_animationSouth->release();
+				if (a.second->m_animationSouth->getReferenceCount() > 0)
+						a.second->m_animationSouth->release();
+
 			if (a.second->m_animationWest)
-				a.second->m_animationWest->release();
+				if (a.second->m_animationWest->getReferenceCount() > 0)
+					a.second->m_animationWest->release();
 			
 			delete a.second;
 			a.second = nullptr;
 		}
 	}
-
+#if _DEBUG
 	cocos2d::log("%s Destructor", "[ANIMATION SYSTEM]");
+#endif
 }
 
 void AnimationSystem::Update()

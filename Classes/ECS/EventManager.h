@@ -22,7 +22,9 @@ namespace ECS
 		}
 		virtual ~EventHandlerBase()
 		{
+#if _DEBUG
 			cocos2d::log("%s Destructor", "[EVENT HANDLER BASE]");
+#endif
 		}
 
 		virtual void execute(int, cocos2d::Event* = nullptr, SLNet::BitStream* = nullptr) = 0;
@@ -49,7 +51,9 @@ namespace ECS
 		}
 		~EventHandler()
 		{
+#if _DEBUG
 			cocos2d::log("%s Destructor", "[EVENT HANDLER]");
+#endif
 		}
 
 		virtual void execute(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr) override
@@ -76,7 +80,9 @@ namespace ECS
 					handler.second = 0;
 				}
 			}
+#if _DEBUG
 			cocos2d::log("%s Destructor", "[EVNT]");
+#endif
 		}
 
 		template <typename Class>

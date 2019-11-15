@@ -89,19 +89,34 @@ CameraSystem::CameraSystem(cocos2d::Scene* scene) : m_scene(scene)
 
 CameraSystem::~CameraSystem()
 {
-	m_entityManager->removeComponent(m_localeid, LAYER3D);
+	if (Director::getInstance())
+	{
+		if (Director::getInstance()->getRunningScene())
+		{
+			if (m_layer3D)
+				if (m_layer3D->getLayer())
+					if (Director::getInstance()->getRunningScene() == m_layer3D->getLayer()->getParent())
+						Director::getInstance()->getRunningScene()->removeChild(m_layer3D->getLayer());
+			if (m_camera)
+			{
+				if (Director::getInstance()->getRunningScene() == m_camera->getParent())
+					Director::getInstance()->getRunningScene()->removeChild(m_camera);
+				if (m_camera->getReferenceCount() > 0)
+					m_camera->release();
+			}
+		}
+	}
+
+	if (m_entityManager)
+		m_entityManager->removeComponent(m_localeid, LAYER3D);
 
 	if (m_layer3D)
 	{
-		//delete m_layer3D;
 		m_layer3D = nullptr;
 	}
-
-	if (m_camera)
-		if (m_camera->getReferenceCount() > 0)
-			m_camera->release();
-
+#if _DEBUG
 	cocos2d::log("%s Destructor", "[CAMERA SYSTEM]");
+#endif
 }
 
 void CameraSystem::Update()

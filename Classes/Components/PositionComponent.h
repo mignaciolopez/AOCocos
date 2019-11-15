@@ -14,8 +14,9 @@ public:
 	}
 	~PositionComponent()
 	{
-
+#if _DEBUG
 		cocos2d::log("%s Destructor", "[POSITION COMPONENT]");
+#endif
 	}
 
 	virtual ComponentType getType() override
@@ -47,13 +48,16 @@ public:
 		if (m_pendingMoves.size() > 0)
 		{
 			dir = m_pendingMoves[0];
-			m_pendingMoves.erase(m_pendingMoves.begin());
 		}
 		return dir;
 	}
 	virtual void setNextMove(Direction dir) override
 	{
 		m_pendingMoves.push_back(dir);
+	}
+	virtual void removeFirstMove() override
+	{
+		m_pendingMoves.erase(m_pendingMoves.begin());
 	}
 
 private:

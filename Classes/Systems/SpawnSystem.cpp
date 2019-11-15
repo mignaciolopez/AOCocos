@@ -26,7 +26,9 @@ SpawnSystem::SpawnSystem()
 
 SpawnSystem::~SpawnSystem()
 {
+#if _DEBUG
 	cocos2d::log("%s Destructor", "[SPAWN SYSTEM]");
+#endif
 }
 
 void SpawnSystem::Update()

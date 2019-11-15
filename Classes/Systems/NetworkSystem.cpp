@@ -45,7 +45,9 @@ NetworkSystem::~NetworkSystem()
 	{
 		m_peer->Shutdown(10000);
 	}
+#if _DEBUG
 	cocos2d::log("%s Destructor", "[NETWORK SYSTEM]");
+#endif
 }
 
 void NetworkSystem::Update()

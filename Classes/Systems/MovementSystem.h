@@ -22,7 +22,7 @@ public:
 
 	void switchRemoteFacing(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 
-	void move(int eid, Direction dir);
+	bool move(int eid, Direction dir);
 
 	void stopMoving(int eid);
 

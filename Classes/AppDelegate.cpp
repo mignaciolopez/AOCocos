@@ -35,13 +35,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	}
 
 	// turn on display FPS
-	director->setDisplayStats(true);
+	director->setDisplayStats(false);
 
 	//Turn OF VSync
 	glview->setSwapInterval(0);
 
 	// set FPS. the default value is 1.0/60 if you don't call this
-	director->setAnimationInterval(1.0f / 60);
+	director->setAnimationInterval(1.0f / 2000);
 
 	glview->setFrameSize(800.0f, 600.0f);
 	//auto screenSize = glview->getFrameSize();

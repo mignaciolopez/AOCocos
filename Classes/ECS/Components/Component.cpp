@@ -16,7 +16,9 @@ namespace ECS
 
 	Component::~Component()
 	{
+#if _DEBUG
 		cocos2d::log("%s Destructor", LOGID);
+#endif
 	}
 
 	cocos2d::Sprite * Component::getBodySpr()
@@ -115,6 +117,10 @@ namespace ECS
 	}
 
 	void Component::setNextMove(Direction dir)
+	{
+	}
+
+	void Component::removeFirstMove()
 	{
 	}
 

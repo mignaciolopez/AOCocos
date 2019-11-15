@@ -22,7 +22,9 @@ namespace ECS
 			delete system.second;
 			system.second = nullptr;
 		}
+#if _DEBUG
 		cocos2d::log("%s Destructor", LOGID);
+#endif
 	}
 
 	void SystemManager::Update()

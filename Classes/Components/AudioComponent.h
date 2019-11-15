@@ -17,8 +17,9 @@ public:
 	}
 	~AudioComponent()
 	{
-
+#if _DEBUG
 		cocos2d::log("%s Destructor", "[AUDIO COMPONENT]");
+#endif
 	}
 
 	virtual ComponentType getType() override

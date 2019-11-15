@@ -20,10 +20,9 @@ public:
 	}
 	~Layer3DComponent()
 	{
-		if (m_layer3D)
-			if (m_layer3D->getReferenceCount() > 0)
-				m_layer3D->release();
+#if _DEBUG
 		cocos2d::log("%s Destructor", "[LAYER3D COMPONENT]");
+#endif
 	}
 
 	virtual ComponentType getType() override

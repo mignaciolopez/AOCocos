@@ -67,7 +67,12 @@ void Graphics::addSpriteFramesToCache()
 void Graphics::removeSpriteFramesFromCache()
 {
     SpriteFrameCache *cache = SpriteFrameCache::getInstance();
+	if (!cache)
+		return;
+
 	FileUtils* fileUtils = FileUtils::getInstance();
+	if (!fileUtils)
+		return;
 
 	int files = 6;
 	for (int i = 0; i < files; i++)
@@ -75,7 +80,8 @@ void Graphics::removeSpriteFramesFromCache()
 		std::string plist = fileUtils->fullPathForFilename("Graphics-" + std::to_string(i) + ".plist");
 
 		if (fileUtils->isFileExist(plist))
-			cache->removeSpriteFramesFromFile(plist);
+			if (cache->isSpriteFramesWithFileLoaded(plist))
+				cache->removeSpriteFramesFromFile(plist);
 	}
 
     /*cache->removeSpriteFramesFromFile(Y_GRAPHICS_DIR + "Graphics-0.plist");

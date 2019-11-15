@@ -26,8 +26,9 @@ namespace ECS
 				e.second = nullptr;
 			}
 		}
-
+#if _DEBUG
 		cocos2d::log("%s Destructor", LOGID);
+#endif
 	}
 
 	void EventManager::execute(EVENTS evnt, int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)

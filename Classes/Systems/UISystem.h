@@ -22,6 +22,7 @@ public:
 	void toogleFullscreen(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void toggleDebugInfo(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void setlblNetwork(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+	void toggleVSync(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 
 private:
 	void createLabels();
@@ -52,6 +53,7 @@ private:
 	cocos2d::Layer* m_layer;
 
 	bool m_showDebug;
+	bool m_vsync;
 
 	//LABELS
 	cocos2d::Label* m_lblPosition;

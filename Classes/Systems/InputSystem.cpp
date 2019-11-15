@@ -56,8 +56,9 @@ InputSystem::~InputSystem()
 		if (m_mouseListener)
 			m_mouseListener->release();
 	}
-
+#if _DEBUG
 	cocos2d::log("%s Destructor", "[INPUT SYSTEM]");
+#endif
 }
 
 void InputSystem::Update()
@@ -71,28 +72,17 @@ void InputSystem::Update()
 	if (m_localeid == -1)
 		return;
 
+
 	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW))
-	{
-		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
-			m_eventManager->execute(EVENTS::MOVE_NORTH, m_localeid);
-	}
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
-	{
-		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
-			m_eventManager->execute(EVENTS::MOVE_EAST, m_localeid);
-	}
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
-	{
-		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
-			m_eventManager->execute(EVENTS::MOVE_SOUTH, m_localeid);
-	}
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
-	{
-		if (!m_entityManager->getComp(m_localeid, PLAYER_BODY)->getMoving())
-			m_eventManager->execute(EVENTS::MOVE_WEST, m_localeid);
-	}
-	
-	
+		m_eventManager->execute(EVENTS::MOVE_NORTH, m_localeid);
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
+		m_eventManager->execute(EVENTS::MOVE_EAST, m_localeid);
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
+		m_eventManager->execute(EVENTS::MOVE_SOUTH, m_localeid);
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
+		m_eventManager->execute(EVENTS::MOVE_WEST, m_localeid);
+
+
 	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F11))
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F11);
@@ -107,6 +97,11 @@ void InputSystem::Update()
 	{
 		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F2);
 		m_eventManager->execute(EVENTS::UI_TOGGLE_DEBUG, m_localeid);
+	}
+	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F3))
+	{
+		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F3);
+		m_eventManager->execute(EVENTS::UI_TOGGLE_VSYNC, m_localeid);
 	}
 	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_PG_UP))
 	{

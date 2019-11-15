@@ -21,7 +21,9 @@ public:
 			if (m_map->getReferenceCount() > 0)
 				m_map->release();
 		}
+#if _DEBUG
 		cocos2d::log("%s Destructor", "[MAP COMPONENT]");
+#endif
 	}
 
 	virtual ComponentType getType() override

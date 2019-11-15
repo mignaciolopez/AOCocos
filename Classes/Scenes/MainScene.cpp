@@ -86,10 +86,19 @@ bool MainScene::init()
 void MainScene::update(float dt)
 {
 	m_ECS_Engine->update();
-	//unscheduleUpdate();
 }
 
 void MainScene::mainSceneOnExit()
 {
+	unscheduleUpdate();
 	TP::Graphics::removeSpriteFramesFromCache();
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_AudioSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_mapSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_animationSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_cameraSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_spawnSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_networkSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_movementSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_uiSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_inputSystemID);
 }

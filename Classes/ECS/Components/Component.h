@@ -53,6 +53,7 @@ namespace ECS
 		virtual void setY(int y);
 		virtual Direction getNextMove();
 		virtual void setNextMove(Direction dir);
+		virtual void removeFirstMove();
 
 		//MapComponent
 		virtual cocos2d::TMXTiledMap* getMap();

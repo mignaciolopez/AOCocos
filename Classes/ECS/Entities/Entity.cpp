@@ -16,6 +16,8 @@ namespace ECS
 
 	Entity::~Entity()
 	{
+#if _DEBUG
 		cocos2d::log("%s Destructor", LOGID);
+#endif
 	}
 }
