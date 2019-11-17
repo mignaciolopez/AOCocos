@@ -41,8 +41,6 @@ MovementSystem::MovementSystem()
 	m_fpsPivot = 0.02f;
 
 	m_localeid = -1;
-
-	m_fpsCounter = 60;
 }
 
 MovementSystem::~MovementSystem()
@@ -73,18 +71,8 @@ void MovementSystem::Update()
 	if (m_localeid == -1)
 		return;
 
-	m_fpsCounter++;
-
-	m_clock_e = clock();
-	double elapsed_secs = double(m_clock_e - m_clock_b) / CLOCKS_PER_SEC;
-	if (elapsed_secs > 1)
-	{
-		m_fpsCounter = std::min(200, m_fpsCounter);
-		double rel = (m_fpsCounter * 100) / 60;
-		m_fpsPivot = 0.02 / (rel / 100.0);
-		m_fpsCounter = 0;
-		m_clock_b = clock();
-	}
+	double rel = (std::min(120.0f, m_director->getFrameRate()) * 100) / 60;
+	m_fpsPivot = 0.02 / (rel / 100.0);
 
 	for (auto e : *m_entityManager->getEntities())
 	{
@@ -100,7 +88,8 @@ void MovementSystem::moveNorth(int eid, cocos2d::Event* ccevnt, SLNet::BitStream
 		move(eid, Direction::North);
 		return;
 	}
-	m_entityManager->getComp(eid, POSITION)->setNextMove(Direction::North);
+	if (m_entityManager->getComp(eid, POSITION))
+		m_entityManager->getComp(eid, POSITION)->setNextMove(Direction::North);
 }
 
 void MovementSystem::moveEast(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs)
@@ -110,7 +99,8 @@ void MovementSystem::moveEast(int eid, cocos2d::Event* ccevnt, SLNet::BitStream*
 		move(eid, Direction::East);
 		return;
 	}
-	m_entityManager->getComp(eid, POSITION)->setNextMove(Direction::East);
+	if (m_entityManager->getComp(eid, POSITION))
+		m_entityManager->getComp(eid, POSITION)->setNextMove(Direction::East);
 }
 
 void MovementSystem::moveSouth(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs)
@@ -120,7 +110,8 @@ void MovementSystem::moveSouth(int eid, cocos2d::Event* ccevnt, SLNet::BitStream
 		move(eid, Direction::South);
 		return;
 	}
-	m_entityManager->getComp(eid, POSITION)->setNextMove(Direction::South);
+	if (m_entityManager->getComp(eid, POSITION))
+		m_entityManager->getComp(eid, POSITION)->setNextMove(Direction::South);
 }
 
 void MovementSystem::moveWest(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs)
@@ -130,7 +121,8 @@ void MovementSystem::moveWest(int eid, cocos2d::Event* ccevnt, SLNet::BitStream*
 		move(eid, Direction::West);
 		return;
 	}
-	m_entityManager->getComp(eid, POSITION)->setNextMove(Direction::West);
+	if (m_entityManager->getComp(eid, POSITION))
+		m_entityManager->getComp(eid, POSITION)->setNextMove(Direction::West);
 }
 
 void MovementSystem::switchRemoteFacing(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
