@@ -1,6 +1,7 @@
 #include "UISystem.h"
 
 USING_NS_CC;
+USING_NS_CC_EXT;
 
 UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 {
@@ -35,7 +36,7 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 	m_eventManager->Subscribe(EVENTS::MY_EID, &UISystem::setLocaleid, this);
 
 	m_eventManager->Subscribe(EVENTS::MOUSE_PRESSED, &UISystem::clicked, this);
-	m_eventManager->Subscribe(EVENTS::MOUSE_RELEASED, &UISystem::clicked, this);
+	m_eventManager->Subscribe(EVENTS::MOUSE_RELEASED, &UISystem::released, this);
 	m_eventManager->Subscribe(EVENTS::UI_TOGGLE_FULLSCREEN, &UISystem::toogleFullscreen, this);
 
 	m_eventManager->Subscribe(EVENTS::MOUSE_SCROLL, &UISystem::scroll, this);
@@ -56,6 +57,8 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 
 	createLabels();
 	createInventoryAndSpells();
+
+	createTableSpells();
 
 	m_layer->setCameraMask(static_cast<int>(CameraFlag::USER1));
 }
@@ -109,6 +112,10 @@ void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 
 	cocos2d::log("Entity: %i | Mouse Button: %i | X: %f, Y: %f",
 		eid, mouseEvent->getMouseButton(), mouseEvent->getLocation().x, mouseEvent->getLocation().y);
+}
+
+void UISystem::released(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
 }
 
 void UISystem::scroll(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
@@ -192,6 +199,49 @@ void UISystem::toggleVSync(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * 
 	}
 }
 
+
+void UISystem::tableCellTouched(cocos2d::extension::TableView * table, cocos2d::extension::TableViewCell * cell)
+{
+#if _DEBUG
+	cocos2d::log("cell touched at index: %ld", static_cast<long>(cell->getIdx()));
+#endif
+}
+
+Size UISystem::tableCellSizeForIndex(cocos2d::extension::TableView * table, ssize_t idx)
+{
+	return cocos2d::Size(m_sprSpells->getContentSize().width, 16);
+}
+
+TableViewCell * UISystem::tableCellAtIndex(cocos2d::extension::TableView * table, ssize_t idx)
+{
+	TableViewCell *cell = table->dequeueCell();
+	if (!cell)
+	{
+		cell = new (std::nothrow) TableViewCell;
+		cell->autorelease();
+
+		auto label = Label::createWithSystemFont("Apocalipsis", "arial", 16.0f);
+		label->setPosition(Vec2::ZERO);
+		label->setAnchorPoint(Vec2::ZERO);
+		label->setTag(123);
+		cell->addChild(label);
+	}
+	else
+	{
+		auto label = (Label*)cell->getChildByTag(123);
+		label->setString("Apocalipsis");
+	}
+
+
+	return cell;
+}
+
+ssize_t UISystem::numberOfCellsInTableView(cocos2d::extension::TableView * table)
+{
+	return 1;
+}
+
+
 void UISystem::createLabels()
 {
 	createlblPosition();
@@ -237,8 +287,8 @@ void UISystem::createInventoryAndSpells()
 	m_sprInventory->setAnchorPoint(Vec2(0, 0));
 	m_sprSpells->setAnchorPoint(Vec2(0, 0));
 
-	m_sprInventory->setPosition(567, 200);
-	m_sprSpells->setPosition(567, 200);
+	m_sprInventory->setPosition(580, 200);
+	m_sprSpells->setPosition(580, 200);
 
 	m_sprSpells->setVisible(false);
 
@@ -246,14 +296,42 @@ void UISystem::createInventoryAndSpells()
 
 void UISystem::toggleInventory(int x, int y)
 {
-	if (x > 570 && y > 115 && x < 667 && y < 145)
+	if (m_localeid == -1)
+		return;
+
+	if (x > 583 && y > 120 && x < 680 && y < 155)
 	{
 		m_sprInventory->setVisible(true);
 		m_sprSpells->setVisible(false);
+		if (m_layer == m_tableSpells->getParent())
+			m_layer->removeChild(m_tableSpells);
+		m_entityManager->getComp(m_localeid, AUDIO)->addAudio(189);
 	}
-	else if(x > 668 && y > 115 && x < 762 && y < 145)
+	else if(x > 680 && y > 120 && x < 775 && y < 155)
 	{
 		m_sprInventory->setVisible(false);
 		m_sprSpells->setVisible(true);
+		m_entityManager->getComp(m_localeid, AUDIO)->addAudio(189);
+		if (m_layer != m_tableSpells->getParent())
+		{
+			m_layer->addChild(m_tableSpells, 6);
+			m_tableSpells->setCameraMask(static_cast<int>(CameraFlag::USER1));
+		}
 	}
+}
+
+void UISystem::createTableSpells()
+{
+	Size size = m_sprSpells->getContentSize();
+	Vec2 pos = m_sprSpells->getPosition();
+	m_tableSpells = TableView::create(this, Size(size.width - 50, size.height - 100));
+	m_tableSpells->retain();
+	m_tableSpells->setDirection(ScrollView::Direction::VERTICAL);
+	m_tableSpells->setAnchorPoint(Vec2(0.0f, 1.0f));
+	m_tableSpells->setPosition(pos.x + 15, pos.y + 55);
+	m_tableSpells->setDelegate(this);
+	m_tableSpells->setVerticalFillOrder(TableView::VerticalFillOrder::BOTTOM_UP);
+	m_tableSpells->setBounceable(false);
+	
+	m_tableSpells->reloadData();
 }
