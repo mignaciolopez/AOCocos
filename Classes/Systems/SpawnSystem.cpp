@@ -61,17 +61,22 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 	m_entityManager->CreateEntity(eid);
 
 	int x = 0, y = 0;
+	Direction dir;
+	Genre genre;
+	Race race;
+	Head head;
+
 	bs->Read(x);
 	bs->Read(y);
+	bs->Read(dir);
+	bs->Read(genre);
+	bs->Read(race);
+	bs->Read(head);
 
 	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(
 		TP::Graphics::playerBodyHumanFemaleStandingSouth,
 		TP::Graphics::headsPlayerHeadPirateSouth,
-		x, y,
-		Direction::South,
-		Genre::Female,
-		Race::Human,
-		Head::Pirate);
+		x, y, dir, genre, race, head);
 
 	if (!body || !body->getBodySpr() || !body->getHeadSpr())
 		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
@@ -96,10 +101,19 @@ void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 	{
 		int reid = -1;
 		int rx, ry;
+		Direction rdir;
+		Genre rgenre;
+		Race rrace;
+		Head rhead;
+
 		bs->Read(reid);
 		bs->Read(rx);
 		bs->Read(ry);
-		syncCreatePlayer(reid, rx, ry);
+		bs->Read(rdir);
+		bs->Read(rgenre);
+		bs->Read(rrace);
+		bs->Read(rhead);
+		syncCreatePlayer(reid, rx, ry, rdir, rgenre, rrace, rhead);
 		
 		m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, reid, nullptr, nullptr);
 		m_eventManager->execute(EVENTS::MAP_CHILD_ADD, reid, nullptr, nullptr);
@@ -117,18 +131,14 @@ void SpawnSystem::removePlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 	m_entityManager->removeEntity(eid);
 }
 
-void SpawnSystem::syncCreatePlayer(int eid, int x, int y)
+void SpawnSystem::syncCreatePlayer(int eid, int x, int y, Direction dir, Genre genre, Race race, Head head)
 {
 	m_entityManager->CreateEntity(eid);
 
 	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(
 		TP::Graphics::playerBodyHumanFemaleStandingSouth,
 		TP::Graphics::headsPlayerHeadPirateSouth,
-		x, y,
-		Direction::South,
-		Genre::Female,
-		Race::Human,
-		Head::Pirate);
+		x, y, dir, genre, race, head);
 
 	if (!body || !body->getBodySpr() || !body->getHeadSpr())
 		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");

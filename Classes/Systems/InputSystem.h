@@ -19,7 +19,9 @@ public:
 	void setLocalEntity(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 
 private:
-	bool IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode);
+	void keyPressed(cocos2d::EventKeyboard::KeyCode keyCode);
+	void keyReleased(cocos2d::EventKeyboard::KeyCode keyCode);
+
 	void ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode keyCode);
 
 	void onMouseDown(cocos2d::Event* event);

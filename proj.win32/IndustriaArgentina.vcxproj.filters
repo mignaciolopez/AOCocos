@@ -102,6 +102,9 @@
     <ClCompile Include="..\Classes\Systems\AudioSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Systems\CombatSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -196,6 +199,12 @@
     </ClInclude>
     <ClInclude Include="..\Classes\Components\AudioComponent.h">
       <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\InventoryComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\CombatSystem.h">
+      <Filter>src\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -65,6 +65,10 @@ bool MainScene::init()
 	if (!audioSystem)
 		cocos2d::log("%s AudioSystem Failed!", LOGID);
 
+	CombatSystem* combatSystem = new (std::nothrow) CombatSystem;
+	if (!combatSystem)
+		cocos2d::log("%s CombatSystem Failed!", LOGID);
+
 	// 3- Register Systems
 	m_inputSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(inputSystem);
 	m_uiSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(uiSystem);
@@ -75,6 +79,7 @@ bool MainScene::init()
 	m_animationSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(animationSystem);
 	m_mapSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(mapSystem);
 	m_AudioSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(audioSystem);
+	m_CombatSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(combatSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
 
@@ -92,6 +97,7 @@ void MainScene::mainSceneOnExit()
 {
 	unscheduleUpdate();
 	TP::Graphics::removeSpriteFramesFromCache();
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_CombatSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_AudioSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_mapSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_animationSystemID);

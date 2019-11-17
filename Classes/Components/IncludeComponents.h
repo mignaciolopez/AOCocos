@@ -8,5 +8,6 @@
 #include "Components/MapComponent.h"
 #include "Components/Layer3DComponent.h"
 #include "Components/AudioComponent.h"
+#include "Components/InventoryComponent.h"
 
 #endif //__INCLUDE_COMPONENTS_H__

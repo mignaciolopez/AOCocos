@@ -99,7 +99,7 @@ void NetworkSystem::Update()
 		}
 	m_clock_e = clock();
 	double elapsed_secs = double(m_clock_e - m_clock_b) / CLOCKS_PER_SEC;
-	if (m_online && elapsed_secs > 3)
+	if (m_online && elapsed_secs > 1)
 	{
 		updateUILatencylbl();
 		m_clock_b = clock();

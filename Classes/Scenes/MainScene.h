@@ -39,6 +39,7 @@ private:
 	int m_animationSystemID;
 	int m_mapSystemID;
 	int m_AudioSystemID;
+	int m_CombatSystemID;
 
 	cocos2d::Layer* m_layer;
 };

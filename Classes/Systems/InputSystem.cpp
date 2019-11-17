@@ -2,6 +2,8 @@
 
 #include "cocos2d.h"
 
+USING_NS_CC;
+
 InputSystem::InputSystem(cocos2d::Scene* scene)
 {
 	cocos2d::log("%s Constructor", "[INPUT SYSTEM]");
@@ -23,10 +25,12 @@ InputSystem::InputSystem(cocos2d::Scene* scene)
 	m_kbListener->onKeyPressed = [this](cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* ccevnt)
 	{
 		m_keyStates[static_cast<int>(keyCode)] = true;
+		keyPressed(keyCode);
 	};
 	m_kbListener->onKeyReleased = [this](cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* ccevnt)
 	{
 		m_keyStates[static_cast<int>(keyCode)] = false;
+		keyReleased(keyCode);
 	};
 
 	m_scene->getEventDispatcher()->addEventListenerWithFixedPriority(m_kbListener, 1);
@@ -63,61 +67,22 @@ InputSystem::~InputSystem()
 
 void InputSystem::Update()
 {
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE))
-	{
-		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_ESCAPE);
-		m_director->end();
-	}
-
 	if (m_localeid == -1)
 		return;
-
-
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_UP_ARROW))
+	
+	if (m_keyStates[static_cast<int>(EventKeyboard::KeyCode::KEY_UP_ARROW)])
 		m_eventManager->execute(EVENTS::MOVE_NORTH, m_localeid);
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_RIGHT_ARROW))
+	else if (m_keyStates[static_cast<int>(EventKeyboard::KeyCode::KEY_RIGHT_ARROW)])
 		m_eventManager->execute(EVENTS::MOVE_EAST, m_localeid);
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_DOWN_ARROW))
+	else if (m_keyStates[static_cast<int>(EventKeyboard::KeyCode::KEY_DOWN_ARROW)])
 		m_eventManager->execute(EVENTS::MOVE_SOUTH, m_localeid);
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_LEFT_ARROW))
+	else if (m_keyStates[static_cast<int>(EventKeyboard::KeyCode::KEY_LEFT_ARROW)])
 		m_eventManager->execute(EVENTS::MOVE_WEST, m_localeid);
 
-
-	if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F11))
-	{
-		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F11);
-		m_eventManager->execute(EVENTS::UI_TOGGLE_FULLSCREEN, m_localeid);
-	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F1))
-	{
-		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F1);
-		m_eventManager->execute(EVENTS::MAP_TOGGLE_DEBUG, m_localeid);
-	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F2))
-	{
-		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F2);
-		m_eventManager->execute(EVENTS::UI_TOGGLE_DEBUG, m_localeid);
-	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_F3))
-	{
-		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_F3);
-		m_eventManager->execute(EVENTS::UI_TOGGLE_VSYNC, m_localeid);
-	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_PG_UP))
-	{
-		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_PG_UP);
-		m_eventManager->execute(EVENTS::CAMERA_ZOOM_IN, m_localeid);
-	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_PG_DOWN))
-	{
-		//ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_PG_DOWN);
+	if (m_keyStates[static_cast<int>(EventKeyboard::KeyCode::KEY_PG_UP)])
 		m_eventManager->execute(EVENTS::CAMERA_ZOOM_OUT, m_localeid);
-	}
-	else if (IsKeyPressed(cocos2d::EventKeyboard::KeyCode::KEY_M))
-	{
-		ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode::KEY_M);
-		m_eventManager->execute(EVENTS::AUDIO_MUSIC_TOGGLE, m_localeid);
-	}
+	else if (m_keyStates[static_cast<int>(EventKeyboard::KeyCode::KEY_PG_DOWN)])
+		m_eventManager->execute(EVENTS::CAMERA_ZOOM_IN, m_localeid);
 }
 
 void InputSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
@@ -125,12 +90,50 @@ void InputSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitSt
 	m_localeid = eid;
 }
 
-bool InputSystem::IsKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
+void InputSystem::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
 {
-	if (m_keyStates[static_cast<int>(keyCode)])
-		return true;
+	if (keyCode == EventKeyboard::KeyCode::KEY_ESCAPE)
+		m_director->end();
 
-	return false;
+	if (m_localeid == -1)
+		return;
+
+	switch (keyCode)
+	{
+	case EventKeyboard::KeyCode::KEY_F1:
+		m_eventManager->execute(EVENTS::MAP_TOGGLE_DEBUG, m_localeid);
+		break;
+	case EventKeyboard::KeyCode::KEY_F2:
+		m_eventManager->execute(EVENTS::UI_TOGGLE_DEBUG, m_localeid);
+		break;
+	case EventKeyboard::KeyCode::KEY_F3:
+		m_eventManager->execute(EVENTS::UI_TOGGLE_VSYNC, m_localeid);
+		break;
+	case EventKeyboard::KeyCode::KEY_F11:
+		m_eventManager->execute(EVENTS::UI_TOGGLE_FULLSCREEN, m_localeid);
+		break;
+	case EventKeyboard::KeyCode::KEY_M:
+		m_eventManager->execute(EVENTS::AUDIO_MUSIC_TOGGLE, m_localeid);
+		break;
+	default:
+		break;
+	}
+}
+
+void InputSystem::keyReleased(cocos2d::EventKeyboard::KeyCode keyCode)
+{
+	if (m_localeid == -1)
+		return;
+
+	switch (keyCode)
+	{
+	case EventKeyboard::KeyCode::KEY_LEFT_CTRL:
+		m_eventManager->execute(EVENTS::COMBAT_PUNCH, m_localeid);
+		break;
+	case EventKeyboard::KeyCode::KEY_RIGHT_CTRL:
+		m_eventManager->execute(EVENTS::COMBAT_PUNCH, m_localeid);
+		break;
+	}		
 }
 
 void InputSystem::ReleaseKeyManually(cocos2d::EventKeyboard::KeyCode keyCode)

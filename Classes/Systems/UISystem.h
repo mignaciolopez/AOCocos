@@ -6,8 +6,11 @@
 #include "Graphics/Interface.h"
 
 #include "cocos2d.h"
+#include "extensions/cocos-ext.h"
 
-class UISystem : public ECS::System
+class UISystem : public ECS::System, 
+	public cocos2d::extension::TableViewDataSource, 
+	public cocos2d::extension::TableViewDelegate
 {
 public:
 	UISystem(cocos2d::Scene* scene);
@@ -18,11 +21,21 @@ public:
 	void setLocaleid(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 
 	void clicked(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+	void released(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void scroll(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void toogleFullscreen(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void toggleDebugInfo(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void setlblNetwork(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void toggleVSync(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+
+
+	virtual void scrollViewDidScroll(cocos2d::extension::ScrollView* view)override {};
+	virtual void scrollViewDidZoom(cocos2d::extension::ScrollView* view)override {}
+	virtual void tableCellTouched(cocos2d::extension::TableView* table, cocos2d::extension::TableViewCell* cell)override;
+	virtual cocos2d::Size tableCellSizeForIndex(cocos2d::extension::TableView *table, ssize_t idx)override;
+	virtual cocos2d::extension::TableViewCell* tableCellAtIndex(cocos2d::extension::TableView *table, ssize_t idx)override;
+	virtual ssize_t numberOfCellsInTableView(cocos2d::extension::TableView *table)override;
+
 
 private:
 	void createLabels();
@@ -35,6 +48,7 @@ private:
 	void createInventoryAndSpells();
 	void toggleInventory(int x, int y);
 
+	void createTableSpells();
 
 private:
 	std::vector<ComponentType> m_compatibleComponents;
@@ -62,6 +76,8 @@ private:
 	//SPRITES
 	cocos2d::Sprite* m_sprInventory;
 	cocos2d::Sprite* m_sprSpells;
+
+	cocos2d::extension::TableView* m_tableSpells;
 };
 
 #endif // __UI_SYSTEM_H__

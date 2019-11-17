@@ -11,6 +11,16 @@ enum Genre;
 enum Race;
 enum Head;
 
+//Inventory
+struct slot
+{
+	short id;
+	bool equiped;
+	unsigned short quantity;
+	std::string name;
+	cocos2d::Vec2 pos;
+};
+
 namespace ECS
 {
 	class Component
@@ -73,6 +83,15 @@ namespace ECS
 		virtual std::map<int, int>* getAudios();
 		virtual int getAeid();
 		virtual void setAeid(int aeid);
+
+		//Inventory
+		virtual slot* getSlot(int slotIndex);
+		virtual void setid(int slotIndex, int id);
+		virtual void setEquiped(int slotIndex, bool equiped);
+		virtual void setQuantity(int slotIndex, int quantity);
+		virtual void setName(int slotIndex, std::string name);
+		virtual void setPosition(int slotIndex, cocos2d::Vec2 pos);
+		virtual void setPosition(int slotIndex, int x, int y);
 
 	private:
 		const ComponentType m_type = ComponentType::NONE;

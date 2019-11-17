@@ -180,4 +180,34 @@ namespace ECS
 	{
 	}
 
+	//Inventory
+	slot * Component::getSlot(int slotIndex)
+	{
+		return nullptr;
+	}
+
+	void Component::setid(int slotIndex, int id)
+	{
+	}
+
+	void Component::setEquiped(int slotIndex, bool equiped)
+	{
+	}
+
+	void Component::setQuantity(int slotIndex, int quantity)
+	{
+	}
+
+	void Component::setName(int slotIndex, std::string name)
+	{
+	}
+
+	void Component::setPosition(int slotIndex, cocos2d::Vec2 pos)
+	{
+	}
+
+	void Component::setPosition(int slotIndex, int x, int y)
+	{
+	}
+
 }

@@ -8,7 +8,8 @@ enum ComponentType
 	POSITION,
 	MAP,
 	LAYER3D,
-	AUDIO
+	AUDIO,
+	INVENTORY
 };
 
 
