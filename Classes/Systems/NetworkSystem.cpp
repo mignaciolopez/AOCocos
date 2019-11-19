@@ -87,6 +87,10 @@ void NetworkSystem::Update()
 				cocos2d::log("%s ID_CONNECTION_ATTEMPT_FAILED", "[NETWORK SYSTEM]");
 				fakeBs.Write(10);
 				fakeBs.Write(10);
+				fakeBs.Write(Direction::South);
+				fakeBs.Write(Genre::Female);
+				fakeBs.Write(Race::Human);
+				fakeBs.Write(Head::Pirate);
 				m_eventManager->execute(EVENTS::MY_EID, 0, nullptr, &fakeBs);
 				m_online = false;
 				updateUILatencylbl();
