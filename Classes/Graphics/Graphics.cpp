@@ -32,35 +32,6 @@ void Graphics::addSpriteFramesToCache()
 	}
 
 	fileUtils->setPopupNotify(restoreNotify); // reset warnings
-
-    /*
-    if(fileUtils->fullPathForFilename(Y_GRAPHICS_DIR + "Graphics-1.plist").size() > 0)
-    {
-        cache->addSpriteFramesWithFile(Y_GRAPHICS_DIR + "Graphics-1.plist",
-			Y_GRAPHICS_DIR + "Graphics-1.png");
-    }
-    if(fileUtils->fullPathForFilename(Y_GRAPHICS_DIR + "Graphics-2.plist").size() > 0)
-    {
-        cache->addSpriteFramesWithFile(Y_GRAPHICS_DIR + "Graphics-2.plist",
-			Y_GRAPHICS_DIR + "Graphics-2.png");
-    }
-    if(fileUtils->fullPathForFilename(Y_GRAPHICS_DIR + "Graphics-3.plist").size() > 0)
-    {
-        cache->addSpriteFramesWithFile(Y_GRAPHICS_DIR + "Graphics-3.plist",
-			Y_GRAPHICS_DIR + "Graphics-3.png");
-    }
-    if(fileUtils->fullPathForFilename(Y_GRAPHICS_DIR + "Graphics-4.plist").size() > 0)
-    {
-        cache->addSpriteFramesWithFile(Y_GRAPHICS_DIR + "Graphics-4.plist",
-			Y_GRAPHICS_DIR + "Graphics-4.png");
-    }
-    if(fileUtils->fullPathForFilename(Y_GRAPHICS_DIR + "Graphics-5.plist").size() > 0)
-    {
-        cache->addSpriteFramesWithFile(Y_GRAPHICS_DIR + "Graphics-5.plist",
-			Y_GRAPHICS_DIR + "Graphics-5.png");
-    }
-
-	*/
 }
 ;
 
@@ -83,13 +54,6 @@ void Graphics::removeSpriteFramesFromCache()
 			if (cache->isSpriteFramesWithFileLoaded(plist))
 				cache->removeSpriteFramesFromFile(plist);
 	}
-
-    /*cache->removeSpriteFramesFromFile(Y_GRAPHICS_DIR + "Graphics-0.plist");
-    cache->removeSpriteFramesFromFile(Y_GRAPHICS_DIR + "Graphics-1.plist");
-    cache->removeSpriteFramesFromFile(Y_GRAPHICS_DIR + "Graphics-2.plist");
-    cache->removeSpriteFramesFromFile(Y_GRAPHICS_DIR + "Graphics-3.plist");
-    cache->removeSpriteFramesFromFile(Y_GRAPHICS_DIR + "Graphics-4.plist");
-    cache->removeSpriteFramesFromFile(Y_GRAPHICS_DIR + "Graphics-5.plist");*/
 };
 
 
