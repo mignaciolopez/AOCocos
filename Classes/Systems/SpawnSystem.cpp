@@ -129,7 +129,7 @@ void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 		bs->Read(rweapon);
 		syncCreatePlayer(reid, rx, ry, rdir, rgenre, rrace, rbody, rhead, rshield, rhelmet, rweapon);
 		
-		m_eventManager->execute(EVENTS::GRAPHICS_LOAD_PLAYER, eid);
+		m_eventManager->execute(EVENTS::GRAPHICS_LOAD_PLAYER, reid);
 		m_eventManager->execute(EVENTS::MAP_CHILD_ADD, reid, nullptr, nullptr);
 		m_eventManager->execute(EVENTS::MOVES_V_CREATE, reid, nullptr, nullptr);
 		m_eventManager->execute(EVENTS::AUDIO_C_CREATE, reid, nullptr, nullptr);
