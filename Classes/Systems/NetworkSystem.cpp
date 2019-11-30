@@ -90,7 +90,11 @@ void NetworkSystem::Update()
 				fakeBs.Write(Direction::South);
 				fakeBs.Write(Genre::Female);
 				fakeBs.Write(Race::Human);
-				fakeBs.Write(Head::Pirate);
+				fakeBs.Write(Body::Body_Common_Clothes_Green);
+				fakeBs.Write(Head::Head_Male_Human1);
+				fakeBs.Write(Shield::Shield_Imperial);
+				fakeBs.Write(Helmet::Helmet_Iron);
+				fakeBs.Write(Weapon::Weapon_Sword_Long);
 				m_eventManager->execute(EVENTS::MY_EID, 0, nullptr, &fakeBs);
 				m_online = false;
 				updateUILatencylbl();

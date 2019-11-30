@@ -11,5 +11,6 @@
 #include "Systems/MapSystem.h"
 #include "Systems/AudioSystem.h"
 #include "Systems/CombatSystem.h"
+#include "Systems/GraphicsSystem.h"
 
 #endif //__INCLUDE_SYSTEMS_H__

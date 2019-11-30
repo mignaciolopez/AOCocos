@@ -39,7 +39,7 @@ void SpawnSystem::Update()
 void SpawnSystem::createLocal(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
 {
 	createPlayer(eid, ccevent, bs);
-	m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::GRAPHICS_LOAD_PLAYER, eid);
 	m_eventManager->execute(EVENTS::CAMERA_LAYER_ADD, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MAP_CREATE, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MAP_CHILD_ADD, eid, nullptr, nullptr);
@@ -50,7 +50,7 @@ void SpawnSystem::createLocal(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 void SpawnSystem::createRemote(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
 {
 	createPlayer(eid, ccevent, bs);
-	m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, eid, nullptr, nullptr);
+	m_eventManager->execute(EVENTS::GRAPHICS_LOAD_PLAYER, eid);
 	m_eventManager->execute(EVENTS::MAP_CHILD_ADD, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MOVES_V_CREATE, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::AUDIO_C_CREATE, eid, nullptr, nullptr);
@@ -64,24 +64,30 @@ void SpawnSystem::createPlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStre
 	Direction dir;
 	Genre genre;
 	Race race;
+	Body body;
 	Head head;
+	Shield shield;
+	Helmet helmet;
+	Weapon weapon;
 
 	bs->Read(x);
 	bs->Read(y);
 	bs->Read(dir);
 	bs->Read(genre);
 	bs->Read(race);
+	bs->Read(body);
 	bs->Read(head);
+	bs->Read(shield);
+	bs->Read(helmet);
+	bs->Read(weapon);
 
-	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(
-		TP::Graphics::playerBodyHumanFemaleStandingSouth,
-		TP::Graphics::headsPlayerHeadPirateSouth,
-		x, y, dir, genre, race, head);
+	PlayerBodyComponent* bodyC = new (std::nothrow) PlayerBodyComponent(
+		x, y, dir, genre, race, body, head, shield, helmet, weapon);
 
-	if (!body || !body->getBodySpr() || !body->getHeadSpr())
+	if (!bodyC || !bodyC->getBodySpr() || !bodyC->getHeadSpr())
 		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
 
-	m_entityManager->AddComponentToEntity(eid, body);
+	m_entityManager->AddComponentToEntity(eid, bodyC);
 
 	PositionComponent* pos = new (std::nothrow) PositionComponent(x, y);
 	if (!pos)
@@ -104,7 +110,11 @@ void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 		Direction rdir;
 		Genre rgenre;
 		Race rrace;
+		Body rbody;
 		Head rhead;
+		Shield rshield;
+		Helmet rhelmet;
+		Weapon rweapon;
 
 		bs->Read(reid);
 		bs->Read(rx);
@@ -112,10 +122,14 @@ void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 		bs->Read(rdir);
 		bs->Read(rgenre);
 		bs->Read(rrace);
+		bs->Read(rbody);
 		bs->Read(rhead);
-		syncCreatePlayer(reid, rx, ry, rdir, rgenre, rrace, rhead);
+		bs->Read(rshield);
+		bs->Read(rhelmet);
+		bs->Read(rweapon);
+		syncCreatePlayer(reid, rx, ry, rdir, rgenre, rrace, rbody, rhead, rshield, rhelmet, rweapon);
 		
-		m_eventManager->execute(EVENTS::ANIMATION_LOAD_INFO, reid, nullptr, nullptr);
+		m_eventManager->execute(EVENTS::GRAPHICS_LOAD_PLAYER, eid);
 		m_eventManager->execute(EVENTS::MAP_CHILD_ADD, reid, nullptr, nullptr);
 		m_eventManager->execute(EVENTS::MOVES_V_CREATE, reid, nullptr, nullptr);
 		m_eventManager->execute(EVENTS::AUDIO_C_CREATE, reid, nullptr, nullptr);
@@ -125,25 +139,22 @@ void SpawnSystem::syncPlayers(int eid, cocos2d::Event * ccevent, SLNet::BitStrea
 void SpawnSystem::removePlayer(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)
 {
 	m_eventManager->execute(EVENTS::MAP_CHILD_REMOVE, eid, nullptr, nullptr);
-	m_eventManager->execute(EVENTS::ANIMATION_REMOVE_INFO, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::MOVES_V_REMOVE, eid, nullptr, nullptr);
 	m_eventManager->execute(EVENTS::AUDIO_C_REMOVE, eid, nullptr, nullptr);
 	m_entityManager->removeEntity(eid);
 }
 
-void SpawnSystem::syncCreatePlayer(int eid, int x, int y, Direction dir, Genre genre, Race race, Head head)
+void SpawnSystem::syncCreatePlayer(int eid, int x, int y, Direction dir, Genre genre, Race race, Body body, Head head, Shield shield, Helmet helmet, Weapon weapon)
 {
 	m_entityManager->CreateEntity(eid);
 
-	PlayerBodyComponent* body = new (std::nothrow) PlayerBodyComponent(
-		TP::Graphics::playerBodyHumanFemaleStandingSouth,
-		TP::Graphics::headsPlayerHeadPirateSouth,
-		x, y, dir, genre, race, head);
+	PlayerBodyComponent* bodyC = new (std::nothrow) PlayerBodyComponent(
+		x, y, dir, genre, race, body, head, shield, helmet, weapon);
 
-	if (!body || !body->getBodySpr() || !body->getHeadSpr())
+	if (!bodyC || !bodyC->getBodySpr() || !bodyC->getHeadSpr())
 		cocos2d::log("%s PlayerBodyComponent Failed!", "[SPAWN SYSTEM]");
 
-	m_entityManager->AddComponentToEntity(eid, body);
+	m_entityManager->AddComponentToEntity(eid, bodyC);
 
 	PositionComponent* pos = new (std::nothrow) PositionComponent(x, y);
 	if (!pos)

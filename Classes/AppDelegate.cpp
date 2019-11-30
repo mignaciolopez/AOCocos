@@ -60,6 +60,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	searchPaths.push_back("Map");
 	searchPaths.push_back("mp3");
 	searchPaths.push_back("WAV");
+	searchPaths.push_back("ini");
 
 	fileUtils->setSearchPaths(searchPaths);
 

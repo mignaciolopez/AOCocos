@@ -39,6 +39,33 @@ namespace ECS
 	{
 	}
 
+	cocos2d::Sprite * Component::getShieldSpr()
+	{
+		return nullptr;
+	}
+
+	void Component::setShieldSpr(cocos2d::Sprite * shield)
+	{
+	}
+
+	cocos2d::Sprite * Component::getHelmetSpr()
+	{
+		return nullptr;
+	}
+
+	void Component::setHelmetSpr(cocos2d::Sprite * helmet)
+	{
+	}
+
+	cocos2d::Sprite * Component::getWeaponSpr()
+	{
+		return nullptr;
+	}
+
+	void Component::setWeaponSpr(cocos2d::Sprite * weapon)
+	{
+	}
+
 	bool Component::getMoving()
 	{
 		return false;
@@ -84,6 +111,15 @@ namespace ECS
 	{
 	}
 
+	Body Component::getBody()
+	{
+		return Body();
+	}
+
+	void Component::setBody(Body body)
+	{
+	}
+
 	Head Component::getHead()
 	{
 		return Head();
@@ -93,6 +129,106 @@ namespace ECS
 	{
 	}
 
+	Shield Component::getShield()
+	{
+		return Shield();
+	}
+
+	void Component::setShield(Shield shield)
+	{
+	}
+
+	Helmet Component::getHelmet()
+	{
+		return Helmet();
+	}
+
+	void Component::setHelmet(Helmet helmet)
+	{
+	}
+
+	Weapon Component::getWeapon()
+	{
+		return Weapon();
+	}
+
+	void Component::setWeapon(Weapon weapon)
+	{
+	}
+
+	unsigned int Component::getBodyGs(Direction dir)
+	{
+		return 0;
+	}
+
+	void Component::setBodyGs(Direction dir, unsigned int gid)
+	{
+	}
+
+	unsigned int Component::getHeadGs(Direction dir)
+	{
+		return 0;
+	}
+
+	void Component::setHeadGs(Direction dir, unsigned int gid)
+	{
+	}
+
+	unsigned int Component::getShieldGs(Direction dir)
+	{
+		return 0;
+	}
+
+	void Component::setShieldGs(Direction dir, unsigned int gid)
+	{
+	}
+
+	unsigned int Component::getHelmetGs(Direction dir)
+	{
+		return 0;
+	}
+
+	void Component::setHelmetGs(Direction dir, unsigned int gid)
+	{
+	}
+
+	unsigned int Component::getWeaponGs(Direction dir)
+	{
+		return 0;
+	}
+
+	void Component::setWeaponGs(Direction dir, unsigned int gid)
+	{
+	}
+
+	cocos2d::Animate * Component::getAnimBody()
+	{
+		return nullptr;
+	}
+
+	void Component::setAnimBody(Direction dir, cocos2d::Animate * anim)
+	{
+	}
+
+	cocos2d::Animate * Component::getAnimShield()
+	{
+		return nullptr;
+	}
+
+	void Component::setAnimShield(Direction dir, cocos2d::Animate * anim)
+	{
+	}
+
+	cocos2d::Animate * Component::getAnimWeapon()
+	{
+		return nullptr;
+	}
+
+	void Component::setAnimWeapon(Direction dir, cocos2d::Animate * anim)
+	{
+	}
+
+	//PositionComponent
 	int Component::getX()
 	{
 		return 0.0f;

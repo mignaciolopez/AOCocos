@@ -6,10 +6,55 @@
 #include "cocos2d.h"
 
 //PlayerBodyComponent
-enum Direction;
-enum Genre;
-enum Race;
-enum Head;
+enum Direction
+{
+	INVALID = -1,
+	North = 0,
+	East,
+	South,
+	West,
+};
+
+enum Genre
+{
+	Male = 0,
+	Female
+};
+
+enum Race
+{
+	Human = 0,
+	Dwarf,
+	Gnome,
+	Elf,
+	DarkElf
+};
+
+enum Body
+{
+	Body_Common_Clothes_Green = 1,
+	Body_Common_Clothes_Blue
+};
+
+enum Head
+{
+	Head_Male_Human1 = 1
+};
+
+enum Shield
+{
+	Shield_Imperial = 1
+};
+
+enum Helmet
+{
+	Helmet_Iron = 1
+};
+
+enum Weapon
+{
+	Weapon_Sword_Long = 1
+};
 
 //Inventory
 struct slot
@@ -38,6 +83,15 @@ namespace ECS
 		virtual cocos2d::Sprite* getHeadSpr();
 		virtual void setHeadSpr(cocos2d::Sprite* head);
 
+		virtual cocos2d::Sprite* getShieldSpr();
+		virtual void setShieldSpr(cocos2d::Sprite* shield);
+
+		virtual cocos2d::Sprite* getHelmetSpr();
+		virtual void setHelmetSpr(cocos2d::Sprite* helmet);
+
+		virtual cocos2d::Sprite* getWeaponSpr();
+		virtual void setWeaponSpr(cocos2d::Sprite* weapon);
+
 		virtual bool getMoving();
 		virtual void setMoving(bool m);
 
@@ -53,8 +107,44 @@ namespace ECS
 		virtual Genre getGenre();
 		virtual void setGenre(Genre genre);
 
+		virtual Body getBody();
+		virtual void setBody(Body body);
+
 		virtual Head getHead();
 		virtual void setHead(Head head);
+
+		virtual Shield getShield();
+		virtual void setShield(Shield shield);
+
+		virtual Helmet getHelmet();
+		virtual void setHelmet(Helmet helmet);
+
+		virtual Weapon getWeapon();
+		virtual void setWeapon(Weapon weapon);
+
+		virtual unsigned int getBodyGs(Direction dir);
+		virtual void setBodyGs(Direction dir, unsigned int gid);
+
+		virtual unsigned int getHeadGs(Direction dir);
+		virtual void setHeadGs(Direction dir, unsigned int gid);
+
+		virtual unsigned int getShieldGs(Direction dir);
+		virtual void setShieldGs(Direction dir, unsigned int gid);
+
+		virtual unsigned int getHelmetGs(Direction dir);
+		virtual void setHelmetGs(Direction dir, unsigned int gid);
+
+		virtual unsigned int getWeaponGs(Direction dir);
+		virtual void setWeaponGs(Direction dir, unsigned int gid);
+
+		virtual cocos2d::Animate* getAnimBody();
+		virtual void setAnimBody(Direction dir, cocos2d::Animate* anim);
+
+		virtual cocos2d::Animate* getAnimShield();
+		virtual void setAnimShield(Direction dir, cocos2d::Animate* anim);
+
+		virtual cocos2d::Animate* getAnimWeapon();
+		virtual void setAnimWeapon(Direction dir, cocos2d::Animate* anim);
 
 		//PositionComponent
 		virtual int getX();

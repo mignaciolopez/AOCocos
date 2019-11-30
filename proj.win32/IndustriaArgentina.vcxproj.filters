@@ -105,6 +105,9 @@
     <ClCompile Include="..\Classes\Systems\CombatSystem.cpp">
       <Filter>src\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Systems\GraphicsSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -204,6 +207,9 @@
       <Filter>src\Components</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\Systems\CombatSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\GraphicsSystem.h">
       <Filter>src\Systems</Filter>
     </ClInclude>
   </ItemGroup>

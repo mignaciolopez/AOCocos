@@ -23,7 +23,7 @@ bool MainScene::init()
 
 	this->scheduleUpdate();
 
-	TP::Graphics::addSpriteFramesToCache();
+	//TP::Graphics::addSpriteFramesToCache();
 
 	// 1- Init Engine
 	m_ECS_Engine = ECS::ECS_Engine::getInstance();
@@ -69,6 +69,10 @@ bool MainScene::init()
 	if (!combatSystem)
 		cocos2d::log("%s CombatSystem Failed!", LOGID);
 
+	GraphicsSystem* graphicsSystem = new (std::nothrow) GraphicsSystem;
+	if (!graphicsSystem)
+		cocos2d::log("%s GraphicsSystem Failed!", LOGID);
+
 	// 3- Register Systems
 	m_inputSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(inputSystem);
 	m_uiSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(uiSystem);
@@ -78,8 +82,9 @@ bool MainScene::init()
 	m_cameraSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(cameraSystem);
 	m_animationSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(animationSystem);
 	m_mapSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(mapSystem);
-	m_AudioSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(audioSystem);
-	m_CombatSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(combatSystem);
+	m_audioSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(audioSystem);
+	m_combatSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(combatSystem);
+	m_graphicsSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(graphicsSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
 
@@ -96,9 +101,10 @@ void MainScene::update(float dt)
 void MainScene::mainSceneOnExit()
 {
 	unscheduleUpdate();
-	TP::Graphics::removeSpriteFramesFromCache();
-	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_CombatSystemID);
-	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_AudioSystemID);
+	//TP::Graphics::removeSpriteFramesFromCache();
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_graphicsSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_combatSystemID);
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_audioSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_mapSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_animationSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_cameraSystemID);

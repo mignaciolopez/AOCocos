@@ -163,6 +163,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClCompile Include="..\Classes\Systems\AnimationSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\AudioSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\CombatSystem.cpp" />
+    <ClCompile Include="..\Classes\Systems\GraphicsSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\MapSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\SpawnSystem.cpp" />
     <ClCompile Include="..\Classes\Systems\InputSystem.cpp" />
@@ -197,6 +198,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\Systems\AnimationSystem.h" />
     <ClInclude Include="..\Classes\Systems\AudioSystem.h" />
     <ClInclude Include="..\Classes\Systems\CombatSystem.h" />
+    <ClInclude Include="..\Classes\Systems\GraphicsSystem.h" />
     <ClInclude Include="..\Classes\Systems\IncludeSystems.h" />
     <ClInclude Include="..\Classes\Systems\MapSystem.h" />
     <ClInclude Include="..\Classes\Systems\SpawnSystem.h" />

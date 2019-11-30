@@ -38,8 +38,9 @@ private:
 	int m_spawnSystemID;
 	int m_animationSystemID;
 	int m_mapSystemID;
-	int m_AudioSystemID;
-	int m_CombatSystemID;
+	int m_audioSystemID;
+	int m_combatSystemID;
+	int m_graphicsSystemID;
 
 	cocos2d::Layer* m_layer;
 };
