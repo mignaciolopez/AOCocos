@@ -48,8 +48,11 @@ void AnimationSystem::animate(int eid, cocos2d::Event*, SLNet::BitStream* bs)
 	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
 		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getAnimBody()->clone());
 
-	animateWeapon(eid, nullptr, nullptr);
-	animateShield(eid, nullptr, nullptr);
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getShieldSpr()->runAction(
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getAnimShield()->clone());
+
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getWeaponSpr()->runAction(
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getAnimWeapon()->clone());
 }
 
 void AnimationSystem::animateWeapon(int eid, cocos2d::Event *, SLNet::BitStream * bs)
@@ -68,7 +71,6 @@ void AnimationSystem::animateShield(int eid, cocos2d::Event *, SLNet::BitStream 
 		getAnimShield()->clone(), callback, nullptr);
 
 	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getShieldSpr()->runAction(seq);
-		//m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getAnimShield()->clone());
 }
 
 void AnimationSystem::setBodyCF(int eid)

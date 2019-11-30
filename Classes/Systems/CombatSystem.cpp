@@ -74,6 +74,8 @@ void CombatSystem::punch(int eid, cocos2d::Event * ccEvent, SLNet::BitStream * b
 
 	m_entityManager->getComp(eid, PLAYER_BODY)->setAttacking(true);
 
+	m_eventManager->execute(EVENTS::ANIMATE_WEAPON, eid);
+
 	//Lets try some client prediction here when renocking is implemented
 	//for now just send the event to server
 	SLNet::BitStream bsOut;
