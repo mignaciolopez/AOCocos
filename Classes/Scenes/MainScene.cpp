@@ -41,10 +41,6 @@ bool MainScene::init()
 	if (!movementSystem)
 		cocos2d::log("%s MovementSystem Failed!", LOGID);
 
-	NetworkSystem* networkSystem = new (std::nothrow) NetworkSystem;
-	if (!networkSystem)
-		cocos2d::log("%s NetworkSystem Failed!", LOGID);
-
 	SpawnSystem* spawnSystem = new (std::nothrow) SpawnSystem;
 	if (!spawnSystem)
 		cocos2d::log("%s SpawnSystem Failed!", LOGID);
@@ -73,11 +69,14 @@ bool MainScene::init()
 	if (!graphicsSystem)
 		cocos2d::log("%s GraphicsSystem Failed!", LOGID);
 
+	NetworkSystem* networkSystem = new (std::nothrow) NetworkSystem;
+	if (!networkSystem)
+		cocos2d::log("%s NetworkSystem Failed!", LOGID);
+
 	// 3- Register Systems
 	m_inputSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(inputSystem);
 	m_uiSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(uiSystem);
 	m_movementSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(movementSystem);
-	m_networkSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(networkSystem);
 	m_spawnSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(spawnSystem);
 	m_cameraSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(cameraSystem);
 	m_animationSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(animationSystem);
@@ -85,6 +84,7 @@ bool MainScene::init()
 	m_audioSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(audioSystem);
 	m_combatSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(combatSystem);
 	m_graphicsSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(graphicsSystem);
+	m_networkSystemID = m_ECS_Engine->getSystemManager()->RegisterSystem(networkSystem);
 
 	cocos2d::log("%s Init Success.", LOGID);
 
@@ -102,6 +102,7 @@ void MainScene::mainSceneOnExit()
 {
 	unscheduleUpdate();
 	//TP::Graphics::removeSpriteFramesFromCache();
+	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_networkSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_graphicsSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_combatSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_audioSystemID);
@@ -109,7 +110,6 @@ void MainScene::mainSceneOnExit()
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_animationSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_cameraSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_spawnSystemID);
-	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_networkSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_movementSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_uiSystemID);
 	m_ECS_Engine->getSystemManager()->unRegisterSystem(m_inputSystemID);
