@@ -71,9 +71,9 @@ namespace ECS
 #endif
 	}
 
-	void ECS_Engine::update()
+	void ECS_Engine::update(float dt)
 	{
-			m_systemManager->Update();
+			m_systemManager->update(dt);
 	}
 
 	EntityManager* ECS_Engine::getEntityManager()

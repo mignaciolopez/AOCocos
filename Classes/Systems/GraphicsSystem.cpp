@@ -45,7 +45,7 @@ GraphicsSystem::~GraphicsSystem()
 #endif
 }
 
-void GraphicsSystem::Update()
+void GraphicsSystem::update(float dt)
 {
 }
 

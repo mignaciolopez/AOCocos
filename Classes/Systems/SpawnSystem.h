@@ -14,7 +14,7 @@ public:
 	SpawnSystem();
 	~SpawnSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 
 	void createLocal(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 	void createRemote(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);

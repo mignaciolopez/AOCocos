@@ -21,7 +21,7 @@ public:
 	NetworkSystem();
 	~NetworkSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 
 	void send(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 

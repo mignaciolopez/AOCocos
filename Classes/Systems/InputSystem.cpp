@@ -65,7 +65,7 @@ InputSystem::~InputSystem()
 #endif
 }
 
-void InputSystem::Update()
+void InputSystem::update(float dt)
 {
 	if (m_localeid == -1)
 		return;
@@ -115,6 +115,10 @@ void InputSystem::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
 	case EventKeyboard::KeyCode::KEY_M:
 		m_eventManager->execute(EVENTS::AUDIO_MUSIC_TOGGLE, m_localeid);
 		break;
+	case EventKeyboard::KeyCode::KEY_E:
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setBody(Body::Body_Common_Clothes_Green);
+		m_eventManager->execute(EVENTS::GRAPHICS_LOAD_BODY, m_localeid);
+		break;
 	default:
 		break;
 	}
@@ -132,6 +136,10 @@ void InputSystem::keyReleased(cocos2d::EventKeyboard::KeyCode keyCode)
 		break;
 	case EventKeyboard::KeyCode::KEY_RIGHT_CTRL:
 		m_eventManager->execute(EVENTS::COMBAT_PUNCH, m_localeid);
+		break;
+	case EventKeyboard::KeyCode::KEY_E:
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setBody(Body::Body_Common_Clothes_Blue);
+		m_eventManager->execute(EVENTS::GRAPHICS_LOAD_BODY, m_localeid);
 		break;
 	}		
 }

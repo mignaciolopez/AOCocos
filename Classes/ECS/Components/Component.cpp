@@ -84,6 +84,15 @@ namespace ECS
 	{
 	}
 
+	bool Component::getAttacking()
+	{
+		return false;
+	}
+
+	void Component::setAttacking(bool a)
+	{
+	}
+
 	Direction Component::getDirection()
 	{
 		return Direction();

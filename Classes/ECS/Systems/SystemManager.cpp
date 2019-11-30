@@ -27,11 +27,11 @@ namespace ECS
 #endif
 	}
 
-	void SystemManager::Update()
+	void SystemManager::update(float dt)
 	{
 		for (auto system : m_systems)
 		{
-			system.second->Update();
+			system.second->update(dt);
 		}
 	}
 

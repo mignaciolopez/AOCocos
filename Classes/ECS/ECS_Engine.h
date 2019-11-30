@@ -17,7 +17,7 @@ namespace ECS
 		static ECS_Engine* getInstance();
 		static void destroyInstance();
 
-		void update();
+		void update(float dt);
 
 		EntityManager* getEntityManager();
 		SystemManager* getSystemManager();

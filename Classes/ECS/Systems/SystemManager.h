@@ -18,7 +18,7 @@ namespace ECS
 		SystemManager(EventManager* eventManager);
 		~SystemManager();
 
-		void Update();
+		void update(float dt);
 
 		template <typename SYSTEM>
 		inline int RegisterSystem(SYSTEM* system)

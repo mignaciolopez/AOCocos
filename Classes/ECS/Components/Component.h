@@ -98,6 +98,9 @@ namespace ECS
 		virtual bool getCanWalk();
 		virtual void setCanWalk(bool w);
 
+		virtual bool getAttacking();
+		virtual void setAttacking(bool a);
+
 		virtual Direction getDirection();
 		virtual void setDirection(Direction dir);
 

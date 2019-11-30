@@ -71,7 +71,7 @@ UISystem::~UISystem()
 #endif
 }
 
-void UISystem::Update()
+void UISystem::update(float dt)
 {
 	if (m_localeid == -1)
 		return;

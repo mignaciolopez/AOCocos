@@ -13,7 +13,7 @@ public:
 	CameraSystem(cocos2d::Scene* scene);
 	~CameraSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 
 	void setLocalEntity(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	void addLayerToEid(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);

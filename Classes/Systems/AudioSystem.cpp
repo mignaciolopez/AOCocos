@@ -51,7 +51,7 @@ AudioSystem::~AudioSystem()
 #endif
 }
 
-void AudioSystem::Update()
+void AudioSystem::update(float dt)
 {
 	if (m_localeid == -1)
 		return;

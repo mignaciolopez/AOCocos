@@ -4,6 +4,8 @@
 
 #include "Graphics/Graphics.h"
 
+USING_NS_CC;
+
 AnimationSystem::AnimationSystem()
 {
 #if _DEBUG
@@ -16,6 +18,8 @@ AnimationSystem::AnimationSystem()
 	m_sfCache = cocos2d::SpriteFrameCache::getInstance();
 
 	m_eventManager->Subscribe(EVENTS::ANIMATE, &AnimationSystem::animate, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATE_WEAPON, &AnimationSystem::animateWeapon, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATE_SHIELD, &AnimationSystem::animateShield, this);
 }
 
 AnimationSystem::~AnimationSystem()
@@ -26,11 +30,12 @@ AnimationSystem::~AnimationSystem()
 #endif
 }
 
-void AnimationSystem::Update()
+void AnimationSystem::update(float dt)
 {
 	for (auto e : *m_entityManager->getEntities())
 	{
-		if (!m_entityManager->getComp(e.first, PLAYER_BODY)->getMoving())
+		if (!m_entityManager->getComp(e.first, PLAYER_BODY)->getMoving() && 
+			!m_entityManager->getComp(e.first, PLAYER_BODY)->getAttacking())
 			setBodyCF(e.first);
 	}
 }
@@ -43,11 +48,27 @@ void AnimationSystem::animate(int eid, cocos2d::Event*, SLNet::BitStream* bs)
 	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr()->runAction(
 		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getAnimBody()->clone());
 
-	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getShieldSpr()->runAction(
-		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getAnimShield()->clone());
+	animateWeapon(eid, nullptr, nullptr);
+	animateShield(eid, nullptr, nullptr);
+}
 
-	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getWeaponSpr()->runAction(
-		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getAnimWeapon()->clone());
+void AnimationSystem::animateWeapon(int eid, cocos2d::Event *, SLNet::BitStream * bs)
+{
+	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(AnimationSystem::attackEnd, this, eid));
+	Action* seq = Sequence::create(m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->
+		getAnimWeapon()->clone(), callback, nullptr);
+
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getWeaponSpr()->runAction(seq);
+}
+
+void AnimationSystem::animateShield(int eid, cocos2d::Event *, SLNet::BitStream * bs)
+{
+	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(AnimationSystem::attackEnd, this, eid));
+	Action* seq = Sequence::create(m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->
+		getAnimShield()->clone(), callback, nullptr);
+
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getShieldSpr()->runAction(seq);
+		//m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getAnimShield()->clone());
 }
 
 void AnimationSystem::setBodyCF(int eid)
@@ -57,6 +78,11 @@ void AnimationSystem::setBodyCF(int eid)
 	setShield(eid);
 	setHelmet(eid);
 	setWeapon(eid);
+}
+
+void AnimationSystem::attackEnd(int eid)
+{
+	m_entityManager->getComp(eid, PLAYER_BODY)->setAttacking(false);
 }
 
 void AnimationSystem::setBody(int eid)

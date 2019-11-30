@@ -16,7 +16,7 @@ public:
 	UISystem(cocos2d::Scene* scene);
 	~UISystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 
 	void setLocaleid(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 

@@ -14,7 +14,7 @@ public:
 	MovementSystem();
 	~MovementSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 
 	void moveNorth(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);
 	void moveEast(int eid, cocos2d::Event* ccevnt = nullptr, SLNet::BitStream* bs = nullptr);

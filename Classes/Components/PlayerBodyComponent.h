@@ -153,6 +153,15 @@ public:
 		m_canWalk = w;
 	}
 
+	virtual bool getAttacking() override
+	{
+		return m_attacking;
+	}
+	virtual void setAttacking(bool a) override
+	{
+		m_attacking = a;
+	}
+
 	virtual Direction getDirection() override
 	{
 		return m_direction;
@@ -308,6 +317,7 @@ private:
 	const ComponentType m_type = ComponentType::PLAYER_BODY;
 	bool m_moving = false;
 	bool m_canWalk = true;
+	bool m_attacking = false;
 	Direction m_direction = Direction::South;
 	Race m_race;
 	Genre m_genre;

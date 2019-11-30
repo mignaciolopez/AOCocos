@@ -95,7 +95,7 @@ bool MainScene::init()
 
 void MainScene::update(float dt)
 {
-	m_ECS_Engine->update();
+	m_ECS_Engine->update(dt);
 }
 
 void MainScene::mainSceneOnExit()

@@ -66,7 +66,7 @@ MovementSystem::~MovementSystem()
 #endif
 }
 
-void MovementSystem::Update()
+void MovementSystem::update(float dt)
 {
 	if (m_localeid == -1)
 		return;

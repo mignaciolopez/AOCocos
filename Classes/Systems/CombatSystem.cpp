@@ -24,7 +24,7 @@ CombatSystem::~CombatSystem()
 #endif
 }
 
-void CombatSystem::Update()
+void CombatSystem::update(float dt)
 {
 }
 
@@ -35,11 +35,15 @@ void CombatSystem::setLocaleid(int eid, cocos2d::Event * ccEvent, SLNet::BitStre
 
 void CombatSystem::punchAir(int eid, cocos2d::Event * ccEvnt, SLNet::BitStream * bs)
 {
+	m_eventManager->execute(EVENTS::ANIMATE_WEAPON, eid);
+	
 	m_entityManager->getComp(eid, AUDIO)->addAudio(2);
 }
 
 void CombatSystem::punchTarget(int eid, cocos2d::Event * ccEvnt, SLNet::BitStream * bs)
 {
+	m_eventManager->execute(EVENTS::ANIMATE_WEAPON, eid);
+
 	int targeteid = -1;
 	if (bs)
 		bs->Read(targeteid);
@@ -59,12 +63,16 @@ void CombatSystem::punchTarget(int eid, cocos2d::Event * ccEvnt, SLNet::BitStrea
 	{
 		//animate who corresponds
 	}
+
 	m_entityManager->getComp(eid, AUDIO)->addAudio(10);
 }
 
 void CombatSystem::punch(int eid, cocos2d::Event * ccEvent, SLNet::BitStream * bs)
 {
-	//attack animation
+	if (m_entityManager->getComp(eid, PLAYER_BODY)->getAttacking())
+		return;
+
+	m_entityManager->getComp(eid, PLAYER_BODY)->setAttacking(true);
 
 	//Lets try some client prediction here when renocking is implemented
 	//for now just send the event to server

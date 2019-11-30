@@ -11,7 +11,7 @@ public:
 	MapSystem();
 	~MapSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 	
 	virtual void setLocaleid(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 	virtual void addeidChild(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);

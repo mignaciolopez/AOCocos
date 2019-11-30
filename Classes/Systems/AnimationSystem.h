@@ -11,11 +11,15 @@ public:
 	AnimationSystem();
 	~AnimationSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 
 	void animate(int eid, cocos2d::Event*, SLNet::BitStream* bs);
+	void animateWeapon(int eid, cocos2d::Event*, SLNet::BitStream* bs);
+	void animateShield(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 
 	void setBodyCF(int eid);
+
+	void attackEnd(int eid);
 
 private:
 	void setBody(int eid);

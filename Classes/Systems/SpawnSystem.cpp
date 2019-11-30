@@ -31,7 +31,7 @@ SpawnSystem::~SpawnSystem()
 #endif
 }
 
-void SpawnSystem::Update()
+void SpawnSystem::update(float dt)
 {
 	//cocos2d::log("%s Update", LOGID);
 }

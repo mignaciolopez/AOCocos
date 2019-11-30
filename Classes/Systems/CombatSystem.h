@@ -11,7 +11,7 @@ public:
 	CombatSystem();
 	~CombatSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 
 	void setLocaleid(int eid, cocos2d::Event* ccEvent, SLNet::BitStream* bs);
 	

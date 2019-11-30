@@ -32,7 +32,7 @@ MapSystem::~MapSystem()
 #endif
 }
 
-void MapSystem::Update()
+void MapSystem::update(float dt)
 {
 	if (m_localeid == -1)
 		return;

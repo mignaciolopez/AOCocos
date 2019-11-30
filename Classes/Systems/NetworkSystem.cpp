@@ -50,7 +50,7 @@ NetworkSystem::~NetworkSystem()
 #endif
 }
 
-void NetworkSystem::Update()
+void NetworkSystem::update(float dt)
 {
 	SLNet::BitStream fakeBs;
 

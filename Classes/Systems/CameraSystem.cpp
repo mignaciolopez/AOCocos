@@ -119,7 +119,7 @@ CameraSystem::~CameraSystem()
 #endif
 }
 
-void CameraSystem::Update()
+void CameraSystem::update(float dt)
 {
 	if (m_localeid != -1)
 	{

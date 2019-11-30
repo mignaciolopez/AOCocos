@@ -15,7 +15,7 @@ public:
 	InputSystem(cocos2d::Scene* scene);
 	~InputSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
 	void setLocalEntity(int eid, cocos2d::Event* ccevent, SLNet::BitStream* bs);
 
 private:

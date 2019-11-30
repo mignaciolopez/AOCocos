@@ -11,7 +11,8 @@ public:
 	GraphicsSystem();
 	~GraphicsSystem();
 
-	virtual void Update() override;
+	virtual void update(float dt) override;
+
 	void setLocaleid(int eid, cocos2d::Event* ccEvent, SLNet::BitStream* bs);
 	void setGraphicsForPlayer(int eid, cocos2d::Event* ccEvent, SLNet::BitStream* bs);
 	void loadBody(int eid, cocos2d::Event* ccEvent, SLNet::BitStream* bs);

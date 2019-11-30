@@ -14,7 +14,7 @@ namespace ECS
 		System();
 		virtual ~System();
 
-		virtual void Update() = 0;
+		virtual void update(float dt) = 0;
 
 	private:
 		std::vector<ComponentType> m_compatibleComponents;
