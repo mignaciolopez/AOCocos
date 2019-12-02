@@ -49,6 +49,7 @@ void CombatSystem::punchTarget(int eid, cocos2d::Event * ccEvnt, SLNet::BitStrea
 		bs->Read(targeteid);
 
 	m_entityManager->getComp(targeteid, PLAYER_BODY)->setAttacking(true);
+	m_entityManager->getComp(eid, PLAYER_BODY)->setAttacking(true);
 
 	m_eventManager->execute(EVENTS::ANIMATE_WEAPON, eid);
 	m_eventManager->execute(EVENTS::ANIMATE_BLOOD, targeteid);
