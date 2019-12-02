@@ -98,6 +98,8 @@ void InputSystem::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
 	if (m_localeid == -1)
 		return;
 
+	SLNet::BitStream bsOut;
+
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_F1:
@@ -116,8 +118,13 @@ void InputSystem::keyPressed(cocos2d::EventKeyboard::KeyCode keyCode)
 		m_eventManager->execute(EVENTS::AUDIO_MUSIC_TOGGLE, m_localeid);
 		break;
 	case EventKeyboard::KeyCode::KEY_E:
-		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setBody(Body::Body_Common_Clothes_Green);
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setBody(Body::Body_Common_Clothes_Blue);
 		m_eventManager->execute(EVENTS::GRAPHICS_LOAD_BODY, m_localeid);
+		
+		bsOut.Write((SLNet::MessageID)EVENTS::GRAPHICS_LOAD_BODY);
+		bsOut.Write(m_localeid);
+		bsOut.Write(Body::Body_Common_Clothes_Blue);
+		m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
 		break;
 	default:
 		break;
@@ -129,6 +136,8 @@ void InputSystem::keyReleased(cocos2d::EventKeyboard::KeyCode keyCode)
 	if (m_localeid == -1)
 		return;
 
+	SLNet::BitStream bsOut;
+
 	switch (keyCode)
 	{
 	case EventKeyboard::KeyCode::KEY_LEFT_CTRL:
@@ -138,8 +147,13 @@ void InputSystem::keyReleased(cocos2d::EventKeyboard::KeyCode keyCode)
 		m_eventManager->execute(EVENTS::COMBAT_PUNCH, m_localeid);
 		break;
 	case EventKeyboard::KeyCode::KEY_E:
-		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setBody(Body::Body_Common_Clothes_Blue);
+		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setBody(Body::Body_Common_Clothes_Red);
 		m_eventManager->execute(EVENTS::GRAPHICS_LOAD_BODY, m_localeid);
+
+		bsOut.Write((SLNet::MessageID)EVENTS::GRAPHICS_LOAD_BODY);
+		bsOut.Write(m_localeid);
+		bsOut.Write(Body::Body_Common_Clothes_Red);
+		m_eventManager->execute(EVENTS::SEND_SERVER, m_localeid, nullptr, &bsOut);
 		break;
 	}		
 }

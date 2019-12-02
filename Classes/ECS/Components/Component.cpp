@@ -237,6 +237,15 @@ namespace ECS
 	{
 	}
 
+	cocos2d::Animate * Component::getAnimBlood()
+	{
+		return nullptr;
+	}
+
+	void Component::setAnimBlood(cocos2d::Animate * anim)
+	{
+	}
+
 	//PositionComponent
 	int Component::getX()
 	{

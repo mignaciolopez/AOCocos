@@ -33,7 +33,9 @@ enum Race
 enum Body
 {
 	Body_Common_Clothes_Green = 1,
-	Body_Common_Clothes_Blue
+	Body_Common_Clothes_Blue,
+	Body_Common_Clothes_Red,
+	whatsthis
 };
 
 enum Head
@@ -148,6 +150,9 @@ namespace ECS
 
 		virtual cocos2d::Animate* getAnimWeapon();
 		virtual void setAnimWeapon(Direction dir, cocos2d::Animate* anim);
+
+		virtual cocos2d::Animate* getAnimBlood();
+		virtual void setAnimBlood(cocos2d::Animate* anim);
 
 		//PositionComponent
 		virtual int getX();

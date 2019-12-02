@@ -61,10 +61,28 @@ void GraphicsSystem::setGraphicsForPlayer(int eid, cocos2d::Event * ccEvent, SLN
 	loadShield(eid, nullptr, nullptr);
 	loadHelmet(eid, nullptr, nullptr);
 	loadWeapon(eid, nullptr, nullptr);
+
+	//265 tiene de la 260 a la 264 Blood Animation
+	Vector<SpriteFrame*> spriteFrames;
+	for (auto f : m_graphicsData.at(265)->frames)
+	{
+		spriteFrames.pushBack(m_sfCache->getSpriteFrameByName(std::to_string(f)));
+	}
+	auto anim = Animate::create(Animation::createWithSpriteFrames(spriteFrames, 0.04f));
+
+	anim->retain();
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->setAnimBlood(anim);
 }
 
 void GraphicsSystem::loadBody(int eid, cocos2d::Event * ccEvent, SLNet::BitStream * bs)
 {
+	if (bs)
+	{
+		Body body;
+		bs->Read(body);
+		m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->setBody(body);
+	}
+
 	auto bodySpr = m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBodySpr();
 	int body = m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getBody();
 	typedef std::multimap<int, std::pair< unsigned int, Direction>>::iterator MMAPIterator;

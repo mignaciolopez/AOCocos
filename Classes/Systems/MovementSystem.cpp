@@ -202,11 +202,15 @@ bool MovementSystem::move(int eid, Direction dir)
 
 	m_entityManager->getComp(eid, POSITION)->setX(
 		m_entityManager->getComp(eid, POSITION)->getX() + x);
+	
+	if (y > 0)
+	{
+		m_entityManager->getComp(eid, POSITION)->setY(
+			m_entityManager->getComp(eid, POSITION)->getY() + y);
+		y = 0;
+	}
 
-	m_entityManager->getComp(eid, POSITION)->setY(
-		m_entityManager->getComp(eid, POSITION)->getY() + y);
-
-	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid));
+	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(MovementSystem::stopMoving, this, eid, y));
 	DelayTime* dtcb = cocos2d::DelayTime::create(m_vel - m_fpsPivot);
 	Action* secuence = Sequence::create(dtcb, callback, nullptr);
 	m_entityManager->getComp(eid, PLAYER_BODY)->getBodySpr()->runAction(secuence);
@@ -218,9 +222,12 @@ bool MovementSystem::move(int eid, Direction dir)
 	return true;
 }
 
-void MovementSystem::stopMoving(int eid)
+void MovementSystem::stopMoving(int eid, int y)
 {
 	m_entityManager->getComp(eid, PLAYER_BODY)->setMoving(false);
+
+	m_entityManager->getComp(eid, POSITION)->setY(
+		m_entityManager->getComp(eid, POSITION)->getY() + y);
 }
 
 void MovementSystem::setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs)

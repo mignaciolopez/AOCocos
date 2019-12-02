@@ -81,8 +81,8 @@ private:
 	std::multimap<int, std::pair< unsigned int, Direction>> m_animationsWeapon;
 	std::multimap<int, std::pair< unsigned int, Direction>> m_animationsShield;
 
-	const float m_NS = 0.04f;
-	const float m_EW = 0.05f;
+	const float m_NS = 0.03f;
+	const float m_EW = 0.04f;
 };
 
 #endif // !__GRAPHICS_SYSTEM_H__

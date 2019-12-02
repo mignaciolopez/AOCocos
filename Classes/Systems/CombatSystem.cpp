@@ -35,18 +35,24 @@ void CombatSystem::setLocaleid(int eid, cocos2d::Event * ccEvent, SLNet::BitStre
 
 void CombatSystem::punchAir(int eid, cocos2d::Event * ccEvnt, SLNet::BitStream * bs)
 {
-	m_eventManager->execute(EVENTS::ANIMATE_WEAPON, eid);
+	//m_eventManager->execute(EVENTS::ANIMATE_WEAPON, eid);
 	
 	m_entityManager->getComp(eid, AUDIO)->addAudio(2);
 }
 
 void CombatSystem::punchTarget(int eid, cocos2d::Event * ccEvnt, SLNet::BitStream * bs)
 {
-	m_eventManager->execute(EVENTS::ANIMATE_WEAPON, eid);
+	//m_eventManager->execute(EVENTS::ANIMATE_WEAPON, eid);
 
 	int targeteid = -1;
 	if (bs)
 		bs->Read(targeteid);
+
+	m_entityManager->getComp(targeteid, PLAYER_BODY)->setAttacking(true);
+	m_eventManager->execute(EVENTS::ANIMATE_BLOOD, targeteid);
+	m_entityManager->getComp(eid, AUDIO)->addAudio(10);
+
+	return;
 
 	if (targeteid == m_localeid)
 	{
@@ -58,13 +64,7 @@ void CombatSystem::punchTarget(int eid, cocos2d::Event * ccEvnt, SLNet::BitStrea
 	{
 		//this menas i git eid
 		//animate my self punching
-	}
-	else
-	{
-		//animate who corresponds
-	}
-
-	m_entityManager->getComp(eid, AUDIO)->addAudio(10);
+	}	
 }
 
 void CombatSystem::punch(int eid, cocos2d::Event * ccEvent, SLNet::BitStream * bs)

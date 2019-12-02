@@ -25,7 +25,7 @@ public:
 
 	bool move(int eid, Direction dir);
 
-	void stopMoving(int eid);
+	void stopMoving(int eid, int y);
 
 	void setLocalEntity(int eid, cocos2d::Event * ccevent, SLNet::BitStream * bs);
 

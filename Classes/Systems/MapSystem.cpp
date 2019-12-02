@@ -37,11 +37,11 @@ void MapSystem::update(float dt)
 	if (m_localeid == -1)
 		return;
 
+	int tilesY = m_currentMapC->getMap()->getMapSize().height;
+
 	for (auto eit : *m_entityManager->getEntities())
 	{
-		auto p = m_entityManager->getComp(eit.first, ComponentType::PLAYER_BODY)->getBodySpr()->getPosition();
-		p = CC_POINT_POINTS_TO_PIXELS(p);
-		float newZ = 20 - ((p.y-20) / 32); //tiles in Y - ((p.y-Tiles in Y) / Tile Height);
+		float newZ = tilesY - m_entityManager->getComp(eit.first, ComponentType::POSITION)->getY() -1;
 		m_entityManager->getComp(m_localeid, MAP)->getMap()->reorderChild( //localeid is the only one entity who has a map, remote ones dont, this is not wrong
 		m_entityManager->getComp(eit.first, ComponentType::PLAYER_BODY)->getBodySpr(), newZ);
 	}
@@ -91,7 +91,7 @@ void MapSystem::loadMap(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 	if (mapName.GetLength() <= 0)
 		return;
 
-	std::string path = cocos2d::FileUtils::getInstance()->fullPathForFilename(mapName.C_String());
+	std::string path = FileUtils::getInstance()->fullPathForFilename(mapName.C_String());
 
 	if (m_currentMapC->getMap())
 	{
@@ -99,7 +99,7 @@ void MapSystem::loadMap(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 			m_entityManager->getComp(eid, LAYER3D)->getLayer()->removeChild(m_currentMapC->getMap());
 	}
 
-	m_currentMapC->setMap(cocos2d::TMXTiledMap::create(path));
+	m_currentMapC->setMap(TMXTiledMap::create(path));
 	
 	if (m_currentMapC->getMap())
 		m_currentMapC->getMap()->retain();
@@ -122,6 +122,7 @@ void MapSystem::canMove(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 	int nx = m_entityManager->getComp(eid, POSITION)->getX();
 	int ny = m_entityManager->getComp(eid, POSITION)->getY();
 
+	int tilesX = m_currentMapC->getMap()->getMapSize().width - 1;
 	int tilesY = m_currentMapC->getMap()->getMapSize().height - 1;
 
 	m_entityManager->getComp(m_localeid, PLAYER_BODY)->setCanWalk(true);
@@ -157,7 +158,7 @@ void MapSystem::canMove(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 		}
 	}
 
-	if (nx < 0 || ny < 0 || nx > 19 || ny > 19)
+	if (nx < 0 || ny < 0 || nx > tilesX || ny > tilesY)
 		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setCanWalk(false);
 	else if (m_currentMapC->getMap()->getLayer("blocks")->getTileAt(Vec2(nx, tilesY - ny)))
 		m_entityManager->getComp(m_localeid, PLAYER_BODY)->setCanWalk(false);

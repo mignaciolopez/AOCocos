@@ -27,7 +27,7 @@ public:
 		m_spriteBody = cocos2d::Sprite::create();
 		m_spriteBody->retain();
 		m_spriteBody->setCameraMask(static_cast<int>(cocos2d::CameraFlag::USER2));
-		m_spriteBody->setPosition(x * 32 + 16, y * 32);
+		m_spriteBody->setPosition(x * 32 + 16, y * 32 + 4);
 		m_spriteBody->setAnchorPoint(cocos2d::Vec2(0.5f, 0.0f));
 
 		//Head
@@ -308,6 +308,15 @@ public:
 		m_animWeapon[dir] = anim;
 	}
 
+	virtual cocos2d::Animate* getAnimBlood() override
+	{
+		return m_animBlood;
+	}
+	virtual void setAnimBlood(cocos2d::Animate* anim) override
+	{
+		m_animBlood = anim;
+	}
+
 private:
 	cocos2d::Sprite* m_spriteBody;
 	cocos2d::Sprite* m_spriteHead; //child of body
@@ -336,6 +345,7 @@ private:
 	cocos2d::Animate* m_animBody[4];
 	cocos2d::Animate* m_animShield[4];
 	cocos2d::Animate* m_animWeapon[4];
+	cocos2d::Animate* m_animBlood;
 };
 
 #endif // __SPRITE_COMPONENT_H__

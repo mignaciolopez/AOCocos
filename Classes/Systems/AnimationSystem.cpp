@@ -20,6 +20,7 @@ AnimationSystem::AnimationSystem()
 	m_eventManager->Subscribe(EVENTS::ANIMATE, &AnimationSystem::animate, this);
 	m_eventManager->Subscribe(EVENTS::ANIMATE_WEAPON, &AnimationSystem::animateWeapon, this);
 	m_eventManager->Subscribe(EVENTS::ANIMATE_SHIELD, &AnimationSystem::animateShield, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATE_BLOOD, &AnimationSystem::animateBlood, this);
 }
 
 AnimationSystem::~AnimationSystem()
@@ -69,6 +70,15 @@ void AnimationSystem::animateShield(int eid, cocos2d::Event *, SLNet::BitStream 
 	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(AnimationSystem::attackEnd, this, eid));
 	Action* seq = Sequence::create(m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->
 		getAnimShield()->clone(), callback, nullptr);
+
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getShieldSpr()->runAction(seq);
+}
+
+void AnimationSystem::animateBlood(int eid, cocos2d::Event *, SLNet::BitStream * bs)
+{
+	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(AnimationSystem::attackEnd, this, eid));
+	Action* seq = Sequence::create(m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->
+		getAnimBlood()->clone(), callback, nullptr);
 
 	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getShieldSpr()->runAction(seq);
 }
