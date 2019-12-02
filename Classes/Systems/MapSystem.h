@@ -24,6 +24,8 @@ public:
 
 	virtual void toggleDebug(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
 
+	virtual void spellThrouw(int eid, cocos2d::Event* ccevnt, SLNet::BitStream* bs);
+
 private:
 
 

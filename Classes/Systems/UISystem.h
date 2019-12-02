@@ -47,6 +47,7 @@ private:
 
 	void createInventoryAndSpells();
 	void toggleInventory(int x, int y);
+	void castSpell(int x, int y);
 
 	void createTableSpells();
 
@@ -78,6 +79,8 @@ private:
 	cocos2d::Sprite* m_sprSpells;
 
 	cocos2d::extension::TableView* m_tableSpells;
+	int m_spellSelected;
+	bool m_spellCasted;
 };
 
 #endif // __UI_SYSTEM_H__

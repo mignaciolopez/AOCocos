@@ -317,6 +317,15 @@ public:
 		m_animBlood = anim;
 	}
 
+	virtual cocos2d::Animate* getAnimApocalipsis() override
+	{
+		return m_animApocalipsis;
+	}
+	virtual void setAnimApocaipsis(cocos2d::Animate* anim) override
+	{
+		m_animApocalipsis = anim;
+	}
+
 private:
 	cocos2d::Sprite* m_spriteBody;
 	cocos2d::Sprite* m_spriteHead; //child of body
@@ -346,6 +355,7 @@ private:
 	cocos2d::Animate* m_animShield[4];
 	cocos2d::Animate* m_animWeapon[4];
 	cocos2d::Animate* m_animBlood;
+	cocos2d::Animate* m_animApocalipsis;
 };
 
 #endif // __SPRITE_COMPONENT_H__

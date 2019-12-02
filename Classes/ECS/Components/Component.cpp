@@ -246,6 +246,15 @@ namespace ECS
 	{
 	}
 
+	cocos2d::Animate * Component::getAnimApocalipsis()
+	{
+		return nullptr;
+	}
+
+	void Component::setAnimApocaipsis(cocos2d::Animate * anim)
+	{
+	}
+
 	//PositionComponent
 	int Component::getX()
 	{

@@ -17,8 +17,13 @@ public:
 	
 	void punchAir(int eid, cocos2d::Event* ccEvnt, SLNet::BitStream* bs);
 	void punchTarget(int eid, cocos2d::Event* ccEvnt, SLNet::BitStream* bs);
+
+	void spellAir(int eid, cocos2d::Event* ccEvnt, SLNet::BitStream* bs);
+	void spellTarget(int eid, cocos2d::Event* ccEvnt, SLNet::BitStream* bs);
+
 	//Client prediction
 	void punch(int eid, cocos2d::Event* ccEvent, SLNet::BitStream* bs);
+	void spellThrow(int eid, cocos2d::Event* ccEvent, SLNet::BitStream* bs);
 
 
 private:

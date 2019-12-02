@@ -62,7 +62,8 @@ void GraphicsSystem::setGraphicsForPlayer(int eid, cocos2d::Event * ccEvent, SLN
 	loadHelmet(eid, nullptr, nullptr);
 	loadWeapon(eid, nullptr, nullptr);
 
-	//265 tiene de la 260 a la 264 Blood Animation
+	//Blood Animation
+	//265 tiene de la 260 a la 264
 	Vector<SpriteFrame*> spriteFrames;
 	for (auto f : m_graphicsData.at(265)->frames)
 	{
@@ -72,6 +73,20 @@ void GraphicsSystem::setGraphicsForPlayer(int eid, cocos2d::Event * ccEvent, SLN
 
 	anim->retain();
 	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->setAnimBlood(anim);
+
+	//ApocalipsisAnimation
+	//index 259
+	spriteFrames.clear();
+	for (auto f : m_graphicsData.at(259)->frames)
+	{
+		auto frame = m_sfCache->getSpriteFrameByName(std::to_string(f));
+		frame->setAnchorPoint(Vec2(0.5f, 0.5f));
+		spriteFrames.pushBack(frame);
+	}
+	anim = Animate::create(Animation::createWithSpriteFrames(spriteFrames, 0.04f));
+
+	anim->retain();
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->setAnimApocaipsis(anim);
 }
 
 void GraphicsSystem::loadBody(int eid, cocos2d::Event * ccEvent, SLNet::BitStream * bs)

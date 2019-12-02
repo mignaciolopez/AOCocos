@@ -21,6 +21,7 @@ AnimationSystem::AnimationSystem()
 	m_eventManager->Subscribe(EVENTS::ANIMATE_WEAPON, &AnimationSystem::animateWeapon, this);
 	m_eventManager->Subscribe(EVENTS::ANIMATE_SHIELD, &AnimationSystem::animateShield, this);
 	m_eventManager->Subscribe(EVENTS::ANIMATE_BLOOD, &AnimationSystem::animateBlood, this);
+	m_eventManager->Subscribe(EVENTS::ANIMATE_APOCALIPSIS, &AnimationSystem::animateApocalipsis, this);
 }
 
 AnimationSystem::~AnimationSystem()
@@ -83,6 +84,15 @@ void AnimationSystem::animateBlood(int eid, cocos2d::Event *, SLNet::BitStream *
 	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getShieldSpr()->runAction(seq);
 }
 
+void AnimationSystem::animateApocalipsis(int eid, cocos2d::Event *, SLNet::BitStream * bs)
+{
+	CallFuncN* callback = CallFuncN::create(CC_CALLBACK_0(AnimationSystem::attackEnd, this, eid));
+	Action* seq = Sequence::create(m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->
+		getAnimApocalipsis()->clone(), callback, nullptr);
+
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getHeadSpr()->runAction(seq);
+}
+
 void AnimationSystem::setBodyCF(int eid)
 {
 	setBody(eid);
@@ -95,6 +105,7 @@ void AnimationSystem::setBodyCF(int eid)
 void AnimationSystem::attackEnd(int eid)
 {
 	m_entityManager->getComp(eid, PLAYER_BODY)->setAttacking(false);
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getHeadSpr()->setAnchorPoint(Vec2(0.5f, 0.85f));
 }
 
 void AnimationSystem::setBody(int eid)

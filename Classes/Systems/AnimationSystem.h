@@ -17,6 +17,7 @@ public:
 	void animateWeapon(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 	void animateShield(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 	void animateBlood(int eid, cocos2d::Event*, SLNet::BitStream* bs);
+	void animateApocalipsis(int eid, cocos2d::Event*, SLNet::BitStream* bs);
 
 	void setBodyCF(int eid);
 

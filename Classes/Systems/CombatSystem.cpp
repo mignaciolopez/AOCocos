@@ -15,6 +15,10 @@ CombatSystem::CombatSystem()
 	m_eventManager->Subscribe(EVENTS::COMBAT_PUNCH_AIR, &CombatSystem::punchAir, this);
 	m_eventManager->Subscribe(EVENTS::COMBAT_PUNCH_TARGET, &CombatSystem::punchTarget, this);
 	m_eventManager->Subscribe(EVENTS::COMBAT_PUNCH, &CombatSystem::punch, this);
+
+	m_eventManager->Subscribe(EVENTS::COMBAT_SPELLS_AIR, &CombatSystem::spellAir, this);
+	m_eventManager->Subscribe(EVENTS::COMBAT_SPELLS_TARGET, &CombatSystem::spellTarget, this);
+	m_eventManager->Subscribe(EVENTS::COMBAT_SPELLS_THROW, &CombatSystem::spellThrow, this);
 }
 
 CombatSystem::~CombatSystem()
@@ -70,6 +74,23 @@ void CombatSystem::punchTarget(int eid, cocos2d::Event * ccEvnt, SLNet::BitStrea
 	}	
 }
 
+void CombatSystem::spellAir(int eid, cocos2d::Event * ccEvnt, SLNet::BitStream * bs)
+{
+	cocos2d::log("[COMBAT SYSTEM] Invalid target");
+}
+
+void CombatSystem::spellTarget(int eid, cocos2d::Event * ccEvnt, SLNet::BitStream * bs)
+{
+	int targeteid = -1;
+	if (bs)
+		bs->Read(targeteid);
+
+	m_entityManager->getComp(targeteid, PLAYER_BODY)->setAttacking(true);
+
+	m_eventManager->execute(EVENTS::ANIMATE_APOCALIPSIS, targeteid);
+	m_entityManager->getComp(eid, AUDIO)->addAudio(27);
+}
+
 void CombatSystem::punch(int eid, cocos2d::Event * ccEvent, SLNet::BitStream * bs)
 {
 	if (m_entityManager->getComp(eid, PLAYER_BODY)->getAttacking())
@@ -85,4 +106,8 @@ void CombatSystem::punch(int eid, cocos2d::Event * ccEvent, SLNet::BitStream * b
 	bsOut.Write((SLNet::MessageID)EVENTS::COMBAT_PUNCH);
 	bsOut.Write(eid);
 	m_eventManager->execute(EVENTS::SEND_SERVER, eid, nullptr, &bsOut);
+}
+
+void CombatSystem::spellThrow(int eid, cocos2d::Event * ccEvent, SLNet::BitStream * bs)
+{
 }

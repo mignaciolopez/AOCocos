@@ -20,6 +20,8 @@ MapSystem::MapSystem()
 	m_eventManager->Subscribe(EVENTS::MAP_CAN_MOVE, &MapSystem::canMove, this);
 
 	m_eventManager->Subscribe(EVENTS::MAP_TOGGLE_DEBUG, &MapSystem::toggleDebug, this);
+	
+	m_eventManager->Subscribe(EVENTS::UI_SPELL_TRHOUW, &MapSystem::spellThrouw, this);
 
 	m_localeid = -1;
 }
@@ -170,4 +172,43 @@ void MapSystem::toggleDebug(int eid, cocos2d::Event * ccevnt, SLNet::BitStream *
 		m_currentMapC->getMap()->getLayer("blocks")->setVisible(false);
 	else
 		m_currentMapC->getMap()->getLayer("blocks")->setVisible(true);
+}
+
+void MapSystem::spellThrouw(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
+{
+	cocos2d::EventMouse* mouseEvent;
+	try
+	{
+		mouseEvent = dynamic_cast<cocos2d::EventMouse*>(ccevnt);
+	}
+	catch (std::bad_cast& e)
+	{
+		cocos2d::log("%s onMouse##Event: %s", "[MAP SYSTEM]", e.what());
+		return;
+	}
+
+	auto layer = m_currentMapC->getMap()->getLayer("grass");
+
+	Size viewSize = m_director->getWinSize();
+
+	Vec2 mapCordinate = m_currentMapC->getMap()->convertToNodeSpace(m_director->convertToGL(mouseEvent->getLocationInView()));
+	int tileX = mapCordinate.x / m_currentMapC->getMap()->getTileSize().width;
+	int tileY = (viewSize.height - mapCordinate.y) / m_currentMapC->getMap()->getTileSize().height;
+
+	tileX = tileX - 8 + m_entityManager->getComp(eid, POSITION)->getX();
+	tileY = tileY - 8 + m_entityManager->getComp(eid, POSITION)->getY();
+
+	cocos2d::log("[MAP SYSTEM] Pos: %d, %d", tileX, tileY);
+
+
+	SLNet::BitStream bsOut;
+	bsOut.Write((SLNet::MessageID)EVENTS::COMBAT_SPELLS_THROW);
+	bsOut.Write(eid);
+	bsOut.Write(tileX);
+	bsOut.Write(tileY);
+	m_eventManager->execute(EVENTS::SEND_SERVER, eid, nullptr, &bsOut);
+
+	m_eventManager->execute(EVENTS::COMBAT_SPELLS_THROW, eid, nullptr, &bsOut);
+
+	ccevnt->stopPropagation();
 }

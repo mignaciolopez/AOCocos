@@ -13,6 +13,8 @@ UISystem::UISystem(cocos2d::Scene* scene) : m_scene(scene)
 	sfCache = SpriteFrameCache::getInstance();
 
 	m_localeid = -1;
+	m_spellSelected = -1;
+	m_spellCasted = false;
 
 	TP::Interface::addSpriteFramesToCache();
 
@@ -97,6 +99,9 @@ void UISystem::setLocaleid(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * 
 
 void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 {
+	if (m_localeid == -1)
+		return;
+
 	cocos2d::EventMouse* mouseEvent;
 	try
 	{
@@ -109,6 +114,7 @@ void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 	}
 
 	toggleInventory(mouseEvent->getLocation().x, mouseEvent->getLocation().y);
+	castSpell(mouseEvent->getLocation().x, mouseEvent->getLocation().y);
 
 	cocos2d::log("Entity: %i | Mouse Button: %i | X: %f, Y: %f",
 		eid, mouseEvent->getMouseButton(), mouseEvent->getLocation().x, mouseEvent->getLocation().y);
@@ -116,6 +122,34 @@ void UISystem::clicked(int eid, cocos2d::Event * ccevnt, SLNet::BitStream* bs)
 
 void UISystem::released(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
 {
+	if (m_localeid == -1)
+		return;
+
+	cocos2d::EventMouse* mouseEvent;
+	try
+	{
+		mouseEvent = dynamic_cast<cocos2d::EventMouse*>(ccevnt);
+	}
+	catch (std::bad_cast& e)
+	{
+		cocos2d::log("%s onMouse##Event: %s", "[INPUT SYSTEM]", e.what());
+		return;
+	}
+
+	int x = mouseEvent->getLocation().x;
+	int y = mouseEvent->getLocation().y;
+
+	if (x > 10 && y > 140 && x < 554 && y < 556)
+	{
+		if (m_spellCasted)
+		{
+			m_director->getOpenGLView()->setDefaultCursor();
+			m_eventManager->execute(EVENTS::UI_SPELL_TRHOUW, eid, ccevnt);
+			m_spellCasted = false;
+		}
+	}
+
+	ccevnt->stopPropagation();
 }
 
 void UISystem::scroll(int eid, cocos2d::Event * ccevnt, SLNet::BitStream * bs)
@@ -205,6 +239,8 @@ void UISystem::tableCellTouched(cocos2d::extension::TableView * table, cocos2d::
 #if _DEBUG
 	cocos2d::log("cell touched at index: %ld", static_cast<long>(cell->getIdx()));
 #endif
+
+	m_spellSelected = static_cast<int>(cell->getIdx());
 }
 
 Size UISystem::tableCellSizeForIndex(cocos2d::extension::TableView * table, ssize_t idx)
@@ -316,6 +352,21 @@ void UISystem::toggleInventory(int x, int y)
 		{
 			m_layer->addChild(m_tableSpells, 6);
 			m_tableSpells->setCameraMask(static_cast<int>(CameraFlag::USER1));
+		}
+	}
+}
+
+void UISystem::castSpell(int x, int y)
+{
+	if (m_spellSelected == -1 || m_spellCasted)
+		return;
+
+	if (m_sprSpells->isVisible())
+	{
+		if (x > 581 && y > 351 && x < 673 && y < 387)
+		{
+			m_director->getOpenGLView()->setCursor("cursor2.png", Vec2::ANCHOR_MIDDLE);
+			m_spellCasted = true;
 		}
 	}
 }

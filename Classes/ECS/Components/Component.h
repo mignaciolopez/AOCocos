@@ -154,6 +154,9 @@ namespace ECS
 		virtual cocos2d::Animate* getAnimBlood();
 		virtual void setAnimBlood(cocos2d::Animate* anim);
 
+		virtual cocos2d::Animate* getAnimApocalipsis();
+		virtual void setAnimApocaipsis(cocos2d::Animate* anim);
+
 		//PositionComponent
 		virtual int getX();
 		virtual void setX(int x);
