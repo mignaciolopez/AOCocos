@@ -64,7 +64,7 @@ CameraSystem::CameraSystem(cocos2d::Scene* scene) : m_scene(scene)
 	m_scene->addChild(m_layer3D->getLayer(), 0);
 
 	m_localeid = -1;
-	m_Z = 350;
+	m_Z = 370;
 	//just to debug camera, remove after////////////////////////////
 	/*cocos2d::DrawNode3D* line = cocos2d::DrawNode3D::create();
 	//draw x
