@@ -90,7 +90,7 @@ void AnimationSystem::animateApocalipsis(int eid, cocos2d::Event *, SLNet::BitSt
 	Action* seq = Sequence::create(m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->
 		getAnimApocalipsis()->clone(), callback, nullptr);
 
-	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getHeadSpr()->runAction(seq);
+	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getHelmetSpr()->runAction(seq);
 }
 
 void AnimationSystem::setBodyCF(int eid)
@@ -105,7 +105,6 @@ void AnimationSystem::setBodyCF(int eid)
 void AnimationSystem::attackEnd(int eid)
 {
 	m_entityManager->getComp(eid, PLAYER_BODY)->setAttacking(false);
-	m_entityManager->getComp(eid, ComponentType::PLAYER_BODY)->getHeadSpr()->setAnchorPoint(Vec2(0.5f, 0.85f));
 }
 
 void AnimationSystem::setBody(int eid)
