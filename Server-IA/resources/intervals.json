@@ -1,0 +1,4 @@
+{ "id":1, "meleeattack":1.0 }
+{ "id":2, "magicattack":1.5 }
+{ "id":3, "castspell":1.0 }
+{ "id":4, "use":0.4 }

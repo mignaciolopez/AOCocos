@@ -1,0 +1,42 @@
+[2020-05-08 00:28:11.661] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 00:28:13.241] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 00:28:13.241] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0xaa7acc
+[2020-05-08 00:37:47.101] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 00:37:49.426] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 00:37:49.426] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0x478acc
+[2020-05-08 00:41:17.951] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 00:41:19.916] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 00:41:19.916] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0xf78acc
+[2020-05-08 00:51:38.297] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 00:51:39.488] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 00:51:39.488] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0x508acc
+[2020-05-08 00:58:46.566] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 00:58:55.887] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 00:58:55.887] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0x728a9c
+[2020-05-08 00:59:09.502] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 00:59:19.568] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 00:59:19.568] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0x10c8a9c
+[2020-05-08 00:59:33.672] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 00:59:38.977] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 00:59:38.977] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0x7c8a9c
+[2020-05-08 01:05:39.032] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 01:05:54.960] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 01:05:54.961] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0xa59a9c
+[2020-05-08 01:07:49.074] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 01:08:57.387] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 01:08:57.387] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0xcb9a9c
+[2020-05-08 01:09:56.052] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 01:10:53.694] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 01:10:53.694] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0xcb9a9c
+[2020-05-08 01:11:52.910] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 01:11:55.381] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 01:11:55.381] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0xf49a9c
+[2020-05-08 01:13:19.631] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 01:13:21.319] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 01:13:21.320] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0xd19a9c
+[2020-05-08 02:42:44.883] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 02:42:56.483] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 02:42:56.483] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0x839a9c
+[2020-05-08 02:44:48.612] [SERVER-IA] [trace] [ECS_Engine] Constructor
+[2020-05-08 02:44:50.736] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger count: 3
+[2020-05-08 02:44:50.736] [SERVER-IA] [debug] [ECS_Log] shutdown() s_fileLogger address: 0x10f9a9c
