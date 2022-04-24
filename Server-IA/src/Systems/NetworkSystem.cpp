@@ -27,7 +27,7 @@ NetworkSystem::NetworkSystem(entt::registry* registry)
 
 	m_peer = SLNet::RakPeerInterface::GetInstance();
 
-	m_peer->InitializeSecurity(m_public_key, m_private_key, false);
+	//m_peer->InitializeSecurity(m_public_key, m_private_key, false);
 
 	SLNet::SocketDescriptor sd(6000, 0);
 	SLNet::StartupResult result = m_peer->Startup(100, &sd, 1);
