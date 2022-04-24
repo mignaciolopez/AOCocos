@@ -1,0 +1,6 @@
+
+Improve Movent System:
+- ask in entt gitter how to use patch, to patch position component and make the movement system react only on components updated.
+(same for fxComponent)
+
+- Maybe there is a need to separate movements for local player and remote players, to make less comparissons checks and make remote players being processed faster.

@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{84a8ebd7-7cf0-47f6-b75e-d441df67da40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="resource">
+      <UniqueIdentifier>{715254bc-d70b-4ec5-bf29-467dd3ace079}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{bb6c862e-70e9-49d9-81b7-3829a6f50471}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Components">
+      <UniqueIdentifier>{39f7dc61-963e-4487-8116-e044a30b350f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ECS">
+      <UniqueIdentifier>{34f01927-99e4-4587-9c41-17f3e80107e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Scenes">
+      <UniqueIdentifier>{c701421f-e164-4d1b-8d49-8aaeb69c3351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Systems">
+      <UniqueIdentifier>{f7d68ef1-439c-4b2c-b950-5402c527e628}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Graphics">
+      <UniqueIdentifier>{474bb12d-5200-48b3-a100-f28940672871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ECS\iSystem">
+      <UniqueIdentifier>{82cb8e75-2348-42c8-bf70-bea384a5c91b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\AppDelegate.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\ECS_Engine.cpp">
+      <Filter>src\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\MainScene.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\AudioSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\InputSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\SignalsManager.cpp">
+      <Filter>src\ECS</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\NetworkSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\UISystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Scenes\DrawNode3D.cpp">
+      <Filter>src\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Graphics\Interface.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\CameraSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\MapSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\SpawnSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\GraphicsSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\MovementSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\AnimationSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\iSystems\SystemManager.cpp">
+      <Filter>src\ECS\iSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\iSystems\iSystem.cpp">
+      <Filter>src\ECS\iSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\CombatSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Graphics\Graphics.cpp">
+      <Filter>src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\InventorySystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\HealthSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\ParticlesSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\ManaSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Systems\IntervalSystem.cpp">
+      <Filter>src\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\ECS\ECS_Log.cpp">
+      <Filter>src\ECS</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="main.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\AppDelegate.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\ECS_Engine.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\MainScene.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\FXComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\IncludeComponents.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\AudioSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\IncludeSystems.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\InputSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\SignalsList.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\SignalsManager.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\NetworkSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\UISystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Scenes\DrawNode3D.h">
+      <Filter>src\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Graphics\Interface.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\TableSpellsComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\MapComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\MapSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\CameraSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\PositionComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\MapCameraComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\HudComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\SpawnSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\PlayerComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\Enums.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\GraphicsSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\MovementSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\AnimationSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\HudDebugComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\iSystems\SystemManager.h">
+      <Filter>src\ECS\iSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\iSystems\iSystem.h">
+      <Filter>src\ECS\iSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\iSystems\iSystemTags.h">
+      <Filter>src\ECS\iSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\CombatSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Graphics\Graphics.h">
+      <Filter>src\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\InventoryComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\InventorySystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\HealthComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\LevelComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\HealthSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\ParticlesSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\ManaComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\ManaSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Components\IntervalComponent.h">
+      <Filter>src\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Systems\IntervalSystem.h">
+      <Filter>src\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\ECS\ECS_Log.h">
+      <Filter>src\ECS</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="game.rc">
+      <Filter>resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

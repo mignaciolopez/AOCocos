@@ -1,0 +1,1 @@
+[2020-05-07 12:26:24.433] [aog_logger] [trace] AppDelegate Constructor

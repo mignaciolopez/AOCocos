@@ -1,0 +1,2 @@
+{ "id":1, "itemframe":542, "spanish":"Poción Roja", "english":"Red Potion", "affectedC":"healthComponent", "value":1.0 }
+{ "id":2, "itemframe":541, "spanish":"Poción Azul", "english":"Blue Potion", "affectedC":"ManaComponent", "value":2.0 }
